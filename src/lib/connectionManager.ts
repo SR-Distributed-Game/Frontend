@@ -3,7 +3,7 @@ export class SpringSocketServer{
     private socket: WebSocket;
 
     constructor(){
-        this.socket = new WebSocket("ws://localhost:8080/hello");
+        this.socket = new WebSocket("ws://localhost:8080/echo");
         this.socket.onopen = this.onOpen;
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;

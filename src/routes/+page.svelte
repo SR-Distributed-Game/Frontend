@@ -19,4 +19,5 @@
 
 <div class = "flex">
     <button id = sendButton class = "m-auto p-5 bg-slate-600 mt-10 rounded-xl text-white"> send message</button>
+    <input> </input>
 </div>
