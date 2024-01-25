@@ -6,13 +6,17 @@
 
     onMount(() => {
         let springSocketServer = new SpringSocketServer(); 
-        springSocketServer.send("hello je suis un messsage");
+        let sendButton = document.getElementById('sendButton');
+            if (sendButton != null){
+                sendButton.addEventListener('click', () => {
+                springSocketServer.send("hello je suis un messsage");
+            });
+        }
+
     });
     
 </script>
 
 <div class = "flex">
-
-    <div class = "m-auto bg-slate-700"> wow je suis la frame principale</div>
-
+    <button id = sendButton class = "m-auto p-5 bg-slate-600 mt-10 rounded-xl text-white"> send message</button>
 </div>
