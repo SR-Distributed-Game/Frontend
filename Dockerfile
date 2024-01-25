@@ -7,4 +7,4 @@ RUN npm install
 RUN npm run build
 
 EXPOSE 4173 
-CMD ["npm", "run", "preview"]  # Make sure this command is suitable for your production environment
+CMD ["npm", "run", "preview"]

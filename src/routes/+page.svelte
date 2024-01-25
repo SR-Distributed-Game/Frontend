@@ -28,6 +28,8 @@
     circle.beginFill(0x9966FF);
     circle.drawCircle(0, 0, 10);
     circle.endFill();
+    circle.name = "circle";
+    circle.addChild(new PIXI.Text("hello world"));
     
     app.ticker.add(() => {
       console.log("state", );
