@@ -10,6 +10,10 @@ export class SpringSocketServer{
         this.socket.onerror = this.onError;
     }
 
+    public getState = () => {
+        return this.socket.readyState;
+    }
+
     private onOpen = (event: Event) => {
         console.log("Socket connected");
     }
@@ -31,6 +35,7 @@ export class SpringSocketServer{
     }
 
     public close = () => {
+        this.socket.send("closing connection");
         this.socket.close();
     }
 }

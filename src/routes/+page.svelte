@@ -30,16 +30,16 @@
     circle.endFill();
     
     app.ticker.add(() => {
+      console.log("state", );
       var mousepos = (app.renderer.events as any).rootPointerEvent.global;
       // circle at mouse position where mouse is
       circle.rotation += 0.1;
-
       circle.transform.position.x = mousepos.x;
       circle.transform.position.y = mousepos.y;
-      circle.onmouseover = () => {
-        circle.scale.x = 1.5;
-        circle.scale.y = 1.5;
-      }
+      if (springSocketServer.getState() != 0)
+      springSocketServer.send(mousepos.x + " " + mousepos.y);
+
+
     });
     
 
@@ -50,6 +50,7 @@
 
     onDestroy(() => {
       app.destroy(true);
+      springSocketServer.close();
     });
     // Votre logique de jeu ou graphique ici
   });
