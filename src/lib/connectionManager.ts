@@ -1,18 +1,24 @@
+import { knownSockets } from "./Servers";
+
 export class SpringSocketServer{
 
     private socket: any;
 
     static instance: SpringSocketServer;
 
+    private playername: string = "defaultname";
+
+    private UID: string = "defaultUID";
+
     constructor(){
     }
 
-    private knownSockets: { [key: string]: string } = {"1": "ws://localhost:8080/echo"};
+
 
     public connectTo(socketName: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            if (this.knownSockets[socketName]) {
-                this.connect(this.knownSockets[socketName]);
+            if (knownSockets[socketName]) {
+                this.connect(knownSockets[socketName]);
                 this.socket.onopen = () => {
                     resolve();
                 };
@@ -31,6 +37,14 @@ export class SpringSocketServer{
         return true;
     }
 
+    getPlayerName = () => {
+        return this.playername;
+    }
+
+    setPlayerName = (name: string) => {
+        this.playername = name;
+    }
+
     static getInstance(){
         if(!SpringSocketServer.instance){
             SpringSocketServer.instance = new SpringSocketServer();
@@ -44,6 +58,7 @@ export class SpringSocketServer{
 
     private onOpen = (event: Event) => {
         console.log("Socket connected");
+        this.send("Hello from client" + this.playername);
     }
 
     private onClose = (event: CloseEvent) => {
@@ -59,12 +74,17 @@ export class SpringSocketServer{
     }
 
     public send = (message: string) => {
-        this.socket.send(message);
+        if (this.socket.readyState === WebSocket.OPEN)
+            this.socket.send( "from:" + this.playername + " | content: " +message);
     }
 
     public close = () => {
-        this.socket.send("closing connection");
-        this.socket.close();
+        if (this.socket){
+            if (this.socket.readyState === WebSocket.OPEN){
+                this.send("closing connection");
+                this.socket.close();
+            }
+        }
     }
 }
 

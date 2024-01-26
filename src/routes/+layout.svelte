@@ -1,11 +1,13 @@
 <script lang="ts">
 	import Navigation from "../lib/Navigation.svelte"
+	import MFooter from "$lib/MFooter.svelte";
+
 	import '../app.css';
 	import { SpringSocketServer } from "$lib/connectionManager";
 
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
-
+    
 	/** @type {import('./$types').LayoutData} */
 	export let socketserver:SpringSocketServer = SpringSocketServer.getInstance();
 
@@ -21,3 +23,5 @@
 <Navigation/>
 
 <slot/>
+
+<MFooter/>

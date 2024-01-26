@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    background-color: #1c1f28;
+    background-color: #7EC8E3;
     width: 100%;
     height: 100%;
 }   
@@ -11,18 +11,18 @@ body {
 
 .searchbar{
 
-    @apply bg-gray-800;
+    @apply bg-red-500;
     @apply border-2;
-    @apply border-gray-700;
+    @apply border-red-700;
     @apply rounded-lg;
     @apply p-2;
-    @apply w-1/2;
     @apply text-white;
     @apply focus:outline-none;
     @apply focus:bg-slate-600;
     @apply hover:scale-105;
     @apply focus:scale-105;
     @apply duration-100;
+    @apply m-auto;
 }
 
 .buttonconnect{
@@ -30,9 +30,35 @@ body {
     @apply focus:scale-105;
     @apply m-auto ;
     @apply p-5;
-    @apply bg-slate-600;
+    background-color: #FBA026;
+
     @apply mt-10;
     @apply rounded-xl;
     @apply text-white;
+    @apply shadow-xl;
+    @apply border;
+    @apply border-gray-700;
+
 
 }
+
+.mainbox{
+    @apply bg-black;
+    @apply bg-opacity-30;
+    @apply rounded-2xl;
+    @apply m-auto;
+    @apply pb-10;
+    @apply p-5;
+    @apply mt-[150px];
+    @apply shadow-xl;
+    @apply mx-2;
+
+}
+
+#sticky-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+  }
+
