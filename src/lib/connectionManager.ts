@@ -9,15 +9,17 @@ export class SpringSocketServer{
 
     private knownSockets: { [key: string]: string } = {"1": "ws://localhost:8080/echo"};
 
-    public connectTo = (socketName: string):boolean => {
-        if(this.knownSockets[socketName]){
-            console.log("Socket found");
-            return this.connect(this.knownSockets[socketName]);
-            
-        } else {
-            console.log("Socket not found");
-            return false;
-        }
+    public connectTo(socketName: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (this.knownSockets[socketName]) {
+                this.connect(this.knownSockets[socketName]);
+                this.socket.onopen = () => {
+                    resolve();
+                };
+            } else {
+                reject(new Error("Socket not found"));
+            }
+        });
     }
 
     private connect = (url: string):boolean => {
@@ -34,6 +36,10 @@ export class SpringSocketServer{
             SpringSocketServer.instance = new SpringSocketServer();
         }
         return SpringSocketServer.instance;
+    }
+
+    public getState = () => {
+        return this.socket.readyState;
     }
 
     private onOpen = (event: Event) => {

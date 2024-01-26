@@ -7,21 +7,23 @@
 
   onMount(() => {
     const connectButton = document.getElementById('connectButton');
-    const ws = $websocketStore; // Accessing the WebSocket instance from the store
+    const ws = $websocketStore; 
     let searchservers = document.getElementById('searchservers') as HTMLInputElement;
     if (connectButton) {
-      connectButton.addEventListener('click', () => {
-        const connected = ws.connectTo(searchservers.value);
-        if (connected) {
-          goto('/game'); // Redirect to '/game' upon successful connection
-        }
-      });
+      connectButton.addEventListener('click', async () => {
+      try {
+        await ws.connectTo(searchservers.value);
+        // Navigate after successful connection
+        goto('/game');
+      } catch (error) {
+        console.error("Failed to connect:", error);
+        // Handle connection failure (e.g., show error message)
+      }
+    });
+
     }
   });
 
-  onDestroy(() => {
-    // Optionally, handle any cleanup here if necessary
-  });
 </script>
 
 
