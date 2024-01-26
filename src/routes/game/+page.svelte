@@ -1,9 +1,7 @@
 
 <script lang=ts>
     import websocketStore from '../../stores/websocket.js';
-
-    import { onMount, onDestroy,getContext} from 'svelte';
-    import { goto } from '$app/navigation';
+    import { onMount, onDestroy} from 'svelte';
     import * as PIXI from 'pixi.js';
 
     let app: PIXI.Application;
@@ -22,7 +20,7 @@
         let quitButton = document.getElementById('quitButton');
         if (quitButton != null){
             quitButton.addEventListener('click', () => {
-                ws.close();
+                quit();
                 window.location = "/";
             });
         }        
@@ -37,7 +35,7 @@
         circle.drawCircle(0, 0, 10);
         circle.endFill();
         circle.name = "circle";
-        circle.addChild(new PIXI.Text("hello world"));
+        circle.addChild(new PIXI.Text(ws.getPlayerName()));
   
     
         app.ticker.add(() => {
@@ -61,29 +59,56 @@
     
     
         });
-        
+
+
+        let quit = () => {
+            ws.close();
+            app.destroy(true);
+            
+        }
   
         app.stage.addChild(circle);
-        (app.view as unknown as HTMLDivElement).classList.add("rounded-lg", "shadow-xl", "mt-10");
+        
+        (app.view as unknown as HTMLDivElement).classList.add("rounded-lg", "shadow-xl");
+
         canvasContainer.appendChild(app.view as unknown as Node);
         onDestroy(() => {
             quit();
         });
 
-        quit = () => {
-            app.destroy(true);
-            ws.close();
-        }
+
     });
   
   
-  </script>
-  
-  <div class = "flex">
+</script>
+
+
+
+<div class = "flex mt-10">
+
     <div class = "m-auto">
-      <div class = "m-auto " bind:this={canvasContainer}></div>
-      <button id = sendButton class = "m-auto p-5 bg-slate-600 mt-10 rounded-xl text-white"> send message</button>
-      <button id = quitButton class = "m-auto p-5 bg-slate-600 mt-10 rounded-xl text-white"> leave room</button>
+        <div bind:this={canvasContainer}></div>  
+
     </div>
-  </div>
-  
+
+    <div class = "bg-black bg-opacity-40 rounded-lg p-5 block m-auto" id=actions>
+        <div class = flex>
+            <p class = "text-xl text-white">actions</p>
+        </div>
+
+        <div class="bg-gray-800 h-px my-2"></div>
+
+        <div class = "flex ">
+            <button id = quitButton class = "p-5 text-[50px] text-white m-auto hover:scale-105 duration-75 hover:text-red-300"> <i class = "fa fa-sign-out "></i></button>  
+        </div>
+
+        <div class="bg-gray-800 h-px my-2"></div>
+
+        <div class = flex>
+            <button id = sendButton class = "p-5 text-[50px] text-white m-auto hover:scale-105 duration-75 hover:text-green-300 ">send</button>
+        </div>
+    </div>
+
+
+</div>
+

@@ -6,13 +6,14 @@
   
 
   onMount(() => {
-    const connectButton = document.getElementById('connectButton');
+    const playbutton = document.getElementById('playbutton');
     const ws = $websocketStore; 
     let searchservers = document.getElementById('searchservers') as HTMLSelectElement;
 
 
     const sel = document.getElementById("existingList");
 
+    searchservers.innerHTML = "";
     for(var sk in knownSockets){
       const opt = document.createElement("option");
       opt.value = sk;
@@ -20,11 +21,9 @@
       searchservers.add(opt, null);
     }
 
-  
 
-
-    if (connectButton) {
-      connectButton.addEventListener('click', async () => {
+    if (playbutton) {
+      playbutton.addEventListener('click', async () => {
       try {
         await ws.connectTo(searchservers.value);
         // Navigate after successful connection
@@ -40,10 +39,9 @@
 
 </script>
 
-
 <div class = "flex">
 
-  <div class = "mainbox">
+  <div class = "mainbox mx-10">
     <div class = flex>
       <h1 class = "m-auto text-[50px] text-white p-1 rounded-lg my-10 text-center">Welcome to our multiplayer game !</h1>
     </div>
@@ -55,14 +53,14 @@
       </div>
     </div>
 
-    <div class = "mainbox">
+    <div class = "mainbox mx-10 ">
       <div class = flex>
         <h1 class = "m-auto text-[50px] text-white p-1 rounded-lg my-10 text-center">Choose a server in the list and start to play !</h1>
       </div>
         <div class = "flex">
           <div class = "m-auto">
   
-            <button id = connectButton class = " buttonconnect">Play</button>
+            <button id = playbutton class = "hover:text-green-300 playbutton bg-white bg-opacity-20 rounded-[50px] shadow-xl"><i class="fa fa-gamepad hover:animate-pulse  text-[10vh]" aria-hidden="true"><i class="fa text-[10vh]">play</i></i></button>
           </div>
         </div>
       </div>

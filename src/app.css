@@ -2,8 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+
+:root{
+    --theme-color: #1c6283;
+
+}
+
+@layer base {
+    @font-face {
+        font-family: 'Nunito';
+        src: local('Nunito'), local('Nunito'), url('/fonts/Nunito/Nunito-Bold.ttf'), format("ttf");
+        font-weight: normal;
+        font-display: swap;
+    }
+}
+
 body {
-    background-color: #7EC8E3;
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--theme-color);
+
     width: 100%;
     height: 100%;
 }   
@@ -25,34 +42,24 @@ body {
     @apply m-auto;
 }
 
-.buttonconnect{
+.playbutton{
+    @apply duration-100;
     @apply hover:scale-105;
     @apply focus:scale-105;
     @apply m-auto ;
     @apply p-5;
-    background-color: #FBA026;
-
     @apply mt-10;
-    @apply rounded-xl;
-    @apply text-white;
-    @apply shadow-xl;
-    @apply border;
-    @apply border-gray-700;
-
-
+    @apply text-[#ffffff];
 }
 
 .mainbox{
-    @apply bg-black;
+    background-color: #0808082c;
     @apply bg-opacity-30;
     @apply rounded-2xl;
-    @apply m-auto;
     @apply pb-10;
     @apply p-5;
     @apply mt-[150px];
     @apply shadow-xl;
-    @apply mx-2;
-
 }
 
 #sticky-footer {

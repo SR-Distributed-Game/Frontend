@@ -1,3 +1,4 @@
+
 import { knownSockets } from "./Servers";
 
 export class SpringSocketServer{
@@ -10,7 +11,12 @@ export class SpringSocketServer{
 
     private UID: string = "defaultUID";
 
+    private IP: string = "defaultIP";
+
     constructor(){
+        getIp().then((ip) => {
+            this.IP = ip;
+        });
     }
 
 
@@ -86,3 +92,15 @@ export class SpringSocketServer{
     }
 }
 
+function getIp(): Promise<string>{
+    //get the public ip
+    let ip = "";
+    fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(data => {
+        ip = data.ip;
+    });
+    return new Promise((resolve, reject) => {
+        resolve(ip);
+    });
+}

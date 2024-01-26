@@ -4,9 +4,11 @@
     import websocketStore from '../../stores/websocket.js';
 onMount(() => {
 
+
     let ws = $websocketStore;
     let nameinput = document.getElementById('nameinput') as HTMLInputElement;
-    nameinput.value = ws.getPlayerName()
+    
+    nameinput.value = ws.getPlayerName();
 
     nameinput.addEventListener('change', () => {
         if (nameinput.value.length < 3){
@@ -14,6 +16,7 @@ onMount(() => {
             return;
         }
         ws.setPlayerName(nameinput.value);
+        localStorage.setItem("playername", nameinput.value);
         console.log("name changed to " + nameinput.value);
     });
 
@@ -21,7 +24,8 @@ onMount(() => {
 
 </script>
 
-<div class = "mainbox">
+<div class = flex>
+<div class = "mainbox m-auto">
     <div class = flex>
       <h1 class = "m-auto text-[50px] text-white p-1 rounded-lg my-10 text-center">Change your name here</h1>
     </div>
@@ -32,3 +36,5 @@ onMount(() => {
         </div>
     </div>
     </div>
+
+</div>
