@@ -6,6 +6,7 @@
 
     let app: PIXI.Application;
     let canvasContainer: HTMLDivElement;
+
     const ws = $websocketStore;
   
     onMount(() => {
@@ -50,12 +51,6 @@
             c.beginFill(0x996600);
             c.transform.position.x = Math.random()*canvasContainer.clientWidth;
             c.transform.position.y = Math.random()*canvasContainer.clientHeight;
-            c.drawCircle(0, 0, 10);
-            c.endFill();
-            c.name = "circle" + app.stage.children.length;
-            c.addChild(new PIXI.Text(c.name));
-    
-            app.stage.addChild(c);
     
     
         });
