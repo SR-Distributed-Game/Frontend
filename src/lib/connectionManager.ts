@@ -21,7 +21,10 @@ export class SpringSocketServer{
                 this.connect(knownSockets[socketName]);
                 this.socket.onopen = () => {
                     resolve();
+                    console.log("Socket connected");
+                    this.send("new connection from client " + this.playername);
                 };
+                
             } else {
                 reject(new Error("Socket not found"));
             }
@@ -30,7 +33,6 @@ export class SpringSocketServer{
 
     private connect = (url: string):boolean => {
         this.socket = new WebSocket(url);
-        this.socket.onopen = this.onOpen;
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;
         this.socket.onerror = this.onError;
@@ -56,12 +58,9 @@ export class SpringSocketServer{
         return this.socket.readyState;
     }
 
-    private onOpen = (event: Event) => {
-        console.log("Socket connected");
-        this.send("Hello from client" + this.playername);
-    }
 
     private onClose = (event: CloseEvent) => {
+        
         console.log("Socket disconnected");
     }
 
@@ -77,11 +76,10 @@ export class SpringSocketServer{
         if (this.socket.readyState === WebSocket.OPEN)
             this.socket.send( "from:" + this.playername + " | content: " +message);
     }
-
     public close = () => {
         if (this.socket){
             if (this.socket.readyState === WebSocket.OPEN){
-                this.send("closing connection");
+                this.send("closing connection " + this.getPlayerName());
                 this.socket.close();
             }
         }
