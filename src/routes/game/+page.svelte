@@ -1,15 +1,15 @@
-
 <script lang=ts>
+    
     import websocketStore from '../../stores/websocket.js';
     import { onMount, onDestroy} from 'svelte';
-    import * as PIXI from 'pixi.js';
     import { Game } from '$lib/GameEngine/Game.js';
-    import p5  from 'p5';
     import { sweetGame } from '$lib/implementedGames/SweetGame.js';
 
     const ws = $websocketStore;
+    onMount(async () => {
 
-    onMount(() => {
+        const p5module = await import('p5');
+        const p5 = p5module.default;
         let sendButton = document.getElementById('sendButton');
         if (sendButton != null){
             sendButton.addEventListener('click', () => {
@@ -48,8 +48,14 @@
         new p5(sketch);
 
     });
+
+    onDestroy(() => {
+        ws.getDispatcher().unsubscribe(Game.getInstance());
+        ws.close();
+    });
   
 </script>
+
 
 
 <div class = "flex mt-10">

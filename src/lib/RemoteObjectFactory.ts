@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import { RequestSender } from './RequestSender';
 import type { SpringSocketServer } from './connectionManager';
 

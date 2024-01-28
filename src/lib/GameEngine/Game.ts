@@ -1,5 +1,4 @@
 import { RequestSender } from '$lib/RequestSender';
-import { SpringSocketServer } from '$lib/connectionManager';
 import { messageSubscriber } from '$lib/messageSubscriber';
 import { GameObject } from './GameObject';
 
@@ -20,7 +19,6 @@ export class Game extends messageSubscriber{
         super();
         this.sender = new RequestSender();
     }
-
 
     addObject(obj: GameObject){
         this.objects.push(obj);

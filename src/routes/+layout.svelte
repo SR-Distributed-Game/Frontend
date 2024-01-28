@@ -17,8 +17,6 @@
 
 	setContext('ws', socket);
 
-
-
 	onMount(() => {
 		$websocketStore.setPlayerName( localStorage.getItem("playername" ) as string );
 	});
