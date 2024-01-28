@@ -3,13 +3,18 @@
     import websocketStore from '../../stores/websocket.js';
     import { onMount, onDestroy} from 'svelte';
     import * as PIXI from 'pixi.js';
+    import { Game } from '$lib/GameEngine/Game.js';
 
-    let app: PIXI.Application;
+    let app: Game;
+    let pixiApp: PIXI.Application;
+    const ws = $websocketStore;
     let canvasContainer: HTMLDivElement;
 
-    const ws = $websocketStore;
-  
     onMount(() => {
+        app = Game.getInstance();
+
+        pixiApp = new PIXI.Application({backgroundColor: 0x1099bb });
+        Game.getInstance().registerWindow(pixiApp);
 
         let sendButton = document.getElementById('sendButton');
         if (sendButton != null){
@@ -26,9 +31,9 @@
             });
         }        
 
-        app = new PIXI.Application({ 
-            backgroundColor: 0x1099bb 
-        });
+
+        ws.getDispatcher().subscribe(Game.getInstance());
+
     
         //add a circle
         let circle = new PIXI.Graphics();
@@ -37,10 +42,12 @@
         circle.endFill();
         circle.name = "circle";
         circle.addChild(new PIXI.Text(ws.getPlayerName()));
-  
+        
+        pixiApp.stage.addChild(circle);
     
-        app.ticker.add(() => {
-            var mousepos = (app.renderer.events as any).rootPointerEvent.global;
+        app.pixiApp.ticker.add(() => {
+            console.log("pixiApp", pixiApp);
+            var mousepos = (app.pixiApp.renderer.events as any).rootPointerEvent.global;
             // circle at mouse position where mouse is
             circle.rotation += 0.1;
             circle.transform.position.x = mousepos.x;
@@ -49,41 +56,36 @@
             ws.send(mousepos.x + " " + mousepos.y);
             let c = new PIXI.Graphics();
             c.beginFill(0x996600);
-            c.transform.position.x = Math.random()*canvasContainer.clientWidth;
-            c.transform.position.y = Math.random()*canvasContainer.clientHeight;
+            c.transform.position.x = Math.random()*canvasContainer!.clientWidth;
+            c.transform.position.y = Math.random()*canvasContainer!.clientHeight;
     
     
         });
 
-
         let quit = () => {
+            ws.getDispatcher().unsubscribe(Game.getInstance());
             ws.close();
-            app.destroy(true);
+            app.pixiApp.destroy(true);
             
         }
-  
-        app.stage.addChild(circle);
-        
-        (app.view as unknown as HTMLDivElement).classList.add("rounded-lg", "shadow-xl");
 
-        canvasContainer.appendChild(app.view as unknown as Node);
+
+
         onDestroy(() => {
             quit();
         });
-
+        (pixiApp.view as unknown as HTMLDivElement).classList.add("rounded-lg", "shadow-xl"); 
+        canvasContainer.appendChild(pixiApp.view as unknown as Node);
 
     });
-  
   
 </script>
 
 
-
 <div class = "flex mt-10">
 
-    <div class = "m-auto">
-        <div bind:this={canvasContainer}></div>  
-
+    <div class = "m-auto" id=canvacontainer>
+        <div bind:this={canvasContainer}></div>
     </div>
 
     <div class = "bg-black bg-opacity-40 rounded-lg p-5 block m-auto" id=actions>

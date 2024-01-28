@@ -1,34 +1,37 @@
+import type { SpringSocketServer } from '$lib/connectionManager';
+import { messageSubscriber } from '$lib/messageSubscriber';
 import * as PIXI from 'pixi.js';
 
-export class Game extends PIXI.Application{
+export class Game extends messageSubscriber{
 
     static instance: Game;
-    canvasContainer?: HTMLDivElement;
+    public pixiApp!: PIXI.Application;
     public static getInstance(){
         if(!Game.instance){
-            Game.instance = new Game({backgroundColor: 0x1099bb });
-            Game.instance.init();
+            Game.instance = new Game();
         }
         return Game.instance;
     }
 
-    init(){
-        this.canvasContainer = document.createElement("div");
-        (this.view as unknown as HTMLDivElement).classList.add("rounded-lg", "shadow-xl");
-        this.canvasContainer.appendChild(this.view as unknown as Node);
+    constructor(){
+        super();
     }
 
-    getContainer(){
-        console.log(this.canvasContainer);
-        return this.canvasContainer;
+    registerWindow(pixiApp: PIXI.Application){
+        this.pixiApp = pixiApp;
     }
 
     addObject(obj: PIXI.Container){
-        this.stage.addChild(obj);
+        this.pixiApp.stage.addChild(obj);
     }
 
     removeObject(obj: PIXI.Container){
-        this.stage.removeChild(obj);
+        this.pixiApp.stage.removeChild(obj);
+    }
+
+
+    onMessage(req: any): void {
+        console.log("handling message: " + req);
     }
 
 }

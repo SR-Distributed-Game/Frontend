@@ -6,12 +6,15 @@ export class RequestReciever {
     
 
     spawnObject(req: any) {
+        
     }
 
-    sendObjectDestroyRequest(req: any) {
+    Destroy(req: any) {
+
     }
 
-    sendObjectUpdateRequest(req: any) {
+    Update(req: any) {
+
     }
 
 }
