@@ -7,6 +7,7 @@ export class Dispatcher{
     subscribe(subscriber:messageSubscriber) {
         this.subscribers.push(subscriber);
     }
+
     unsubscribe(subscriber:messageSubscriber) {
         this.subscribers = this.subscribers.filter((s) => s !== subscriber);
     }
@@ -16,7 +17,7 @@ export class Dispatcher{
 
     dispatch(req: any){
         for(let subscriber of this.subscribers){
-            
+
             subscriber.onMessage(req);
         }
     }

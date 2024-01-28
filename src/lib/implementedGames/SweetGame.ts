@@ -1,4 +1,4 @@
-import { Game } from "./Game";
+import { Game } from "../GameEngine/Game";
 import { player } from "./player";
 
 export class sweetGame extends Game {
@@ -8,6 +8,17 @@ export class sweetGame extends Game {
         super();
         this.pl1 = new player(100, 100, "player");
         this.addObject(this.pl1);
+    }
+
+    start(p: any): void {
+        p.mousePressed = () => {
+            this.sender.sendObjectSpawnRequest({
+                id: "fruit",
+                x: p.mouseX,
+                y: p.mouseX,
+            });
+
+        };
     }
 
     update(p: any): void {
@@ -22,9 +33,12 @@ export class sweetGame extends Game {
         }
         if (this.pl1.y < 0) {
             this.pl1.y = 0;
+
         }
 
     }
+
+
 
 
 }

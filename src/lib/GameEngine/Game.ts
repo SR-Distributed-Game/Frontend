@@ -55,7 +55,7 @@ export class Game extends messageSubscriber{
         console.log("handling message: " + req);
     }
 
-    start(){
+    start(p:any){
 
     }
 

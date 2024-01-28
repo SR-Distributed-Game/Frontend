@@ -5,10 +5,9 @@
     import * as PIXI from 'pixi.js';
     import { Game } from '$lib/GameEngine/Game.js';
     import p5  from 'p5';
-    import { sweetGame } from '$lib/GameEngine/SweetGame.js';
+    import { sweetGame } from '$lib/implementedGames/SweetGame.js';
 
     const ws = $websocketStore;
-
 
     onMount(() => {
         let sendButton = document.getElementById('sendButton');
@@ -28,9 +27,10 @@
         ws.getDispatcher().subscribe(Game.getInstance());
         const sketch = (p:any) => {
             let game = new sweetGame();
-            game.start(); // Initialize the game
+
 
             p.setup = () => {
+                game.start(p); // Initialize the game
                 let canvas = p.createCanvas(400, 400);
                 //add a class to the canvas element
                 canvas.addClass('rounded-lg');
