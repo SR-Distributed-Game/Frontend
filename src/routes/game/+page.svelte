@@ -3,13 +3,13 @@
     import websocketStore from '../../stores/websocket.js';
     import { onMount, onDestroy} from 'svelte';
     import * as PIXI from 'pixi.js';
+    import { Game } from '$lib/GameEngine/Game.js';
+    import p5  from 'p5';
+    import { sweetGame } from '$lib/implementedGames/SweetGame.js';
 
-    let app: PIXI.Application;
-    let canvasContainer: HTMLDivElement;
     const ws = $websocketStore;
-  
-    onMount(() => {
 
+    onMount(() => {
         let sendButton = document.getElementById('sendButton');
         if (sendButton != null){
             sendButton.addEventListener('click', () => {
@@ -20,75 +20,42 @@
         let quitButton = document.getElementById('quitButton');
         if (quitButton != null){
             quitButton.addEventListener('click', () => {
-                quit();
                 window.location = "/";
             });
         }        
 
-        app = new PIXI.Application({ 
-            backgroundColor: 0x1099bb 
-        });
-    
-        //add a circle
-        let circle = new PIXI.Graphics();
-        circle.beginFill(0x9966FF);
-        circle.drawCircle(0, 0, 10);
-        circle.endFill();
-        circle.name = "circle";
-        circle.addChild(new PIXI.Text(ws.getPlayerName()));
-  
-    
-        app.ticker.add(() => {
-            var mousepos = (app.renderer.events as any).rootPointerEvent.global;
-            // circle at mouse position where mouse is
-            circle.rotation += 0.1;
-            circle.transform.position.x = mousepos.x;
-            circle.transform.position.y = mousepos.y;
-
-            ws.send(mousepos.x + " " + mousepos.y);
-            let c = new PIXI.Graphics();
-            c.beginFill(0x996600);
-            c.transform.position.x = Math.random()*canvasContainer.clientWidth;
-            c.transform.position.y = Math.random()*canvasContainer.clientHeight;
-            c.drawCircle(0, 0, 10);
-            c.endFill();
-            c.name = "circle" + app.stage.children.length;
-            c.addChild(new PIXI.Text(c.name));
-    
-            app.stage.addChild(c);
-    
-    
-        });
+        ws.getDispatcher().subscribe(Game.getInstance());
+        const sketch = (p:any) => {
+            let game = new sweetGame();
 
 
-        let quit = () => {
-            ws.close();
-            app.destroy(true);
-            
-        }
-  
-        app.stage.addChild(circle);
-        
-        (app.view as unknown as HTMLDivElement).classList.add("rounded-lg", "shadow-xl");
+            p.setup = () => {
+                game.start(p); // Initialize the game
+                let canvas = p.createCanvas(400, 400);
+                //add a class to the canvas element
+                canvas.addClass('rounded-lg');
+                canvas.addClass('shadow-xl');
+                canvas.parent('canvas-container');
+            };
 
-        canvasContainer.appendChild(app.view as unknown as Node);
-        onDestroy(() => {
-            quit();
-        });
+            p.draw = () => {
+                p.background(200);
+                game.update(p); // Pass p5 instance to update
+                game.draw(p);   // Pass p5 instance to draw
+            };
+        };
 
+        new p5(sketch);
 
     });
-  
   
 </script>
 
 
-
 <div class = "flex mt-10">
 
-    <div class = "m-auto">
-        <div bind:this={canvasContainer}></div>  
-
+    <div class = "m-auto" id=canvacontainer>
+        <div id="canvas-container"></div>
     </div>
 
     <div class = "bg-black bg-opacity-40 rounded-lg p-5 block m-auto" id=actions>

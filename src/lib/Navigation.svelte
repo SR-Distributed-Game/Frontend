@@ -24,16 +24,22 @@
         
         <div class="flex space-x-12"> 
 
-            <a href = "/">
-                <h1 class="text-2xl text-white p-1 rounded-md ">GameDist logo</h1>
-            </a>
-            
-            <div class="bg-gray-800 w-px mx-2"></div>
             {#if ingame}
+
+                
+                <h1 class="text-2xl text-white p-1 rounded-md ">GameDist logo</h1>
+
+                <div class="bg-gray-800 w-px mx-2"></div>
                 <h1 class="text-2xl text-white p-1 opacity-20"><i class="fa fa-home" aria-hidden="true"></i></h1>
                 <i class="fa fa-address-card text-2xl text-white p-1 opacity-20" aria-hidden="true"></i>
             {:else}
             
+            <a href = "/">
+                
+                <h1 class="text-2xl text-white p-1 rounded-md ">GameDist logo</h1>
+            </a>
+            <div class="bg-gray-800 w-px mx-2"></div>
+
             <a href = "/">
                 <h1 class="text-2xl text-white p-1"><i class="fa fa-home hover:scale-[1.5] duration-75 hover:animate-pulse" aria-hidden="true"></i></h1>
             </a>

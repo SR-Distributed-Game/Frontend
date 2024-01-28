@@ -1,6 +1,5 @@
 <script lang=ts>
     import { onMount} from 'svelte';
-    import { goto } from '$app/navigation';
     import websocketStore from '../../stores/websocket.js';
 onMount(() => {
 
@@ -25,16 +24,16 @@ onMount(() => {
 </script>
 
 <div class = flex>
-<div class = "mainbox m-auto">
-    <div class = flex>
-      <h1 class = "m-auto text-[50px] text-white p-1 rounded-lg my-10 text-center">Change your name here</h1>
-    </div>
-      <div class = "flex">
-        <div class = "m-auto">
-            <input id = nameinput class = searchbar>
-
+    <div class = "mainbox m-auto">
+        <div class = flex>
+        <h1 class = "m-auto text-[50px] text-white p-1 rounded-lg my-10 text-center">Change your name here</h1>
         </div>
-    </div>
+        <div class = "flex">
+            <div class = "m-auto">
+                <input id = nameinput class = searchbar>
+
+            </div>
+        </div>
     </div>
 
 </div>

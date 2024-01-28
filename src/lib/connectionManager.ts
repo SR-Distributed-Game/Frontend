@@ -1,4 +1,5 @@
 
+import { Dispatcher } from "./Dispatcher";
 import { knownSockets } from "./Servers";
 
 export class SpringSocketServer{
@@ -13,13 +14,19 @@ export class SpringSocketServer{
 
     private IP: string = "defaultIP";
 
+    private dispatcher: Dispatcher;
+
+
     constructor(){
+        this.dispatcher = new Dispatcher();
         getIp().then((ip) => {
             this.IP = ip;
         });
     }
 
-
+    public getDispatcher() : Dispatcher {
+        return this.dispatcher;    
+    }
 
     public connectTo(socketName: string): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -71,7 +78,7 @@ export class SpringSocketServer{
     }
 
     private onMessage = (event: MessageEvent) => {
-        console.log("Socket message: " + event.data);
+        this.dispatcher.dispatch(event.data);
     }
 
     private onError = (event: Event) => {
