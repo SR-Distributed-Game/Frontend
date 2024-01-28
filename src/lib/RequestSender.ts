@@ -2,17 +2,27 @@ import { SpringSocketServer } from "./connectionManager"
 
 
 export class RequestSender {
-    
-    sendObjectSpawnRequest(req: any, socket: SpringSocketServer) {
-        socket.send(JSON.stringify(req));
+    socket: SpringSocketServer;
+    constructor() {
+        this.socket = SpringSocketServer.getInstance();
     }
 
-    sendObjectDestroyRequest(req: any, socket: SpringSocketServer) {
-        socket.send(JSON.stringify(req));
+    sendObjectSpawnRequest(req: any) {
+        req.type = "spawn";
+        req.playername = this.socket.getPlayerName();
+        this.socket.send(JSON.stringify(req));
     }
 
-    sendObjectUpdateRequest(req: any, socket: SpringSocketServer) {
-        socket.send(JSON.stringify(req));
+    sendObjectDestroyRequest(req: any) {
+        req.type = "destroy";
+        req.playername = this.socket.getPlayerName();
+        this.socket.send(JSON.stringify(req));
+    }
+
+    sendObjectUpdateRequest(req: any) {
+        req.type = "update";
+        req.playername = this.socket.getPlayerName();
+        this.socket.send(JSON.stringify(req));
     }
 
 }

@@ -1,5 +1,3 @@
-import { RequestReciever } from "./RequestReciever";
-import { RequestSender } from "./RequestSender";
 import type { messageSubscriber } from "./messageSubscriber";
 
 export class Dispatcher{
@@ -18,6 +16,7 @@ export class Dispatcher{
 
     dispatch(req: any){
         for(let subscriber of this.subscribers){
+            
             subscriber.onMessage(req);
         }
     }

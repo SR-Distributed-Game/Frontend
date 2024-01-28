@@ -1,11 +1,14 @@
-import type { SpringSocketServer } from '$lib/connectionManager';
+import { RequestSender } from '$lib/RequestSender';
+import { SpringSocketServer } from '$lib/connectionManager';
 import { messageSubscriber } from '$lib/messageSubscriber';
-import * as PIXI from 'pixi.js';
+import { GameObject } from './GameObject';
 
 export class Game extends messageSubscriber{
 
     static instance: Game;
-    public pixiApp!: PIXI.Application;
+    protected sender: RequestSender;
+    private objects: GameObject[] = [];
+
     public static getInstance(){
         if(!Game.instance){
             Game.instance = new Game();
@@ -15,23 +18,61 @@ export class Game extends messageSubscriber{
 
     constructor(){
         super();
+        this.sender = new RequestSender();
     }
 
-    registerWindow(pixiApp: PIXI.Application){
-        this.pixiApp = pixiApp;
+
+    addObject(obj: GameObject){
+        this.objects.push(obj);
+        this.sender.sendObjectSpawnRequest({
+            id: obj.name,
+            x: obj.x,
+            y: obj.y,
+        });
     }
 
-    addObject(obj: PIXI.Container){
-        this.pixiApp.stage.addChild(obj);
+    removeObject(obj: GameObject){
+        this.objects = this.objects.filter((o) => o!== obj);
+        this.sender.sendObjectDestroyRequest({
+            id: obj.name,
+            x: obj.x,
+            y: obj.y,
+        });
     }
 
-    removeObject(obj: PIXI.Container){
-        this.pixiApp.stage.removeChild(obj);
+    moveObject(obj: GameObject, x: number, y: number){
+        obj.x = x;
+        obj.y = y;
+        this.sender.sendObjectUpdateRequest({
+            id: obj.name,
+            x: obj.x,
+            y: obj.y,
+        });
     }
 
 
     onMessage(req: any): void {
         console.log("handling message: " + req);
     }
+
+    start(){
+
+    }
+
+    update(p:any){
+    
+    }
+
+    Mupdate(p:any){
+        this.objects.forEach(obj => obj.update(p));
+        this.update(p);
+    }
+
+    draw(p:any) {
+        // Draw all game objects
+        this.Mupdate(p);
+        this.objects.forEach(obj => obj.draw(p));
+    }
+
 
 }
