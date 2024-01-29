@@ -8,10 +8,20 @@ export class player extends GameObject {
     }
 
     update(p:any) {
-        let mouseX = p.mouseX;
-        let mouseY = p.mouseY;
-        
-        Game.getInstance().moveObject(this, this.x + (mouseX - this.x) * 0.01, this.y + (mouseY - this.y) * 0.01);
+
+        if(p.keyIsDown(p.LEFT_ARROW)){
+            this.move( this.x-1, this.y );
+        }
+        if(p.keyIsDown(p.RIGHT_ARROW)){
+            this.move( this.x+1, this.y );
+        }
+        if(p.keyIsDown(p.UP_ARROW)){
+            this.move( this.x, this.y-1 );
+        }
+        if(p.keyIsDown(p.DOWN_ARROW)){
+            this.move( this.x, this.y+1 );
+        }
+
     }
 
     draw(p: any) {

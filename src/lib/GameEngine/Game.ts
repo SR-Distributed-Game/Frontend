@@ -7,6 +7,7 @@ export class Game extends messageSubscriber{
     static instance: Game;
     protected sender: RequestSender;
     private objects: GameObject[] = [];
+    keys: any = {};
 
     public static getInstance(){
         if(!Game.instance){
@@ -55,6 +56,17 @@ export class Game extends messageSubscriber{
 
     start(p:any){
 
+    }
+
+    Mstart(p:any){
+        p.keyPressed = () => {
+            this.keys[p.key] = true;
+        }
+        
+        p.keyReleased = () => {
+            this.keys[p.key] = false;
+        }
+        this.start(p);
     }
 
     update(p:any){

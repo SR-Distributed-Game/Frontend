@@ -1,4 +1,5 @@
 import { Game } from "../GameEngine/Game";
+import { fruit } from "./fruit";
 import { player } from "./player";
 
 export class sweetGame extends Game {
@@ -12,12 +13,12 @@ export class sweetGame extends Game {
 
     start(p: any): void {
         p.mousePressed = () => {
+            this.addObject(new fruit(p.mouseX, p.mouseY, "fruit1"))
             this.sender.sendObjectSpawnRequest({
                 id: "fruit",
                 x: p.mouseX,
                 y: p.mouseX,
             });
-
         };
     }
 
@@ -33,12 +34,7 @@ export class sweetGame extends Game {
         }
         if (this.pl1.y < 0) {
             this.pl1.y = 0;
-
         }
-
     }
-
-
-
 
 }

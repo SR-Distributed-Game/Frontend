@@ -20,9 +20,9 @@
         let quitButton = document.getElementById('quitButton');
         if (quitButton != null){
             quitButton.addEventListener('click', () => {
-                window.location = "/";
+                window.location.assign("/");
             });
-        }        
+        }
 
         ws.getDispatcher().subscribe(Game.getInstance());
         const sketch = (p:any) => {
@@ -30,7 +30,7 @@
 
 
             p.setup = () => {
-                game.start(p); // Initialize the game
+                game.Mstart(p); // Initialize the game
                 let canvas = p.createCanvas(400, 400);
                 //add a class to the canvas element
                 canvas.addClass('rounded-lg');
