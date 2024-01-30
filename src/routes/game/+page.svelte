@@ -13,7 +13,7 @@
         let sendButton = document.getElementById('sendButton');
         if (sendButton != null){
             sendButton.addEventListener('click', () => {
-                ws.send("hello je suis un messsage");
+                //ws.send();
             });
         }
 

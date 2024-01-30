@@ -10,22 +10,23 @@ export class player extends GameObject {
     update(p:any) {
 
         if(p.keyIsDown(p.LEFT_ARROW)){
-            this.move( this.x-1, this.y );
+            this.requestMove( this.x-1, this.y );
         }
         if(p.keyIsDown(p.RIGHT_ARROW)){
-            this.move( this.x+1, this.y );
+            this.requestMove( this.x+1, this.y );
         }
         if(p.keyIsDown(p.UP_ARROW)){
-            this.move( this.x, this.y-1 );
+            this.requestMove( this.x, this.y-1 );
         }
         if(p.keyIsDown(p.DOWN_ARROW)){
-            this.move( this.x, this.y+1 );
+            this.requestMove( this.x, this.y+1 );
         }
 
     }
 
     draw(p: any) {
-        p.ellipse(this.x, this.y, 40, 40);
         p.fill(0);
+        p.ellipse(this.x, this.y, 40, 40);
+        
     }
 }

@@ -1,6 +1,8 @@
 
 import { Dispatcher } from "./Dispatcher";
 import { knownSockets } from "./Servers";
+import { gameRequestFactory } from "./gameRequestFactory";
+import type { gameRequest } from "./request";
 
 export class SpringSocketServer{
 
@@ -10,7 +12,7 @@ export class SpringSocketServer{
 
     private playername: string = "defaultname";
 
-    private UID: string = "defaultUID";
+    private ClientID: string = "defaultUID";
 
     private IP: string = "defaultIP";
 
@@ -18,10 +20,8 @@ export class SpringSocketServer{
 
 
     constructor(){
+        console.log("Creating socket server")
         this.dispatcher = new Dispatcher();
-        getIp().then((ip) => {
-            this.IP = ip;
-        });
     }
 
     public getDispatcher() : Dispatcher {
@@ -35,7 +35,9 @@ export class SpringSocketServer{
                 this.socket.onopen = () => {
                     resolve();
                     console.log("Socket connected");
-                    this.send("new connection from client " + this.playername);
+                    var request = gameRequestFactory.getSuccesConnectionRequest();
+
+                    this.send(request);
                 };
                 
             } else {
@@ -45,6 +47,7 @@ export class SpringSocketServer{
     }
 
     private connect = (url: string):boolean => {
+        console.log("Connecting to " + url);
         this.socket = new WebSocket(url);
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;
@@ -85,29 +88,26 @@ export class SpringSocketServer{
         console.log("Socket error");
     }
 
-    public send = (message: string) => {
-        if (this.socket.readyState === WebSocket.OPEN)
-            this.socket.send( "from:" + this.playername + " | content: " +message);
+    public send = (request:gameRequest ) => {
+        if (this.socket.readyState === WebSocket.OPEN){
+            request.ClientID = 5;
+            this.socket.send( JSON.stringify(request));
+        }
+            
     }
     public close = () => {
         if (this.socket){
             if (this.socket.readyState === WebSocket.OPEN){
-                this.send("closing connection " + this.getPlayerName());
+                var request = gameRequestFactory.getClosingRequest();
+                request.Metadata = {
+                    playername: this.playername,
+                    ClientID: this.ClientID,
+                    IP: this.IP
+                }
+                this.send(request);
                 this.socket.close();
             }
         }
     }
 }
 
-function getIp(): Promise<string>{
-    //get the public ip
-    let ip = "";
-    fetch('https://api.ipify.org?format=json')
-    .then(res => res.json())
-    .then(data => {
-        ip = data.ip;
-    });
-    return new Promise((resolve, reject) => {
-        resolve(ip);
-    });
-}

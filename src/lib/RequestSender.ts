@@ -1,4 +1,5 @@
 import { SpringSocketServer } from "./connectionManager"
+import type { gameRequest } from "./request";
 
 
 export class RequestSender {
@@ -7,22 +8,9 @@ export class RequestSender {
         this.socket = SpringSocketServer.getInstance();
     }
 
-    sendObjectSpawnRequest(req: any) {
-        req.type = "spawn";
-        req.playername = this.socket.getPlayerName();
-        this.socket.send(JSON.stringify(req));
+    sendRequest(req: gameRequest) {
+        this.socket.send(req);
     }
 
-    sendObjectDestroyRequest(req: any) {
-        req.type = "destroy";
-        req.playername = this.socket.getPlayerName();
-        this.socket.send(JSON.stringify(req));
-    }
-
-    sendObjectUpdateRequest(req: any) {
-        req.type = "update";
-        req.playername = this.socket.getPlayerName();
-        this.socket.send(JSON.stringify(req));
-    }
 
 }

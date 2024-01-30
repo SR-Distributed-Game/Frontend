@@ -23,7 +23,7 @@ export class GameObject {
 
     }
 
-    move(x: number, y: number) {
+    requestMove(x: number, y: number) {
         this.x = x;
         this.y = y;
         if (x == this.lastx && y == this.lasty) {
@@ -33,6 +33,13 @@ export class GameObject {
         this.lastx = x;
         this.lasty = y;
     }
+
+    move(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+
+
 
     setName(name: string) {
         this.name = name;

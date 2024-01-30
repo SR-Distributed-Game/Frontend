@@ -2,9 +2,8 @@
     import { onMount} from 'svelte';
     import websocketStore from '../../stores/websocket.js';
     import Colorpicker from '$lib/Colorpicker.svelte';
+
 onMount(() => {
-
-
     let ws = $websocketStore;
     let nameinput = document.getElementById('nameinput') as HTMLInputElement;
     ws.setPlayerName(localStorage.getItem("playername") || ws.getPlayerName());

@@ -12,7 +12,8 @@ export class fruit extends GameObject {
     }
 
     draw(p: any) {
-        p.rectangle(this.x, this.y, 40, 40);
-        p.fill(0);
+        p.fill(100);
+        p.ellipse(this.x, this.y, 40, 40);
+        
     }
 }

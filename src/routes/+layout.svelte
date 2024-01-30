@@ -7,7 +7,6 @@
 	import { SpringSocketServer } from "$lib/connectionManager";
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
-
     
 	/** @type {import('./$types').LayoutData} */
 	export let socketserver:SpringSocketServer = SpringSocketServer.getInstance();
@@ -20,6 +19,8 @@
 	onMount(() => {
 		$websocketStore.setPlayerName( localStorage.getItem("playername" ) as string );
 	});
+
+	
 
 </script>
 

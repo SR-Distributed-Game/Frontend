@@ -1,5 +1,7 @@
 import { RequestSender } from '$lib/RequestSender';
+import { gameRequestFactory } from '$lib/gameRequestFactory';
 import { messageSubscriber } from '$lib/messageSubscriber';
+import { gameRequest } from '$lib/request';
 import { GameObject } from './GameObject';
 
 export class Game extends messageSubscriber{
@@ -23,30 +25,37 @@ export class Game extends messageSubscriber{
 
     addObject(obj: GameObject){
         this.objects.push(obj);
-        this.sender.sendObjectSpawnRequest({
-            id: obj.name,
-            x: obj.x,
-            y: obj.y,
-        });
+        var request = gameRequestFactory.getSpawnRequest();
+        request.Metadata = {
+            x: obj.y,
+            y: obj.x,
+            type: obj.constructor.name,
+        }
+        this.sender.sendRequest(request);
     }
 
     removeObject(obj: GameObject){
         this.objects = this.objects.filter((o) => o!== obj);
-        this.sender.sendObjectDestroyRequest({
-            id: obj.name,
-            x: obj.x,
-            y: obj.y,
-        });
+        var request = gameRequestFactory.getDestroyRequest();
+        request.Metadata = {
+            type: obj.constructor.name,
+            id: obj.id
+        }
+        this.sender.sendRequest(request);
     }
 
     moveObject(obj: GameObject, x: number, y: number){
         obj.x = x;
         obj.y = y;
-        this.sender.sendObjectUpdateRequest({
-            id: obj.name,
-            x: obj.x,
-            y: obj.y,
-        });
+
+        var request = gameRequestFactory.getUpdateRequest();
+        request.Metadata = {
+            x: x,
+            y: y,
+            id: obj.id,
+        }
+
+        this.sender.sendRequest(request);
     }
 
 
@@ -59,13 +68,6 @@ export class Game extends messageSubscriber{
     }
 
     Mstart(p:any){
-        p.keyPressed = () => {
-            this.keys[p.key] = true;
-        }
-        
-        p.keyReleased = () => {
-            this.keys[p.key] = false;
-        }
         this.start(p);
     }
 
