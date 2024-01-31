@@ -12,8 +12,9 @@ export class SpringSocketServer{
 
     private playername: string = "defaultname";
 
-    private clientID: number = -1;
+    private roomId: number = -1;
 
+    private clientID: number = -1;
 
     private dispatcher: Dispatcher;
 
@@ -83,13 +84,28 @@ export class SpringSocketServer{
         return SpringSocketServer.instance;
     }
 
+    public setRoomId = (id: number) => {
+        this.roomId = id;
+    }
+
+    public getRoomId = () => {
+        return this.roomId;
+    }
+
+    public setClientID = (id: number) => {
+        this.clientID = id;
+    }
+
+    public getClientID = () => {
+        return this.clientID;
+    }
+
     public getState = () => {
         return this.socket.readyState;
     }
 
 
     private onClose = (event: CloseEvent) => {
-        
         console.log("Socket disconnected");
     }
 
@@ -108,18 +124,18 @@ export class SpringSocketServer{
 
     public send = (request:gameRequest ) => {
         if (this.socket.readyState === WebSocket.OPEN){
-            request.ClientID = this.clientID;
+            request.ClientID = this.getClientID();
+            request.RoomID = this.getRoomId();
             this.socket.send( JSON.stringify(request));
         }
-            
     }
     public close = () => {
         if (this.socket){
             if (this.socket.readyState === WebSocket.OPEN){
                 var request = gameRequestFactory.getClosingRequest();
                 request.Metadata = {
-                    playername: this.playername,
-                    ClientID: this.clientID,
+                    playername: this.getPlayerName(),
+                    ClientID: this.getClientID(),
                 }
                 this.send(request);
                 this.socket.close();

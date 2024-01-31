@@ -24,12 +24,23 @@
 
 
             p.setup = () => {
+
                 game.Mstart(p); // Initialize the game
-                let canvas = p.createCanvas(400, 400);
+                p.frameRate(60);
+                var newValue = Math.min(p.windowWidth/2, p.windowHeight/1.4);
+                let canvas = p.createCanvas(newValue, newValue);
+
                 //add a class to the canvas element
                 canvas.addClass('rounded-lg');
                 canvas.addClass('shadow-xl');
                 canvas.parent('canvas-container');
+
+                //event resizing the canvas
+                p.windowResized = () => {
+                    var newValue = Math.min(p.windowWidth/2, p.windowHeight/1.4);
+                    p.resizeCanvas(newValue, newValue);
+                };
+
             };
 
             p.draw = () => {
@@ -51,7 +62,11 @@
 </script>
 
 
+<div class = "flex mt-2" id=rules>
 
+    <div class = " bg-black bg-opacity-30 p-2 rounded-xl m-auto text-white text-2xl" > move with keyboard arrow</div>
+
+</div>
 <div class = "flex mt-10">
 
     <div class = "m-auto" id=canvacontainer>

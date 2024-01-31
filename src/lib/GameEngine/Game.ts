@@ -2,6 +2,7 @@ import { RequestSender } from '$lib/RequestSender';
 import { gameRequestFactory } from '$lib/gameRequestFactory';
 import { messageSubscriber } from '$lib/messageSubscriber';
 import { gameRequest } from '$lib/request';
+import { Camera } from './Camera';
 import { GameObject } from './GameObject';
 
 export class Game extends messageSubscriber{
@@ -9,6 +10,7 @@ export class Game extends messageSubscriber{
     static instance: Game;
     protected sender: RequestSender;
     private objects: GameObject[] = [];
+    private camera: Camera;
     keys: any = {};
 
     public static getInstance(){
@@ -20,10 +22,12 @@ export class Game extends messageSubscriber{
 
     constructor(){
         super();
+        this.camera = new Camera();
         this.sender = new RequestSender();
     }
 
     addObject(obj: GameObject){
+        obj.Mstart();
         this.objects.push(obj);
         var request = gameRequestFactory.getSpawnRequest();
         request.Metadata = obj.asMetadata();
@@ -38,8 +42,8 @@ export class Game extends messageSubscriber{
     }
 
     moveObject(obj: GameObject, x: number, y: number){
-        obj.transform.x = x;
-        obj.transform.y = y;
+        obj.getTransform().getPosition().setX(x);
+        obj.getTransform().getPosition().setY(y);
 
         var request = gameRequestFactory.getUpdateRequest();
         request.Metadata = obj.asMetadata();
@@ -73,6 +77,7 @@ export class Game extends messageSubscriber{
     }
 
     Mstart(p:any){
+        this.objects.forEach(obj => obj.Mstart());
         this.start(p);
     }
 
@@ -81,14 +86,22 @@ export class Game extends messageSubscriber{
     }
 
     Mupdate(p:any){
-        this.objects.forEach(obj => obj.update(p));
+        this.objects.forEach(obj => obj.Mupdate(p));
         this.update(p);
+    }
+
+    pointInCanvas(x: number, y: number): boolean {
+        return x >= 0 && x <= 400 && y >= 0 && y <= 400;
+    }
+
+    getCamera(): Camera {
+        return this.camera;
     }
 
     draw(p:any) {
         // Draw all game objects
         this.Mupdate(p);
-        this.objects.forEach(obj => obj.draw(p));
+        this.objects.forEach(obj => obj.Mdraw(p, this.camera));
     }
 
 

@@ -1,24 +1,36 @@
+import { Vector2 } from "./Vector2";
+
 export class Transform {
 
-    x: number;
-    y: number;
-    dx: number;
-    dy:number;
+    private position: Vector2;
+    private scale: Vector2;
 
     constructor( x: number, y: number, dx: number, dy: number) {
-        this.x = x;
-        this.y = y;
-        this.dx = dx;
-        this.dy = dy;
+        this.position = new Vector2(x, y);
+        this.scale = new Vector2(dx, dy);
+
     }
 
     toJson(): any {
         return {
-            x: this.x,
-            y: this.y,
-            dx: this.dx,
-            dy: this.dy
+            x: this.position.getX(),
+            y: this.position.getY(),
+            dx: this.scale.getX(),
+            dy: this.scale.getY()
         }
     }
 
+    pointIsIn(x: number, y: number): boolean {
+        return this.position.getX() == x && this.position.getY() == y;
+    }
+
+    getPosition(): Vector2 {
+        return this.position;
+    }
+
+    getScale(): Vector2 {
+        return this.scale;
+    }
+
+    
 }

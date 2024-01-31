@@ -1,12 +1,18 @@
+import type { Camera } from "./Camera";
+import type { Component } from "./Component";
 import { Game } from "./Game";
 import { Transform } from "./Transform";
+import type { Vector2 } from "./Vector2";
+import type { drawComponent } from "./drawComponent";
 
 export class GameObject {
-    transform : Transform;
-    lastx : number;
-    lasty: number;
-    name: string;
-    id: number;
+    protected transform : Transform;
+    protected lastx : number;
+    protected lasty: number;
+    protected name: string;
+    protected id: number;
+    protected components: Component[];
+    protected drawComponents: drawComponent[];
 
     constructor(x: number, y: number, id: number) {
         this.transform = new Transform(x, y, 0, 0);
@@ -14,25 +20,45 @@ export class GameObject {
         this.lasty = y;
         this.id = id;
         this.name = "object";
+        this.components = [];
+        this.drawComponents = [];
     }
 
-    start(p:any){
+    getTransform(): Transform {
+        return this.transform;
     }
 
-    requestMove(x: number, y: number) {
-        this.transform.x = x;
-        this.transform.y = y;
-        if (x == this.lastx && y == this.lasty) {
+    addComponent(component: Component) {
+        this.components.push(component);
+    }
+
+    addDrawComponent(component: drawComponent) {
+        this.drawComponents.push(component);
+    }
+
+
+    start(){
+    }
+
+    Mstart(){
+        this.components.forEach(component => component.start());
+        this.start();
+    }
+
+    asyncMove(vec:Vector2) {
+        this.getTransform().getPosition().setX(vec.getX());
+        this.getTransform().getPosition().setY(vec.getY());
+        if (vec.getX() == this.lastx && vec.getY() == this.lasty) {
             return;
         }
-        Game.getInstance().moveObject(this, x,y);
-        this.lastx = x;
-        this.lasty = y;
+        Game.getInstance().moveObject(this, vec.getX(),vec.getY());
+        this.lastx = vec.getX();
+        this.lasty = vec.getY();
     }
 
     move(x: number, y: number) {
-        this.transform.x = x;
-        this.transform.y = y;
+        this.getTransform().getPosition().setX(x);
+        this.getTransform().getPosition().setY(y);
     }
 
     setName(name: string) {
@@ -43,9 +69,25 @@ export class GameObject {
         // Update logic for the object
     }
 
-    draw(p:any) {
+    Mupdate(p:any) {
+        this.components.forEach(component => component.update(p));
+        this.update(p);
+    }
+
+    draw(p:any,camera: Camera) {
         // Drawing logic using p5 instance (p)
     }
+
+    Mdraw(p:any,camera: Camera) {
+        
+        this.drawComponents.forEach(drawComponent => {
+            drawComponent.draw(p,camera);
+        });
+
+        this.draw(p,camera);
+    }
+
+
 
     asMetadata(): any {
         return {
