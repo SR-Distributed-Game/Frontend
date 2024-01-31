@@ -12,9 +12,8 @@ export class SpringSocketServer{
 
     private playername: string = "defaultname";
 
-    private ClientID: string = "defaultUID";
+    private clientID: number = -1;
 
-    private IP: string = "defaultIP";
 
     private dispatcher: Dispatcher;
 
@@ -45,6 +44,9 @@ export class SpringSocketServer{
                     resolve();
                     console.log("Socket connected");
                     var request = gameRequestFactory.getSuccesConnectionRequest();
+                    request.Metadata = {
+                        playername: this.playername
+                    }
                     this.send(request);
                 };
             }else {
@@ -106,7 +108,7 @@ export class SpringSocketServer{
 
     public send = (request:gameRequest ) => {
         if (this.socket.readyState === WebSocket.OPEN){
-            request.ClientID = 5;
+            request.ClientID = this.clientID;
             this.socket.send( JSON.stringify(request));
         }
             
@@ -117,8 +119,7 @@ export class SpringSocketServer{
                 var request = gameRequestFactory.getClosingRequest();
                 request.Metadata = {
                     playername: this.playername,
-                    ClientID: this.ClientID,
-                    IP: this.IP
+                    ClientID: this.clientID,
                 }
                 this.send(request);
                 this.socket.close();
