@@ -8,6 +8,7 @@ export class fruit extends GameObject {
         this.setName("fruit");
         this.getTransform().getScale().setX(10);
         this.getTransform().getScale().setY(10);
+        this.getTransform().setRotation(Math.random()*360);
     }
 
     start(): void {

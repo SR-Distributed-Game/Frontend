@@ -12,7 +12,7 @@ export class sweetGame extends Game {
     }
 
     start(p: any): void {
-
+        p.noStroke();
         let sendButton = document.getElementById('sendButton');
         if (sendButton != null){
             sendButton.addEventListener('click', () => {
@@ -22,6 +22,9 @@ export class sweetGame extends Game {
 
         p.mousePressed = () => {
             this.addObject(new fruit(p.mouseX, p.mouseY, (Math.random()*1000)));
+        }
+        for (let i = 0; i < 1000; i++) {
+            this.addObject(new fruit(Math.random() * p.width, Math.random() * p.height, (Math.random()*1000)));
         }
 
     }
