@@ -25,28 +25,30 @@
 
             p.setup = () => {
 
-                game.Mstart(p); // Initialize the game
+
                 p.frameRate(60);
                 var newValue = Math.min(p.windowWidth/2, p.windowHeight/1.4);
                 let canvas = p.createCanvas(newValue, newValue);
 
-                //add a class to the canvas element
+               
                 canvas.addClass('rounded-lg');
                 canvas.addClass('shadow-xl');
                 canvas.parent('canvas-container');
 
-                //event resizing the canvas
+               
                 p.windowResized = () => {
                     var newValue = Math.min(p.windowWidth/2, p.windowHeight/1.4);
                     p.resizeCanvas(newValue, newValue);
                 };
 
+                game.Mstart(p); 
+
             };
 
             p.draw = () => {
                 p.background(200);
-                game.update(p); // Pass p5 instance to update
-                game.draw(p);   // Pass p5 instance to draw
+                game.update(p); 
+                game.draw(p);  
             };
         };
 

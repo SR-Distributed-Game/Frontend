@@ -1,6 +1,8 @@
 import { DrawRectangleComponent } from "$lib/GameEngine/Components/DrawRectangleComponent";
+import { LocalAnimator } from "$lib/GameEngine/Components/LocalAnimator";
 import { Game } from "../GameEngine/Game";
 import { GameObject } from "../GameEngine/GameObject";
+import { fruitAnnimation } from "./fruitAnnimation";
 
 export class fruit extends GameObject {
     constructor(x: number, y: number, id: number) {
@@ -13,6 +15,11 @@ export class fruit extends GameObject {
 
     start(): void {
         this.addDrawComponent(new DrawRectangleComponent(this, "green"));
+        var anim = new LocalAnimator(this);
+        this.addComponent(anim);
+        anim.addAnimation("gigle",new fruitAnnimation())
+        anim.playAnimation("gigle");
+
     }
 
 }

@@ -32,18 +32,20 @@ export class sweetGame extends Game {
     update(p: any): void {
         var currentx = this.pl1.getTransform().getPosition().getX();
         var currenty = this.pl1.getTransform().getPosition().getY();
+        var currentdx = this.pl1.getTransform().getScale().getX();
+        var currentdy = this.pl1.getTransform().getScale().getY();
 
-        if (currentx > p.width) {
-            this.pl1.getTransform().getPosition().setX(p.width);
+        if (currentx+ currentdx/2 > p.width) {
+            this.pl1.getTransform().getPosition().setX(p.width - currentdx/2);
         }
-        if (currentx < 0) {
-            this.pl1.getTransform().getPosition().setX(0);
+        if (currentx - currentdx/2 < 0) {
+            this.pl1.getTransform().getPosition().setX(currentdx/2);
         }
-        if (currenty > p.height) {
-            this.pl1.getTransform().getPosition().setY(p.height);
+        if (currenty + currentdy/2 > p.height) {
+            this.pl1.getTransform().getPosition().setY(p.height - currentdy/2);
         }
-        if (currenty < 0) {
-            this.pl1.getTransform().getPosition().setY(0);
+        if (currenty - currentdy/2 < 0) {
+            this.pl1.getTransform().getPosition().setY(currentdy/2);
         }
     }
 

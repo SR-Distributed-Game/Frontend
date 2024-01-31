@@ -8,7 +8,7 @@ export class player extends GameObject {
 
     constructor(x: number, y: number, id: number) {
         super(x, y, id);
-        this.speed = 10;
+        this.speed = 5;
         this.setName("player");
         this.getTransform().getScale().setX(20);
         this.getTransform().getScale().setY(20);
