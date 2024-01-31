@@ -5,6 +5,7 @@
     "roomID": "int",
     "Metadata": {
       "color (optional)": "rgbValue",
+      "playername (optional)": "rgbValue",
       "position (optional)": {
         "x": "int",
         "y": "int"
