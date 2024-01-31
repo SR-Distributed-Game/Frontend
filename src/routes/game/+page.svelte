@@ -10,12 +10,6 @@
 
         const p5module = await import('p5');
         const p5 = p5module.default;
-        let sendButton = document.getElementById('sendButton');
-        if (sendButton != null){
-            sendButton.addEventListener('click', () => {
-                //ws.send();
-            });
-        }
 
         let quitButton = document.getElementById('quitButton');
         if (quitButton != null){

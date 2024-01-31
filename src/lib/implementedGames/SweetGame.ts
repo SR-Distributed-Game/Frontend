@@ -12,9 +12,18 @@ export class sweetGame extends Game {
     }
 
     start(p: any): void {
+
+        let sendButton = document.getElementById('sendButton');
+        if (sendButton != null){
+            sendButton.addEventListener('click', () => {
+                this.addObject(new fruit(p.mouseX, p.mouseY, "fruit2"));
+            });
+        }
+
         p.mousePressed = () => {
             this.addObject(new fruit(p.mouseX, p.mouseY, "fruit1"));
         }
+        
     }
 
     update(p: any): void {

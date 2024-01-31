@@ -18,41 +18,52 @@ export class SpringSocketServer{
 
     private dispatcher: Dispatcher;
 
+    private errorState:boolean;
 
     constructor(){
         console.log("Creating socket server")
         this.dispatcher = new Dispatcher();
+        this.errorState = false;
     }
 
     public getDispatcher() : Dispatcher {
         return this.dispatcher;    
     }
 
-    public connectTo(socketName: string): Promise<void> {
+    public resetErrorState() {
+        this.errorState = false;
+    }
+
+    public async connectTo(socketName: string): Promise<void> {
+        console.log(this.errorState);
         return new Promise((resolve, reject) => {
+
             if (knownSockets[socketName]) {
+                
                 this.connect(knownSockets[socketName]);
                 this.socket.onopen = () => {
                     resolve();
                     console.log("Socket connected");
                     var request = gameRequestFactory.getSuccesConnectionRequest();
-
                     this.send(request);
                 };
-                
-            } else {
+            }else {
                 reject(new Error("Socket not found"));
             }
         });
     }
 
-    private connect = (url: string):boolean => {
-        console.log("Connecting to " + url);
-        this.socket = new WebSocket(url);
+    private connect = async (url: string) => {
+        try{
+            console.log("Connecting to " + url);
+            this.socket = new WebSocket(url);
+        }catch(error){
+            console.log("aaaaa");
+            throw new Error("Socket not found");
+        }
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;
         this.socket.onerror = this.onError;
-        return true;
     }
 
     getPlayerName = () => {
@@ -85,7 +96,12 @@ export class SpringSocketServer{
     }
 
     private onError = (event: Event) => {
-        console.log("Socket error");
+        this.errorState = true;
+        console.log(this.errorState);
+    }
+
+    public getErrorState = () => {
+        return this.errorState;
     }
 
     public send = (request:gameRequest ) => {

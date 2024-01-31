@@ -4,10 +4,25 @@
   import websocketStore from '../stores/websocket.js';
   import { knownSockets } from '../lib/Servers';
   
-
+  const ws = $websocketStore; 
+  let connError = false;
   onMount(() => {
+
+    async function connect() {
+      try {
+        connError = true;
+        await ws.connectTo(searchservers.value);
+        connError = false;
+        goto("/game");
+        
+      } catch (error) {
+      }
+
+    }
+
     const playbutton = document.getElementById('playbutton');
-    const ws = $websocketStore; 
+    const playbuttonError = document.getElementById('playbuttonError');
+
     let searchservers = document.getElementById('searchservers') as HTMLSelectElement;
 
     searchservers.innerHTML = "";
@@ -17,19 +32,17 @@
       opt.text = sk;
       searchservers.add(opt, null);
     }
-
-
     if (playbutton) {
       playbutton.addEventListener('click', async () => {
-      try {
-        await ws.connectTo(searchservers.value);
-        goto("/game");
-      } catch (error) {
-        console.error("Failed to connect:", error);
-
-      }
+        connect();
     });
 
+    }
+
+    if (playbuttonError) {
+      playbuttonError.addEventListener('click', async () => {
+        connect();
+    });
     }
   });
 
@@ -55,14 +68,14 @@
       </div>
         <div class = "flex">
           <div class = "m-auto">
-  
-            <button id = playbutton class = "hover:text-green-300 playbutton bg-white bg-opacity-20 rounded-[50px] shadow-xl"><i class="fa fa-gamepad hover:animate-pulse  text-[10vh]" aria-hidden="true"><i class="fa text-[10vh]">play</i></i></button>
+
+              <button id = playbutton class = "{!connError ? '' : 'hidden'} hover:text-green-300 playbutton bg-white bg-opacity-20 rounded-[50px] shadow-xl"><i class="fa fa-gamepad hover:animate-pulse  text-[10vh]" aria-hidden="true"><i class="fa text-[10vh]">play</i></i></button>
+              
+              <!-- here i want to display ony if connError -->
+              <p class = "{connError ? '' : 'hidden'} bg-red-200 rounded-lg bg-opacity-50 text-2xl text-red-800 text-center">server connection error</p>
+              <button id = playbuttonError class = "{connError ? '' : 'hidden'} playbutton bg-white bg-opacity-20 rounded-[50px] shadow-xl"><i class="fa fa-gamepad hover:animate-pulse text-red-300 text-[10vh]" aria-hidden="true"><i class="fa text-[10vh]">play</i></i></button>
+
           </div>
         </div>
       </div>
-
-
-      
-
-
 </div>
