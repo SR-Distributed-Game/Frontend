@@ -1,31 +1,27 @@
 import { Game } from "./Game";
+import { Transform } from "./Transform";
 
 export class GameObject {
-    x: number;
-    y: number;
-    
+    transform : Transform;
     lastx : number;
     lasty: number;
     name: string;
-    id: string;
+    id: number;
 
-    constructor(x: number, y: number, id: string) {
-        this.x = x;
-        this.y = y;
+    constructor(x: number, y: number, id: number) {
+        this.transform = new Transform(x, y, 0, 0);
         this.lastx = x;
         this.lasty = y;
         this.id = id;
         this.name = "object";
-
     }
 
     start(p:any){
-
     }
 
     requestMove(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+        this.transform.x = x;
+        this.transform.y = y;
         if (x == this.lastx && y == this.lasty) {
             return;
         }
@@ -35,11 +31,9 @@ export class GameObject {
     }
 
     move(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+        this.transform.x = x;
+        this.transform.y = y;
     }
-
-
 
     setName(name: string) {
         this.name = name;
@@ -52,4 +46,14 @@ export class GameObject {
     draw(p:any) {
         // Drawing logic using p5 instance (p)
     }
+
+    asMetadata(): any {
+        return {
+            "transform": this.transform.toJson(),
+            "targetedObjectId": this.id,
+            "objectType": this.constructor.name
+        }
+    }
+
+
 }

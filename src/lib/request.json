@@ -5,10 +5,14 @@
     "roomID": "int",
     "Metadata": {
       "color (optional)": "rgbValue",
-      "playername (optional)": "rgbValue",
-      "position (optional)": {
+      "playername (optional)": "String",
+      "targetedObjectId (optional)":"int",
+      "objectType (optional)" : "String",
+      "transform (optional)": {
         "x": "int",
-        "y": "int"
+        "y": "int",
+        "dx":"int",
+        "dy":"int"
       }
     }
   },

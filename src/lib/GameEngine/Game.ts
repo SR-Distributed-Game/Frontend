@@ -26,38 +26,43 @@ export class Game extends messageSubscriber{
     addObject(obj: GameObject){
         this.objects.push(obj);
         var request = gameRequestFactory.getSpawnRequest();
-        request.Metadata = {
-            x: obj.y,
-            y: obj.x,
-            type: obj.constructor.name,
-        }
+        request.Metadata = obj.asMetadata();
         this.sender.sendRequest(request);
     }
 
     removeObject(obj: GameObject){
         this.objects = this.objects.filter((o) => o!== obj);
         var request = gameRequestFactory.getDestroyRequest();
-        request.Metadata = {
-            type: obj.constructor.name,
-            id: obj.id
-        }
+        request.Metadata = obj.asMetadata();
         this.sender.sendRequest(request);
     }
 
     moveObject(obj: GameObject, x: number, y: number){
-        obj.x = x;
-        obj.y = y;
+        obj.transform.x = x;
+        obj.transform.y = y;
 
         var request = gameRequestFactory.getUpdateRequest();
-        request.Metadata = {
-            x: x,
-            y: y,
-            id: obj.id,
-        }
-
+        request.Metadata = obj.asMetadata();
         this.sender.sendRequest(request);
     }
 
+    asyncAddObject(obj: GameObject){
+        var request = gameRequestFactory.getSpawnRequest();
+        request.Metadata = obj.asMetadata();
+        this.sender.sendRequest(request);
+    }
+
+    asyncRemoveObject(obj: GameObject){
+        var request = gameRequestFactory.getDestroyRequest();
+        request.Metadata = obj.asMetadata();
+        this.sender.sendRequest(request);
+    }
+
+    asyncMoveObject(obj: GameObject, x: number, y: number){
+        var request = gameRequestFactory.getUpdateRequest();
+        request.Metadata = obj.asMetadata();
+        this.sender.sendRequest(request);
+    }
 
     onMessage(req: any): void {
         console.log("handling message: " + req);
