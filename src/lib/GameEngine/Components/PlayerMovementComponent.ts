@@ -9,6 +9,7 @@ export class PlayerMovementComponent extends Component {
         this.speed = speed;
 
     }
+    
     update(p:any) {
         var amountToMove:Vector2;
         amountToMove = new Vector2(0,0);

@@ -129,14 +129,13 @@ export class SpringSocketServer{
             this.socket.send( JSON.stringify(request));
         }
     }
+
     public close = () => {
         if (this.socket){
             if (this.socket.readyState === WebSocket.OPEN){
                 var request = gameRequestFactory.getClosingRequest();
-                request.Metadata = {
-                    playername: this.getPlayerName(),
-                    ClientID: this.getClientID(),
-                }
+                request.addMetadata("playername",this.getPlayerName()),
+                request.ClientID =  this.getClientID(),
                 this.send(request);
                 this.socket.close();
             }

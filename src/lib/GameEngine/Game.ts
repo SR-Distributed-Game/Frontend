@@ -30,14 +30,14 @@ export class Game extends messageSubscriber{
         obj.Mstart();
         this.objects.push(obj);
         var request = gameRequestFactory.getSpawnRequest();
-        request.Metadata = obj.asMetadata();
+        request.addMetadata("objectData", obj.asMetadata());
         this.sender.sendRequest(request);
     }
 
     removeObject(obj: GameObject){
         this.objects = this.objects.filter((o) => o!== obj);
         var request = gameRequestFactory.getDestroyRequest();
-        request.Metadata = obj.asMetadata();
+        request.addMetadata("objectData", obj.asMetadata());
         this.sender.sendRequest(request);
     }
 
@@ -46,25 +46,25 @@ export class Game extends messageSubscriber{
         obj.getTransform().getPosition().setY(y);
 
         var request = gameRequestFactory.getUpdateRequest();
-        request.Metadata = obj.asMetadata();
+        request.addMetadata("objectData", obj.asMetadata());
         this.sender.sendRequest(request);
     }
 
     asyncAddObject(obj: GameObject){
         var request = gameRequestFactory.getSpawnRequest();
-        request.Metadata = obj.asMetadata();
+        request.addMetadata("objectData", obj.asMetadata());
         this.sender.sendRequest(request);
     }
 
     asyncRemoveObject(obj: GameObject){
         var request = gameRequestFactory.getDestroyRequest();
-        request.Metadata = obj.asMetadata();
+        request.addMetadata("objectData", obj.asMetadata());
         this.sender.sendRequest(request);
     }
 
     asyncMoveObject(obj: GameObject, x: number, y: number){
         var request = gameRequestFactory.getUpdateRequest();
-        request.Metadata = obj.asMetadata();
+        request.addMetadata("objectData", obj.asMetadata());
         this.sender.sendRequest(request);
     }
 

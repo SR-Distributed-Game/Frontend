@@ -2,18 +2,21 @@
   "Format": {
     "Type": "String",
     "ClientID": "int",
-    "roomID": "int",
+    "RoomID": "int",
     "Metadata": {
-      "color (optional)": "rgbValue",
       "playername (optional)": "String",
-      "targetedObjectId (optional)":"int",
-      "objectType (optional)" : "String",
-      "transform (optional)": {
-        "x": "int",
-        "y": "int",
-        "dx":"int",
-        "dy":"int"
+      "objectData (optional)": {
+        "color (optional)": "rgbValue",
+        "targetedObjectId":"int",
+        "objectType" : "String",
+        "transform ": {
+          "x": "int",
+          "y": "int",
+          "dx":"int",
+          "dy":"int"
+        }
       }
+      
     }
   },
   "Enum": {

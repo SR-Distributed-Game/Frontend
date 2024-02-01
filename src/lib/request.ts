@@ -11,4 +11,12 @@ export class gameRequest {
         this.Metadata = {};
     }
 
+    addMetadata(key: string, value: any) {
+        this.Metadata[key] = value;
+    }
+
+    addObjectMetadata(value:any) {
+        this.addMetadata("objectData", value);
+    }
+
 }

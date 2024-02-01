@@ -7,21 +7,27 @@ import type { drawComponent } from "./drawComponent";
 
 export class GameObject {
     protected transform : Transform;
+    protected localTransform:Transform;
     protected lastx : number;
     protected lasty: number;
     protected name: string;
     protected id: number;
     protected components: Component[];
     protected drawComponents: drawComponent[];
+    protected children: GameObject[];
 
     constructor(x: number, y: number, id: number) {
+        
         this.transform = new Transform(x, y, 0, 0);
+        this.localTransform = new Transform(x, y, 0, 0);
+
         this.lastx = x;
         this.lasty = y;
         this.id = id;
         this.name = "object";
         this.components = [];
         this.drawComponents = [];
+        this.children = [];
     }
 
     getTransform(): Transform {
@@ -71,6 +77,7 @@ export class GameObject {
 
     Mupdate(p:any) {
         this.components.forEach(component => component.update(p));
+
         this.update(p);
     }
 
@@ -88,13 +95,14 @@ export class GameObject {
     }
 
 
-
     asMetadata(): any {
+
         return {
             "transform": this.transform.toJson(),
             "targetedObjectId": this.id,
             "objectType": this.constructor.name
         }
+    
     }
 
 

@@ -15,8 +15,10 @@ export class player extends GameObject {
     }
 
     start(): void {
+
         this.addDrawComponent(new DrawElipseComponent(this, "red"));
         this.addComponent(new PlayerMovementComponent(this,this.speed));
+        //this.attachCamera();
     }
 
 }
