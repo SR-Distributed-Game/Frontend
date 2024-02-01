@@ -5,6 +5,7 @@ import { gameRequest } from '$lib/request';
 import { Camera } from './Camera';
 import { GameObject } from './GameObject';
 import { SpatialHashmap } from './SpatialHashmap';
+import { Vector2 } from './Vector2';
 
 export class Game extends messageSubscriber{
 
@@ -14,6 +15,9 @@ export class Game extends messageSubscriber{
     private camera: Camera;
     private collisionSystem: SpatialHashmap;
     private scene: any;
+
+    private mousePosition:Vector2 = new Vector2(0,0); 
+
     keys: any = {};
 
     public static getInstance(){
@@ -39,6 +43,7 @@ export class Game extends messageSubscriber{
         return this.scene;
     }
 
+    
 
     getSender(): RequestSender {
         return this.sender;
@@ -59,11 +64,17 @@ export class Game extends messageSubscriber{
 
 
     Mupdate(p:any){
-
+        this.mousePosition.setX(p.mouseX + this.camera.getTransform().getPosition().getX());
+        this.mousePosition.setY(p.mouseY + this.camera.getTransform().getPosition().getY());
+        
         this.collisionSystem.getHashMap().clear();
         this.objects.forEach(obj => obj.Mupdate(p));
         this.scene.Mupdate(p);
         this.collisionSystem.update();
+    }
+
+    getMousePosition():Vector2{
+        return this.mousePosition;
     }
 
     getCollisionSystem(): SpatialHashmap {

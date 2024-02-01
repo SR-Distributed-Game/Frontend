@@ -42,5 +42,13 @@ export class Transform {
         this.rotation = rotation;
     }
 
+    setPosition (position: Vector2) {
+        this.position = position;
+    }
+
+    setScale (scale: Vector2) {
+        this.scale = scale;
+    }
+
     
 }

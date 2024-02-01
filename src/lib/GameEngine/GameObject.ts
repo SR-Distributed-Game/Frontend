@@ -3,7 +3,7 @@ import type { Component } from "./Component";
 import type { ColliderComponent } from "./Components/ColliderComponent";
 import { Game } from "./Game";
 import { Transform } from "./Transform";
-import type { Vector2 } from "./Vector2";
+import { Vector2 } from "./Vector2";
 import type { drawComponent } from "./drawComponent";
 
 export class GameObject {
@@ -18,20 +18,26 @@ export class GameObject {
     colliderComponents: ColliderComponent[];
     protected children: GameObject[];
     private shouldDestroy: boolean = false;
+    private cameraAttached: boolean = false;
 
-    constructor(x: number, y: number, id: number) {
+    constructor() {
         
-        this.transform = new Transform(x, y, 0, 0);
-        this.localTransform = new Transform(x, y, 0, 0);
+        this.transform = new Transform(0, 0, 0, 0);
+        this.localTransform = new Transform(0, 0, 0, 0);
 
-        this.lastx = x;
-        this.lasty = y;
-        this.id = id;
+        this.lastx = 0;
+        this.lasty = 0;
+        this.id = 0;
         this.name = "object";
         this.components = [];
         this.drawComponents = [];
         this.colliderComponents = [];
         this.children = [];
+
+    }
+
+    setId(id: number) {
+        this.id = id;
     }
 
     destroy() {
@@ -40,6 +46,10 @@ export class GameObject {
     
     shouldBeDestroyed(): boolean {
         return this.shouldDestroy;
+    }
+
+    attachCamera() {
+        this.cameraAttached = true;
     }
 
     getTransform(): Transform {
@@ -95,6 +105,9 @@ export class GameObject {
         this.colliderComponents.forEach(component => component.update(p));
         this.components.forEach(component => component.update(p));
         this.update(p);
+        if (this.cameraAttached) {
+            Game.getInstance().getCamera().getTransform().setPosition(this.getTransform().getPosition().sub(new Vector2(p.width/2,p.height/2)));
+        }
     }
 
     draw(p:any,camera: Camera) {

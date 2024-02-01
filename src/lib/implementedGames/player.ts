@@ -9,8 +9,8 @@ export class player extends GameObject {
     private points: number;
     private speed: number;
 
-    constructor(x: number, y: number, id: number) {
-        super(x, y, id);
+    constructor(x: number, y: number) {
+        super();
         this.speed = 5;
         this.points = 0;
         this.setName("player");
@@ -32,6 +32,7 @@ export class player extends GameObject {
         this.addDrawComponent(this.gfx);
         this.addComponent(new PlayerMovementComponent(this,this.speed));
         this.addColliderComponent(new ColliderComponent(this));
+        this.attachCamera();
     }
 
     update(p: any): void {

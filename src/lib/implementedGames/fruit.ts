@@ -1,15 +1,18 @@
 import { ColliderComponent } from "$lib/GameEngine/Components/ColliderComponent";
 import { DrawRectangleComponent } from "$lib/GameEngine/Components/DrawRectangleComponent";
 import { LocalAnimator } from "$lib/GameEngine/Components/LocalAnimator";
+import { Vector2 } from "$lib/GameEngine/Vector2";
 import { Game } from "../GameEngine/Game";
 import { GameObject } from "../GameEngine/GameObject";
 import { fruitAnnimation } from "./fruitAnnimation";
 
 export class fruit extends GameObject {
     gfx:DrawRectangleComponent;
-    constructor(x: number, y: number, id: number) {
-        super(x, y, id);
+    constructor(x: number, y: number) {
+        super();
         this.setName("fruit");
+        this.setId((Math.random()*1000));
+        this.getTransform().setPosition(new Vector2(x,y));
         this.getTransform().getScale().setX(10);
         this.getTransform().getScale().setY(10);
         this.getTransform().setRotation(Math.random()*360);

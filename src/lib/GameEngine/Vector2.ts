@@ -40,6 +40,10 @@ export class Vector2 {
         return new Vector2(this.x / v.x, this.y / v.y);
     }
 
+    scaldiv(s: number): Vector2 {
+        return new Vector2(this.x / s, this.y / s);
+    }
+
     dot(v: Vector2): number {
         return this.x * v.x + this.y * v.y;
     }
@@ -91,6 +95,7 @@ export class Vector2 {
     static fromAngle(angle: number): Vector2 {
         return new Vector2(Math.cos(angle), Math.sin(angle));
     }
+
 
 
 
