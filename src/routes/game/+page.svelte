@@ -57,7 +57,7 @@
 
 <div class = "flex mt-2" id=rules>
 
-    <div class = " bg-black bg-opacity-30 p-2 rounded-xl m-auto text-white text-2xl" >move with keyboard arrow</div>
+    <div class = " bg-black bg-opacity-30 p-2 rounded-xl m-auto text-white text-2xl" >move with keyboard arrow to eat</div>
     <div class = " bg-black bg-opacity-30 p-2 rounded-xl m-auto text-white text-2xl" >click to activate traps</div>
     <div class = "bg-black bg-opacity-40 rounded-lg p-2 flex m-auto" id=actions>
         <button id = quitButton class = "p-5  text-white  hover:scale-105 duration-75 hover:text-red-300"> disconnect <i class = "fa fa-sign-out "></i></button>  

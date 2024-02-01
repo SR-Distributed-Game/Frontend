@@ -6,6 +6,8 @@ import type p5 from "p5";
 import { Game } from "../GameEngine/Game";
 import { GameObject } from "../GameEngine/GameObject";
 import { fruitAnnimation } from "./fruitAnnimation";
+import { DrawElipseComponent } from "$lib/GameEngine/Components/DrawElipseComponent";
+import { Color } from "p5";
 
 export class fruit extends GameObject {
     gfx:DrawRectangleComponent;
@@ -18,8 +20,12 @@ export class fruit extends GameObject {
         this.getTransform().getScale().setX(10);
         this.getTransform().getScale().setY(10);
         this.getTransform().setRotation(Math.random()*360);
-        this.randomColor = Math.random()*200  + "";
-        this.gfx = new DrawRectangleComponent(this, this.randomColor);
+        this.randomColor = this.getRandomHexColor();
+        this.gfx = new DrawElipseComponent(this, this.randomColor);
+    }
+
+    getRandomHexColor(): string {
+        return "#" + Math.floor(Math.random()*16777215).toString(16);
     }
 
     start(): void {
@@ -29,11 +35,12 @@ export class fruit extends GameObject {
     }
 
     update(p: p5): void {
+        
         this.gfx.setColor(this.randomColor);
     }
 
     onCollision(collider: ColliderComponent): void {
-        this.gfx.setColor("blue");
+        this.randomColor = this.getRandomHexColor();
     }
 
 }

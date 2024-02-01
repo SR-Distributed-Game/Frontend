@@ -11,6 +11,7 @@ export class DrawElipseComponent extends drawComponent {
 
     draw(p: p5, camera: Camera) {
         p.fill(this.color);
+        p.ellipseMode(p.CORNER);
         p.ellipse(this.getParent().getTransform().getPosition().getX() - camera.getTransform().getPosition().getX(), this.getParent().getTransform().getPosition().getY() - camera.getTransform().getPosition().getY(), this.getParent().getTransform().getScale().getX(), this.getParent().getTransform().getScale().getY());
     }
 }

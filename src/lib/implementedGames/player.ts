@@ -21,7 +21,7 @@ export class player extends GameObject {
         this.setName("player");
         this.getTransform().getScale().setX(20);
         this.getTransform().getScale().setY(20);
-        this.gfx = new DrawRectangleComponent(this, "green");
+        this.gfx = new DrawElipseComponent(this, "#b0ffb0b0");
         this.namegfx = new DrawTextComponent(this);
         this.namegfx.setText(SpringSocketServer.getInstance().getPlayerName());
         this.namegfx.setColor("white");
@@ -30,6 +30,8 @@ export class player extends GameObject {
 
     setPoints(points: number): void {
         this.points = points;
+        this.getTransform().getScale().setX(20+this.points* 0.05);
+        this.getTransform().getScale().setY(20+this.points*0.05);
     }
 
     getPoints(): number {
@@ -45,18 +47,13 @@ export class player extends GameObject {
         this.attachCamera();
     }
 
-    update(p: p5): void {
-        this.gfx.setColor("green");
-    }
 
     onCollision(collider: ColliderComponent): void {
-        this.gfx.setColor("purple");
         collider.getParent().destroy();
         this.setPoints(this.getPoints() + 1);
     }
 
     draw(p: p5, camera: Camera): void {
-        p.fill("white");
         p.textSize(20);
         p.text("Points: " + this.points, 10, 20);
     }
