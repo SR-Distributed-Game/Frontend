@@ -66,7 +66,6 @@
 
 </div>
 <div class = "flex mt-10">
-
     <div class = "m-auto" id=canvacontainer>
         <div id="canvas-container"></div>
     </div>

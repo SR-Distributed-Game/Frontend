@@ -6,6 +6,7 @@ import { Game } from "../GameEngine/Game";
 import { fruit } from "./fruit";
 import { player } from "./player";
 import { terrain } from "./terrain";
+import { Enemy } from "./Enemy";
 
 export class sweetGame extends Scene {
 
@@ -26,11 +27,28 @@ export class sweetGame extends Scene {
             this.addObject(new fruit(Game.getInstance().getMousePosition().getX(), Game.getInstance().getMousePosition().getY()));
         }
 
-        for (let i = 0; i < 500; i++) {
+        for (let i = 0; i < 200; i++) {
             this.addObject(new fruit(Math.random() * this.terrainSize.getX(), Math.random() * this.terrainSize.getY()));
         }
 
+        //simulate server init
+        this.simulate();
     }
+
+    simulate() {
+        //simulation of server send fruit
+        setInterval(() => {
+            this.addObject(new fruit(Math.random() * this.terrainSize.getX(), Math.random() * this.terrainSize.getY()));
+        }, 1000);
+
+        //simulation of server send enemy
+        this.spawnEnemy();
+    }
+
+    spawnEnemy() {
+        this.addObject(new Enemy(this.terrainSize.getX()*Math.random(),this.terrainSize.getY()*Math.random()));
+    }
+
 
     update(p: p5): void {
         var currentx = this.pl1.getTransform().getPosition().getX();
