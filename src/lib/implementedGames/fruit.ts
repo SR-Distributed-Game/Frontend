@@ -9,6 +9,7 @@ import { fruitAnnimation } from "./fruitAnnimation";
 
 export class fruit extends GameObject {
     gfx:DrawRectangleComponent;
+    randomColor:string;
     constructor(x: number, y: number) {
         super();
         this.setName("fruit");
@@ -17,7 +18,8 @@ export class fruit extends GameObject {
         this.getTransform().getScale().setX(10);
         this.getTransform().getScale().setY(10);
         this.getTransform().setRotation(Math.random()*360);
-        this.gfx = new DrawRectangleComponent(this, "red");
+        this.randomColor = Math.random()*200  + "";
+        this.gfx = new DrawRectangleComponent(this, this.randomColor);
     }
 
     start(): void {
@@ -27,7 +29,7 @@ export class fruit extends GameObject {
     }
 
     update(p: p5): void {
-        this.gfx.setColor("red");
+        this.gfx.setColor(this.randomColor);
     }
 
     onCollision(collider: ColliderComponent): void {

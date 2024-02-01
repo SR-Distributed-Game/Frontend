@@ -21,6 +21,7 @@
         ws.getDispatcher().subscribe(Game.getInstance());
         const sketch = (p:any) => {
             let game:Game = Game.getInstance();
+        
             game.setScene(new sweetGame());
             p.setup = () => {
                 var newValue = Math.min(p.windowWidth/1.2, p.windowHeight/1.4);

@@ -1,7 +1,5 @@
 import { RequestSender } from '$lib/RequestSender';
-import { gameRequestFactory } from '$lib/gameRequestFactory';
 import { messageSubscriber } from '$lib/messageSubscriber';
-import { gameRequest } from '$lib/request';
 import type p5 from 'p5';
 import { Camera } from './Camera';
 import { GameObject } from './GameObject';

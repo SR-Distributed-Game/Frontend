@@ -54,11 +54,4 @@ export class sweetGame extends Scene {
         
     }
 
-    draw(p: p5, camera: Camera): void {
-        p.fill("black");
-        p.text("Points: " + this.pl1.getPoints(), 10, 10);
-
-    }
-
-
 }
