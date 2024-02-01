@@ -1,3 +1,4 @@
+import type p5 from "p5";
 import type { ColliderComponent } from "./Components/ColliderComponent";
 
 export class SpatialHashmap {
@@ -90,7 +91,7 @@ export class SpatialHashmap {
         return set;
     }
 
-    draw(p:any){
+    draw(p:p5){
         p.stroke(255);
         p.strokeWeight(1);
         for (let i = 0; i < p.width; i += this.cellSize) {

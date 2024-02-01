@@ -1,3 +1,4 @@
+import type p5 from "p5";
 import { Component } from "../Component";
 import type { GameObject } from "../GameObject";
 import { Vector2 } from "../Vector2";
@@ -9,7 +10,7 @@ export class PlayerMovementComponent extends Component {
         this.speed = speed;
     }
     
-    update(p:any) {
+    update(p:p5) {
         var amountToMove:Vector2;
         amountToMove = new Vector2(0,0);
 

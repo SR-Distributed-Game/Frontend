@@ -1,3 +1,4 @@
+import type p5 from "p5";
 import { Component } from "../Component";
 import { GameObject } from "../GameObject";
 import { Annimation } from "./Annimation";
@@ -33,7 +34,7 @@ export class LocalAnimator extends Component {
             this.currentAnimation.stop();
     }
 
-    update(p:any) {
+    update(p:p5) {
         if (this.currentAnimation)
             this.currentAnimation.Mupdate(p);
     }

@@ -2,6 +2,7 @@ import { RequestSender } from '$lib/RequestSender';
 import { gameRequestFactory } from '$lib/gameRequestFactory';
 import { messageSubscriber } from '$lib/messageSubscriber';
 import { gameRequest } from '$lib/request';
+import type p5 from 'p5';
 import { Camera } from './Camera';
 import { GameObject } from './GameObject';
 import { SpatialHashmap } from './SpatialHashmap';
@@ -53,17 +54,17 @@ export class Game extends messageSubscriber{
         //console.log("handling message: " + req);
     }
 
-    start(p:any){
+    start(p:p5){
 
     }
 
-    Mstart(p:any){
+    Mstart(p:p5){
         this.scene.Mstart(p);
         this.start(p);
     }
 
 
-    Mupdate(p:any){
+    Mupdate(p:p5){
         this.mousePosition.setX(p.mouseX + this.camera.getTransform().getPosition().getX());
         this.mousePosition.setY(p.mouseY + this.camera.getTransform().getPosition().getY());
         
@@ -85,12 +86,12 @@ export class Game extends messageSubscriber{
         return this.camera;
     }
 
-    draw(p:any) {
+    draw(p:p5) {
         this.scene.Mdraw(p,this.camera);
         //this.collisionSystem.draw(p);
     }
     
-    runFrame(p:any){
+    runFrame(p:p5){
         this.Mupdate(p);
         this.draw(p);
     }

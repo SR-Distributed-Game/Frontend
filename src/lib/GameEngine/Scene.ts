@@ -1,4 +1,5 @@
 import { gameRequestFactory } from "$lib/gameRequestFactory";
+import type p5 from "p5";
 import { Camera } from "./Camera";
 import { Game } from "./Game";
 import { GameObject } from "./GameObject";
@@ -64,14 +65,14 @@ export class Scene {
         Game.getInstance().getSender().sendRequest(req);
     }
 
-    Mstart(p:any){
+    Mstart(p:p5){
         this.start(p);
     }
 
-    start(p:any){
+    start(p:p5){
     }
 
-    Mupdate(p:any){
+    Mupdate(p:p5){
         for(var ob of this.gameObjects){
             ob.Mupdate(p);
             if (ob.shouldBeDestroyed()){
@@ -81,15 +82,15 @@ export class Scene {
         this.update(p);
     }
 
-    update(p:any){
+    update(p:p5){
     }
 
-    Mdraw(p:any,camera: Camera){
+    Mdraw(p:p5,camera: Camera){
         this.gameObjects.forEach(obj => obj.Mdraw(p,camera));
         this.draw(p,camera);
     }
 
-    draw(p:any,camera: Camera){
+    draw(p:p5,camera: Camera){
     
     }
 

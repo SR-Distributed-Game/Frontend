@@ -3,7 +3,7 @@ import { Transform } from "./Transform";
 
 export class Camera extends GameObject {
     constructor() {
-        super(0, 0, -300);
+        super();
         this.transform = new Transform(0, 0, 0, 0);
     }
 

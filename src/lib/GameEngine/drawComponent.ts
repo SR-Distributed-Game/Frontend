@@ -1,3 +1,4 @@
+import type p5 from "p5";
 import type { Camera } from "./Camera";
 import { Component } from "./Component";
 import type { GameObject } from "./GameObject";
@@ -17,7 +18,7 @@ export class drawComponent extends Component{
         return this.color;
     }
 
-    draw(p: any,camera:Camera) {
+    draw(p: p5,camera:Camera) {
     }
 
 }

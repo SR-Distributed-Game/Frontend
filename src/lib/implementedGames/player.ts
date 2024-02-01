@@ -2,6 +2,7 @@ import { ColliderComponent } from "$lib/GameEngine/Components/ColliderComponent"
 import { DrawElipseComponent } from "$lib/GameEngine/Components/DrawElipseComponent";
 import { DrawRectangleComponent } from "$lib/GameEngine/Components/DrawRectangleComponent";
 import { PlayerMovementComponent } from "$lib/GameEngine/Components/PlayerMovementComponent";
+import type p5 from "p5";
 import { GameObject } from "../GameEngine/GameObject";
 
 export class player extends GameObject {
@@ -35,7 +36,7 @@ export class player extends GameObject {
         this.attachCamera();
     }
 
-    update(p: any): void {
+    update(p: p5): void {
         this.gfx.setColor("green");
     }
 

@@ -1,3 +1,4 @@
+import type p5 from "p5";
 import { GameObject } from "../GameObject";
 import type { LocalAnimator } from "./LocalAnimator";
 
@@ -25,7 +26,7 @@ export class Annimation {
         this.playing = false;
     }
 
-    Mupdate(p: any) {
+    Mupdate(p: p5) {
         if(this.playing) {
             this.currentFrame += 1;
                 this.currentFrame = 0;
@@ -34,7 +35,7 @@ export class Annimation {
     
     }
 
-    update(p:any) {
+    update(p:p5) {
     
     }
 

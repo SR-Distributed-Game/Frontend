@@ -1,6 +1,7 @@
 import type { Camera } from "$lib/GameEngine/Camera";
 import { Scene } from "$lib/GameEngine/Scene";
 import { Vector2 } from "$lib/GameEngine/Vector2";
+import type p5 from "p5";
 import { Game } from "../GameEngine/Game";
 import { fruit } from "./fruit";
 import { player } from "./player";
@@ -17,7 +18,7 @@ export class sweetGame extends Scene {
         this.terrainSize = new Vector2(2000, 2000);
     }
 
-    start(p: any) {
+    start(p: p5) {
         this.addObject(new terrain(this.terrainSize));
         p.noStroke();
 
@@ -31,7 +32,7 @@ export class sweetGame extends Scene {
 
     }
 
-    update(p: any): void {
+    update(p: p5): void {
         var currentx = this.pl1.getTransform().getPosition().getX();
         var currenty = this.pl1.getTransform().getPosition().getY();
         var currentdx = this.pl1.getTransform().getScale().getX();
@@ -53,7 +54,7 @@ export class sweetGame extends Scene {
         
     }
 
-    draw(p: any, camera: Camera): void {
+    draw(p: p5, camera: Camera): void {
         p.fill("black");
         p.text("Points: " + this.pl1.getPoints(), 10, 10);
 

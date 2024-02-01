@@ -2,6 +2,7 @@ import { ColliderComponent } from "$lib/GameEngine/Components/ColliderComponent"
 import { DrawRectangleComponent } from "$lib/GameEngine/Components/DrawRectangleComponent";
 import { LocalAnimator } from "$lib/GameEngine/Components/LocalAnimator";
 import { Vector2 } from "$lib/GameEngine/Vector2";
+import type p5 from "p5";
 import { Game } from "../GameEngine/Game";
 import { GameObject } from "../GameEngine/GameObject";
 import { fruitAnnimation } from "./fruitAnnimation";
@@ -25,7 +26,7 @@ export class fruit extends GameObject {
 
     }
 
-    update(p: any): void {
+    update(p: p5): void {
         this.gfx.setColor("red");
     }
 

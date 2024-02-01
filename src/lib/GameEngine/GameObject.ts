@@ -1,3 +1,4 @@
+import type p5 from "p5";
 import type { Camera } from "./Camera";
 import type { Component } from "./Component";
 import type { ColliderComponent } from "./Components/ColliderComponent";
@@ -97,11 +98,11 @@ export class GameObject {
         this.name = name;
     }
 
-    update(p:any) {
+    update(p:p5) {
         // Update logic for the object
     }
 
-    Mupdate(p:any) {
+    Mupdate(p:p5) {
         this.colliderComponents.forEach(component => component.update(p));
         this.components.forEach(component => component.update(p));
         this.update(p);
@@ -110,7 +111,7 @@ export class GameObject {
         }
     }
 
-    draw(p:any,camera: Camera) {
+    draw(p:p5,camera: Camera) {
         // Drawing logic using p5 instance (p)
     }
 
@@ -118,7 +119,7 @@ export class GameObject {
         return this.id;
     }
 
-    Mdraw(p:any,camera: Camera) {
+    Mdraw(p:p5,camera: Camera) {
         
         this.drawComponents.forEach(drawComponent => {
             drawComponent.draw(p,camera);

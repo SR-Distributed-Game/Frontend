@@ -1,4 +1,6 @@
 
+import type p5 from "p5";
+import type { Camera } from "../Camera";
 import { drawComponent } from "../drawComponent";
 
 export class DrawPolyComponent extends drawComponent {
@@ -11,7 +13,7 @@ export class DrawPolyComponent extends drawComponent {
         this.color = color;
     }
 
-    draw(p: any, camera: any) {
+    draw(p: p5, camera: Camera) {
         p.fill(this.color);
         p.beginShape();
         for (let i = 0; i < this.points.length; i++) {

@@ -1,3 +1,4 @@
+import type p5 from "p5";
 import type { GameObject } from "./GameObject";
 
 export class Component {
@@ -14,7 +15,7 @@ export class Component {
     start() {
     }
 
-    update(p: any) {
+    update(p: p5) {
     
     }
 

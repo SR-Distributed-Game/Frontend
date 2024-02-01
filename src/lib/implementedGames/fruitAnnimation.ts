@@ -1,4 +1,5 @@
 import { Annimation } from "$lib/GameEngine/Components/Annimation";
+import type p5 from "p5";
 
 export class fruitAnnimation extends Annimation {
 
@@ -6,7 +7,7 @@ export class fruitAnnimation extends Annimation {
         super();
     }
 
-    update(p: any) {
+    update(p: p5) {
     
     }
 

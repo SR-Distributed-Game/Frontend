@@ -1,3 +1,4 @@
+import type p5 from "p5";
 import { Component } from "../Component";
 import { Game } from "../Game";
 import type { GameObject } from "../GameObject";
@@ -7,7 +8,7 @@ export class ColliderComponent extends Component {
         super(parent);
     }
     
-    update(p:any) {
+    update(p:p5) {
         Game.getInstance().getCollisionSystem().insert(this);
     }
 
