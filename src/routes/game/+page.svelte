@@ -37,7 +37,7 @@
             };
 
             p.draw = () => {
-                p.background(200);
+                p.background("#101010");
                 game.runFrame(p);  
             };
         };

@@ -6,6 +6,7 @@ export class SpatialHashmap {
     private alreadyCollided: Map<string, boolean>;
     private cellMap: Map<ColliderComponent, number[]>;
     private colls: number;
+
     constructor(cellSize: number) {
         this.cellSize = cellSize;
         this.map = new Map<number, ColliderComponent[]>();
@@ -141,29 +142,7 @@ export class SpatialHashmap {
         this.alreadyCollided.clear();
     }
 
-    // Assuming checkAABBCollision is a method that checks for Axis-Aligned Bounding Box collision
-    // and returns a boolean or collision data. You'll need to implement this based on your collision detection needs.
     checkAABBCollision(collider1: ColliderComponent, collider2: ColliderComponent): any {
-        
-        var transform1 = collider1.getParent().getTransform();
-        var transform2 = collider2.getParent().getTransform();
-
-        var x1 = transform1.getPosition().getX();
-        var y1 = transform1.getPosition().getY();
-        var w1 = transform1.getScale().getX();
-        var h1 = transform1.getScale().getY();
-
-        var x2 = transform2.getPosition().getX();
-        var y2 = transform2.getPosition().getY();
-        var w2 = transform2.getScale().getX();
-        var h2 = transform2.getScale().getY();
-
-        if (x1 < x2 + w2 &&
-            x1 + w1 > x2 &&
-            y1 < y2 + h2 &&
-            h1 + y1 > y2) {
-            return true;
-        }
-        return false;
+        return collider1.getParent().getTransform().intersects(collider2.getParent().getTransform());
     }
 }

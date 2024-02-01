@@ -50,5 +50,12 @@ export class Transform {
         this.scale = scale;
     }
 
+    intersects (transform: Transform): boolean {
+        return this.position.getX() < transform.position.getX() + transform.scale.getX() &&
+        this.position.getX() + this.scale.getX() > transform.position.getX() &&
+        this.position.getY() < transform.position.getY() + transform.scale.getY() &&
+        this.position.getY() + this.scale.getY() > transform.position.getY();
+    }
+
     
 }

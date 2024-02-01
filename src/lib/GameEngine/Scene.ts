@@ -65,7 +65,6 @@ export class Scene {
     }
 
     Mstart(p:any){
-        //this.gameObjects.forEach(obj => obj.Mstart());
         this.start(p);
     }
 
@@ -79,7 +78,6 @@ export class Scene {
                 this.removeObject(ob);
             }
         }
-        //this.gameObjects.forEach(obj => obj.Mupdate(p));
         this.update(p);
     }
 
