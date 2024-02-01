@@ -20,35 +20,27 @@
 
         ws.getDispatcher().subscribe(Game.getInstance());
         const sketch = (p:any) => {
-            let game = new sweetGame();
+            let game:Game = Game.getInstance();
+            game.setScene(new sweetGame());
 
 
             p.setup = () => {
-
-
-                p.frameRate(60);
                 var newValue = Math.min(p.windowWidth/2, p.windowHeight/1.4);
                 let canvas = p.createCanvas(newValue, newValue);
-
-               
                 canvas.addClass('rounded-lg');
                 canvas.addClass('shadow-xl');
                 canvas.parent('canvas-container');
 
-               
                 p.windowResized = () => {
                     var newValue = Math.min(p.windowWidth/2, p.windowHeight/1.4);
                     p.resizeCanvas(newValue, newValue);
                 };
-
                 game.Mstart(p); 
-
             };
 
             p.draw = () => {
                 p.background(200);
-                game.update(p); 
-                game.draw(p);  
+                game.runFrame(p);  
             };
         };
 

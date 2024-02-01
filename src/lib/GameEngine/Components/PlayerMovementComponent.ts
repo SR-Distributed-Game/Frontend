@@ -7,7 +7,6 @@ export class PlayerMovementComponent extends Component {
     constructor(parent: GameObject, speed: number) {
         super(parent);
         this.speed = speed;
-
     }
     
     update(p:any) {

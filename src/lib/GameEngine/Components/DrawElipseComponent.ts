@@ -2,7 +2,6 @@ import type { GameObject } from "../GameObject";
 import { drawComponent } from "../drawComponent";
 
 export class DrawElipseComponent extends drawComponent {
-    private color: string;
     constructor(parent: GameObject, color: string) {
         super(parent);
         this.color = color;

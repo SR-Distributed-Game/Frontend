@@ -1,8 +1,10 @@
+import type { Camera } from "$lib/GameEngine/Camera";
+import { Scene } from "$lib/GameEngine/Scene";
 import { Game } from "../GameEngine/Game";
 import { fruit } from "./fruit";
 import { player } from "./player";
 
-export class sweetGame extends Game {
+export class sweetGame extends Scene {
 
     pl1: player;
     constructor() {
@@ -11,7 +13,8 @@ export class sweetGame extends Game {
         this.addObject(this.pl1);
     }
 
-    start(p: any): void {
+    start(p: any) {
+
         p.noStroke();
         let sendButton = document.getElementById('sendButton');
         if (sendButton != null){
@@ -23,7 +26,8 @@ export class sweetGame extends Game {
         p.mousePressed = () => {
             this.addObject(new fruit(p.mouseX, p.mouseY, (Math.random()*1000)));
         }
-        for (let i = 0; i < 1000; i++) {
+
+        for (let i = 0; i < 500; i++) {
             this.addObject(new fruit(Math.random() * p.width, Math.random() * p.height, (Math.random()*1000)));
         }
 
@@ -48,5 +52,11 @@ export class sweetGame extends Game {
             this.pl1.getTransform().getPosition().setY(currentdy/2);
         }
     }
+
+    draw(p: any, camera: Camera): void {
+        p.fill("black");
+        p.text("Points: " + this.pl1.getPoints(), 10, 10);
+    }
+
 
 }

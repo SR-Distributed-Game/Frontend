@@ -61,7 +61,6 @@ export class SpringSocketServer{
             console.log("Connecting to " + url);
             this.socket = new WebSocket(url);
         }catch(error){
-            console.log("aaaaa");
             throw new Error("Socket not found");
         }
         this.socket.onclose = this.onClose;

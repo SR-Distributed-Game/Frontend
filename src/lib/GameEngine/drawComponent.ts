@@ -3,9 +3,18 @@ import { Component } from "./Component";
 import type { GameObject } from "./GameObject";
 
 export class drawComponent extends Component{
-
+    color
     constructor(parent:GameObject) {
         super(parent);
+        this.color = "black";
+    }
+
+    setColor(color:string){
+        this.color = color;
+    }
+
+    getColor(){
+        return this.color;
     }
 
     draw(p: any,camera:Camera) {

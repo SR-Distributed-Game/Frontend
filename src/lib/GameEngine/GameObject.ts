@@ -1,5 +1,6 @@
 import type { Camera } from "./Camera";
 import type { Component } from "./Component";
+import type { ColliderComponent } from "./Components/ColliderComponent";
 import { Game } from "./Game";
 import { Transform } from "./Transform";
 import type { Vector2 } from "./Vector2";
@@ -14,7 +15,9 @@ export class GameObject {
     protected id: number;
     protected components: Component[];
     protected drawComponents: drawComponent[];
+    colliderComponents: ColliderComponent[];
     protected children: GameObject[];
+    private shouldDestroy: boolean = false;
 
     constructor(x: number, y: number, id: number) {
         
@@ -27,7 +30,16 @@ export class GameObject {
         this.name = "object";
         this.components = [];
         this.drawComponents = [];
+        this.colliderComponents = [];
         this.children = [];
+    }
+
+    destroy() {
+        this.shouldDestroy = true;
+    }
+    
+    shouldBeDestroyed(): boolean {
+        return this.shouldDestroy;
     }
 
     getTransform(): Transform {
@@ -40,6 +52,10 @@ export class GameObject {
 
     addDrawComponent(component: drawComponent) {
         this.drawComponents.push(component);
+    }
+
+    addColliderComponent(component: ColliderComponent) {
+        this.colliderComponents.push(component);
     }
 
 
@@ -57,7 +73,7 @@ export class GameObject {
         if (vec.getX() == this.lastx && vec.getY() == this.lasty) {
             return;
         }
-        Game.getInstance().moveObject(this, vec.getX(),vec.getY());
+        Game.getInstance().getScene().moveObject(this, vec.getX(),vec.getY());
         this.lastx = vec.getX();
         this.lasty = vec.getY();
     }
@@ -76,13 +92,17 @@ export class GameObject {
     }
 
     Mupdate(p:any) {
+        this.colliderComponents.forEach(component => component.update(p));
         this.components.forEach(component => component.update(p));
-
         this.update(p);
     }
 
     draw(p:any,camera: Camera) {
         // Drawing logic using p5 instance (p)
+    }
+
+    getId(): number {
+        return this.id;
     }
 
     Mdraw(p:any,camera: Camera) {
@@ -94,16 +114,29 @@ export class GameObject {
         this.draw(p,camera);
     }
 
+    MonCollision(collider:ColliderComponent){
+        this.onCollision(collider);
+    }
+
+    onCollision(collider:ColliderComponent){
+        
+    }
 
     asMetadata(): any {
-
         return {
             "transform": this.transform.toJson(),
             "targetedObjectId": this.id,
             "objectType": this.constructor.name
         }
-    
     }
 
+    Mend(){
+        this.components.forEach(component => component.end());
+        this.end();
+    }
+
+    end(){
+        
+    }
 
 }

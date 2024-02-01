@@ -4,6 +4,7 @@ import { messageSubscriber } from '$lib/messageSubscriber';
 import { gameRequest } from '$lib/request';
 import { Camera } from './Camera';
 import { GameObject } from './GameObject';
+import { SpatialHashmap } from './SpatialHashmap';
 
 export class Game extends messageSubscriber{
 
@@ -11,6 +12,8 @@ export class Game extends messageSubscriber{
     protected sender: RequestSender;
     private objects: GameObject[] = [];
     private camera: Camera;
+    private collisionSystem: SpatialHashmap;
+    private scene: any;
     keys: any = {};
 
     public static getInstance(){
@@ -24,52 +27,25 @@ export class Game extends messageSubscriber{
         super();
         this.camera = new Camera();
         this.sender = new RequestSender();
+        this.collisionSystem = new SpatialHashmap(50);
     }
 
-    addObject(obj: GameObject){
-        obj.Mstart();
-        this.objects.push(obj);
-        var request = gameRequestFactory.getSpawnRequest();
-        request.addMetadata("objectData", obj.asMetadata());
-        this.sender.sendRequest(request);
+    setScene(scene: any){
+        this.scene = scene;
+        this.scene.attachGame(this);
     }
 
-    removeObject(obj: GameObject){
-        this.objects = this.objects.filter((o) => o!== obj);
-        var request = gameRequestFactory.getDestroyRequest();
-        request.addMetadata("objectData", obj.asMetadata());
-        this.sender.sendRequest(request);
+    getScene(){
+        return this.scene;
     }
 
-    moveObject(obj: GameObject, x: number, y: number){
-        obj.getTransform().getPosition().setX(x);
-        obj.getTransform().getPosition().setY(y);
 
-        var request = gameRequestFactory.getUpdateRequest();
-        request.addMetadata("objectData", obj.asMetadata());
-        this.sender.sendRequest(request);
-    }
-
-    asyncAddObject(obj: GameObject){
-        var request = gameRequestFactory.getSpawnRequest();
-        request.addMetadata("objectData", obj.asMetadata());
-        this.sender.sendRequest(request);
-    }
-
-    asyncRemoveObject(obj: GameObject){
-        var request = gameRequestFactory.getDestroyRequest();
-        request.addMetadata("objectData", obj.asMetadata());
-        this.sender.sendRequest(request);
-    }
-
-    asyncMoveObject(obj: GameObject, x: number, y: number){
-        var request = gameRequestFactory.getUpdateRequest();
-        request.addMetadata("objectData", obj.asMetadata());
-        this.sender.sendRequest(request);
+    getSender(): RequestSender {
+        return this.sender;
     }
 
     onMessage(req: any): void {
-        console.log("handling message: " + req);
+        //console.log("handling message: " + req);
     }
 
     start(p:any){
@@ -77,21 +53,21 @@ export class Game extends messageSubscriber{
     }
 
     Mstart(p:any){
-        this.objects.forEach(obj => obj.Mstart());
+        this.scene.Mstart(p);
         this.start(p);
     }
 
-    update(p:any){
-    
-    }
 
     Mupdate(p:any){
+
+        this.collisionSystem.getHashMap().clear();
         this.objects.forEach(obj => obj.Mupdate(p));
-        this.update(p);
+        this.scene.Mupdate(p);
+        this.collisionSystem.update();
     }
 
-    pointInCanvas(x: number, y: number): boolean {
-        return x >= 0 && x <= 400 && y >= 0 && y <= 400;
+    getCollisionSystem(): SpatialHashmap {
+        return this.collisionSystem;
     }
 
     getCamera(): Camera {
@@ -99,10 +75,12 @@ export class Game extends messageSubscriber{
     }
 
     draw(p:any) {
-        // Draw all game objects
-        this.Mupdate(p);
-        this.objects.forEach(obj => obj.Mdraw(p, this.camera));
+        this.scene.Mdraw(p,this.camera);
+        //this.collisionSystem.draw(p);
     }
-
-
+    
+    runFrame(p:any){
+        this.Mupdate(p);
+        this.draw(p);
+    }
 }
