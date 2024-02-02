@@ -28,9 +28,9 @@ export class sweetGameScene extends Scene {
             this.addObject(new fruit(Game.getInstance().getMousePosition().getX(), Game.getInstance().getMousePosition().getY()));
         }
 
-        for (let i = 0; i < 200; i++) {
+        /*for (let i = 0; i < 200; i++) {
             this.addObject(new fruit(Math.random() * this.terrainSize.getX(), Math.random() * this.terrainSize.getY()));
-        }
+        }*/
 
         //simulate server init
         //this.simulate();
