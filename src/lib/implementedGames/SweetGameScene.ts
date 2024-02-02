@@ -33,7 +33,7 @@ export class sweetGameScene extends Scene {
         }
 
         //simulate server init
-        this.simulate();
+        //this.simulate();
     }
 
     simulate() {
