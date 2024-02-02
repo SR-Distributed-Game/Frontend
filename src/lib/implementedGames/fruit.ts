@@ -1,13 +1,10 @@
 import { ColliderComponent } from "$lib/GameEngine/Components/ColliderComponent";
 import { DrawRectangleComponent } from "$lib/GameEngine/Components/DrawRectangleComponent";
-import { LocalAnimator } from "$lib/GameEngine/Components/LocalAnimator";
 import { Vector2 } from "$lib/GameEngine/Vector2";
 import type p5 from "p5";
-import { Game } from "../GameEngine/Game";
 import { GameObject } from "../GameEngine/GameObject";
-import { fruitAnnimation } from "./fruitAnnimation";
+
 import { DrawElipseComponent } from "$lib/GameEngine/Components/DrawElipseComponent";
-import { Color } from "p5";
 
 export class fruit extends GameObject {
     gfx:DrawRectangleComponent;

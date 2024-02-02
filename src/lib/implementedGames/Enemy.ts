@@ -1,12 +1,8 @@
 import { ColliderComponent } from "$lib/GameEngine/Components/ColliderComponent";
 import { DrawElipseComponent } from "$lib/GameEngine/Components/DrawElipseComponent";
 import { DrawRectangleComponent } from "$lib/GameEngine/Components/DrawRectangleComponent";
-import { PlayerMovementComponent } from "$lib/GameEngine/Components/PlayerMovementComponent";
-import type p5 from "p5";
 import { GameObject } from "../GameEngine/GameObject";
-import  { Camera } from "$lib/GameEngine/Camera";
 import  { DrawTextComponent } from "$lib/GameEngine/Components/DrawTextComponent";
-import { SpringSocketServer } from "$lib/connectionManager";
 import { Vector2 } from "$lib/GameEngine/Vector2";
 
 export class Enemy extends GameObject {
