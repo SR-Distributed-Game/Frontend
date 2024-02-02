@@ -17,6 +17,19 @@ export class Scene {
         this.game = game;
     }
 
+    addLocalObject(obj: GameObject){
+        obj.Mstart();
+        this.gameObjects.push(obj);
+    }
+    removeLocalObject(obj: GameObject){
+        obj.Mend();
+        this.gameObjects = this.gameObjects.filter((o) => o!== obj);
+    }
+    moveLocalObject(obj: GameObject, x: number, y: number){
+        obj.getTransform().getPosition().setX(x);
+        obj.getTransform().getPosition().setY(y);
+    }
+
     addObject(obj: GameObject){
         obj.Mstart();
         this.gameObjects.push(obj);

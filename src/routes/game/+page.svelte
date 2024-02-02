@@ -4,6 +4,7 @@
     import { onMount, onDestroy} from 'svelte';
     import { Game } from '$lib/GameEngine/Game.js';
     import { sweetGameScene } from '$lib/implementedGames/SweetGameScene.js';
+    import { LeaderboardLogic } from '$lib/LeaderboardLogic.js';
 
     const ws = $websocketStore;
     onMount(async () => {
@@ -12,6 +13,7 @@
         const p5 = p5module.default;
 
         let quitButton = document.getElementById('quitButton');
+
         if (quitButton != null){
             quitButton.addEventListener('click', () => {
                 window.location.assign("/");
@@ -19,6 +21,7 @@
         }
 
         ws.getDispatcher().subscribe(Game.getInstance());
+        ws.getDispatcher().subscribe(LeaderboardLogic.getInstance());
         const sketch = (p:any) => {
             let game:Game = Game.getInstance();
         
@@ -49,9 +52,10 @@
 
     onDestroy(() => {
         ws.getDispatcher().unsubscribe(Game.getInstance());
+        ws.getDispatcher().unsubscribe(LeaderboardLogic.getInstance());
         ws.close();
     });
-  
+
 </script>
 
 
@@ -69,4 +73,3 @@
         <div id="canvas-container"></div>
     </div>
 </div>
-

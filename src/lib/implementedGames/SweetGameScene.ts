@@ -21,7 +21,7 @@ export class sweetGameScene extends Scene {
     }
 
     start(p: p5) {
-        this.addObject(new terrain(this.terrainSize));
+        this.addLocalObject(new terrain(this.terrainSize));
         p.noStroke();
 
         p.mousePressed = () => {
