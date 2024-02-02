@@ -19,4 +19,13 @@ export class gameRequest {
         this.addMetadata("objectData", value);
     }
 
+    static fromJSON(json: any) {
+        let req = new gameRequest(json.Type);
+        req.ClientID = json.ClientID;
+        req.RoomID = json.RoomID;
+        req.Metadata = json.Metadata;
+        return req;
+    }
+
+
 }

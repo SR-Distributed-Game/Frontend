@@ -2,7 +2,7 @@
 import { Dispatcher } from "./Dispatcher";
 import { knownSockets } from "./Servers";
 import { gameRequestFactory } from "./gameRequestFactory";
-import type { gameRequest } from "./request";
+import type { gameRequest } from "./gameRequest";
 
 export class SpringSocketServer{
 

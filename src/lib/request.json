@@ -4,6 +4,7 @@
     "ClientID": "int",
     "RoomID": "int",
     "Metadata": {
+      "playerId (optional)":"int",
       "playername (optional)": "String",
       "objectData (optional)": {
         "color (optional)": "rgbValue",
@@ -16,7 +17,6 @@
           "dy":"int"
         }
       }
-      
     }
   },
   "Enum": {

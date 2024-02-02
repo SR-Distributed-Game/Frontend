@@ -1,5 +1,5 @@
 import { SpringSocketServer } from "./connectionManager"
-import type { gameRequest } from "./request";
+import type { gameRequest } from "./gameRequest";
 
 
 export class RequestSender {

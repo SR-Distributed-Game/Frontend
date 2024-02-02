@@ -1,4 +1,4 @@
-import { gameRequest } from "./request"
+import { gameRequest } from "./gameRequest"
 
 export class gameRequestFactory {
 
@@ -33,5 +33,10 @@ export class gameRequestFactory {
     static getSuccesConnectionRequest():gameRequest{
         return new gameRequest("ConnectSucces");
     }
+
+    static createFromJson(req:any):gameRequest{
+        return gameRequest.fromJSON(req);
+    }
+
 
 }
