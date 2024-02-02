@@ -1,1 +1,1 @@
-export let knownSockets: { [key: string]: string } = {"1": "ws://localhost:8080/echo","2": "ws://localhost:8080/game"};
+export let knownSockets: { [key: string]: string } = {"dev - echo": "ws://localhost:8080/echo","dev - game": "ws://localhost:8080/game"};

@@ -1,5 +1,6 @@
 import type p5 from "p5";
 import type { ColliderComponent } from "./Components/ColliderComponent";
+import { Game } from "./Game";
 
 export class SpatialHashmap {
     private cellSize: number;
@@ -94,11 +95,14 @@ export class SpatialHashmap {
     draw(p:p5){
         p.stroke(255);
         p.strokeWeight(1);
+        var camerax = Game.getInstance().getCamera().getTransform().getPosition().getX();
+        var cameray = Game.getInstance().getCamera().getTransform().getPosition().getY();
+        
         for (let i = 0; i < p.width; i += this.cellSize) {
-            p.line(i, 0, i, p.height);
+            p.line(i-camerax, -cameray, i-camerax, p.height-cameray);
         }
         for (let i = 0; i < p.height; i += this.cellSize) {
-            p.line(0, i, p.width, i);
+            p.line(-camerax, i-cameray, p.width-camerax, i-cameray);
         }
     }
 

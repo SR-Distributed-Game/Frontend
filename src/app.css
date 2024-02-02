@@ -5,6 +5,8 @@
 
 :root{
     --theme-color: #1c6283;
+    --search-element-color: #428eb1;
+    --search-element-border-color: #7d9baa;
 
 }
 
@@ -29,9 +31,9 @@ body {
 
 .searchbar{
 
-    @apply bg-red-500;
+    @apply bg-[var(--search-element-color)];
     @apply border-2;
-    @apply border-red-700;
+    @apply border-[var(--search-element-border-color)];
     @apply rounded-lg;
     @apply p-2;
     @apply text-white;

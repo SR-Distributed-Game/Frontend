@@ -8,10 +8,11 @@ import { player } from "./player";
 import { terrain } from "./terrain";
 import { Enemy } from "./Enemy";
 
-export class sweetGame extends Scene {
+export class sweetGameScene extends Scene {
 
     pl1: player;
     terrainSize:Vector2;
+    
     constructor() {
         super();
         this.pl1 = new player(100, 100);

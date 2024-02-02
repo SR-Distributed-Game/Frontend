@@ -2,18 +2,18 @@ import { RequestSender } from '$lib/RequestSender';
 import { messageSubscriber } from '$lib/messageSubscriber';
 import type p5 from 'p5';
 import { Camera } from './Camera';
-import { GameObject } from './GameObject';
 import { SpatialHashmap } from './SpatialHashmap';
 import { Vector2 } from './Vector2';
+import { Scene } from './Scene';
+import { defaultScene } from './defaultScene';
 
 export class Game extends messageSubscriber{
 
     static instance: Game;
     protected sender: RequestSender;
-    private objects: GameObject[] = [];
     private camera: Camera;
     private collisionSystem: SpatialHashmap;
-    private scene: any;
+    private scene: Scene;
 
     private mousePosition:Vector2 = new Vector2(0,0); 
 
@@ -31,6 +31,7 @@ export class Game extends messageSubscriber{
         this.camera = new Camera();
         this.sender = new RequestSender();
         this.collisionSystem = new SpatialHashmap(50);
+        this.scene = new defaultScene(); 
     }
 
     setScene(scene: any){
@@ -49,7 +50,8 @@ export class Game extends messageSubscriber{
     }
 
     onMessage(req: any): void {
-        //console.log("handling message: " + req);
+
+        console.log("handling message: " + req);
     }
 
     start(p:p5){
@@ -67,7 +69,6 @@ export class Game extends messageSubscriber{
         this.mousePosition.setY(p.mouseY + this.camera.getTransform().getPosition().getY());
         
         this.collisionSystem.getHashMap().clear();
-        this.objects.forEach(obj => obj.Mupdate(p));
         this.scene.Mupdate(p);
         this.collisionSystem.update();
     }

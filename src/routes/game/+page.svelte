@@ -3,7 +3,7 @@
     import websocketStore from '../../stores/websocket.js';
     import { onMount, onDestroy} from 'svelte';
     import { Game } from '$lib/GameEngine/Game.js';
-    import { sweetGame } from '$lib/implementedGames/SweetGame.js';
+    import { sweetGameScene } from '$lib/implementedGames/SweetGameScene.js';
 
     const ws = $websocketStore;
     onMount(async () => {
@@ -22,7 +22,7 @@
         const sketch = (p:any) => {
             let game:Game = Game.getInstance();
         
-            game.setScene(new sweetGame());
+            game.setScene(new sweetGameScene());
             p.setup = () => {
                 var newValue = Math.min(p.windowWidth/1.2, p.windowHeight/1.4);
                 let canvas = p.createCanvas(p.windowWidth/1.2, newValue);
@@ -59,9 +59,8 @@
 
     <div class = " bg-black bg-opacity-30 p-2 rounded-xl m-auto text-white text-2xl" >move with keyboard arrow to eat</div>
     <div class = " bg-black bg-opacity-30 p-2 rounded-xl m-auto text-white text-2xl" >click to activate traps</div>
-    <div class = "bg-black bg-opacity-40 rounded-lg p-2 flex m-auto" id=actions>
+    <div class = "bg-black bg-opacity-40 rounded-lg p-2 flex m-auto hover:bg-red-800 hover:scale-105 duration-75" id=actions>
         <button id = quitButton class = "p-5  text-white  hover:scale-105 duration-75 hover:text-red-300"> disconnect <i class = "fa fa-sign-out "></i></button>  
-        
     </div>
 
 </div>

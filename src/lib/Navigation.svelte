@@ -1,10 +1,16 @@
 
-<script>
+<script lang=ts>
     import websocketStore from "../stores/websocket";
     import { onNavigate } from "$app/navigation";
+    import { onMount } from "svelte";
 
     let playername = $websocketStore.getPlayerName();
     let ingame = false;
+
+    onMount(() => {
+        playername = localStorage.getItem("playername") || $websocketStore.getPlayerName();
+    });
+
     onNavigate( () => {
         playername = $websocketStore.getPlayerName();
         
@@ -16,6 +22,10 @@
         }
 
     });
+
+    export const updateName = (playername:any) => {
+        playername = name;
+    }
 
 </script>
 
