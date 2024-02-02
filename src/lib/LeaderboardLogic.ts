@@ -6,7 +6,6 @@ export class LeaderboardLogic extends messageSubscriber {
     static instance: LeaderboardLogic;
     private leaderboard: any = {};
     private sender: any;
-    players: any = {};
     history: any = {};
 
     public static getInstance() {
@@ -40,15 +39,41 @@ export class LeaderboardLogic extends messageSubscriber {
     }
 
     addPlayer(player: any) {
-        this.players[player.id] = player;
+        this.leaderboard[player.id] = player;
+        this.onAddPlayer();
     }
 
     removePlayer(player: any) {
-        delete this.players[player.id];
+        
+        delete this.leaderboard[player.id];
+        this.onRemovePlayer();
     }
 
     getLeaderboard() {
         return this.leaderboard;
+    }
+
+    asHTMLList() {
+        var html = "<ul>";
+        for (var key in this.leaderboard) {
+            html += "<li>" + key + " : " + this.leaderboard[key].id + "</li>";
+        }
+        html += "</ul>";
+        return html;
+    }
+
+    onAddPlayer() {
+    }
+
+    onRemovePlayer() {
+    }
+
+    addOnNewPlayerListener(callback: any) {
+        this.onAddPlayer = callback;
+    }
+
+    addOnRemovePlayerListener(callback: any) {
+        this.onRemovePlayer = callback;
     }
 
 }
