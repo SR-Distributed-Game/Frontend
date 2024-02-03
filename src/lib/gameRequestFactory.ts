@@ -35,7 +35,9 @@ export class gameRequestFactory {
     }
 
     static createFromJson(req:any):gameRequest{
-        return gameRequest.fromJSON(req);
+        
+        var computedRequest = gameRequest.fromJSON(req);
+        return computedRequest;
     }
 
 

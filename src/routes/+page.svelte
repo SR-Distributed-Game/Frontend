@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import websocketStore from '../stores/websocket.js';
   import { knownSockets } from '../lib/Servers';
+    import { gameRequestFactory } from '$lib/gameRequestFactory.js';
   
   const ws = $websocketStore; 
   let connError = false;
@@ -13,6 +14,7 @@
         connError = true;
         await ws.connectTo(searchservers.value);
         connError = false;
+
         goto("/game");
         
       } catch (error) {

@@ -1,4 +1,5 @@
 import { RequestSender } from "./RequestSender";
+import type { gameRequest } from "./gameRequest";
 import { gameRequestFactory } from "./gameRequestFactory";
 import { messageSubscriber } from "./messageSubscriber";
 
@@ -21,14 +22,14 @@ export class LeaderboardLogic extends messageSubscriber {
     }
 
     onMessage(req: any): void {
-
-        var computedRequest = gameRequestFactory.createFromJson(req);
-        
-        if (computedRequest.Type === "JoinRoom") {
+        var computedRequest:gameRequest = gameRequestFactory.createFromJson(req);
+        console.log("LeaderboardLogic received message: " + computedRequest);
+            
+        if (computedRequest.Type == "JoinRoom") {
             this.addPlayer(computedRequest.Metadata.playerId);
         }
 
-        if (computedRequest.Type === "LeavingRoom") {
+        if (computedRequest.Type == "LeavingRoom") {
             this.removePlayer(computedRequest.Metadata.playerId);
         }
 

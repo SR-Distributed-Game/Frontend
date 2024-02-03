@@ -6,9 +6,14 @@
     import { sweetGameScene } from '$lib/implementedGames/SweetGameScene.js';
     import { LeaderboardLogic } from '$lib/LeaderboardLogic.js';
     import Leaderboard from '$lib/Leaderboard.svelte';
+    import { gameRequestFactory } from '$lib/gameRequestFactory.js';
     const ws = $websocketStore;
 
     onMount(async () => {
+
+        const joinrequest = gameRequestFactory.getJoinRoomRequest();
+        joinrequest.Metadata.clientID = ws.getClientID();
+        ws.send(joinrequest)
 
         const updateLeaderboard = () => {
             let leaderboard = LeaderboardLogic.getInstance().asHTMLList();
