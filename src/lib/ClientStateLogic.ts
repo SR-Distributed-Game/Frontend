@@ -27,8 +27,8 @@ export class ClientStateLogic extends messageSubscriber {
         console.log(computedRequest);
 
         if (computedRequest.Type == "ConnectSucces") {
-            SpringSocketServer.getInstance().setClientID(computedRequest.Metadata.playerId);
-            console.log("Client ID set to " + computedRequest.Metadata.playerId);
+            SpringSocketServer.getInstance().setClientID(computedRequest.Metadata.clientID);
+            console.log("Client ID set to " + computedRequest.Metadata.clientID);
         }
 
     }

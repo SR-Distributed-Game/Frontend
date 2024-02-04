@@ -7,7 +7,7 @@ export class LeaderboardLogic extends messageSubscriber {
     static instance: LeaderboardLogic;
     private leaderboard: any = {};
     private sender: any;
-    history: any = {};
+    private players: any = {};
 
     public static getInstance() {
         if (!LeaderboardLogic.instance) {
@@ -25,11 +25,11 @@ export class LeaderboardLogic extends messageSubscriber {
         var computedRequest:gameRequest = gameRequestFactory.createFromJson(req);
 
         if (computedRequest.Type == "JoinRoom") {
-            this.addPlayer(computedRequest.Metadata.playerId);
+            this.updateLeaderboard(computedRequest.Metadata.leaderboard,computedRequest.Metadata.players);
         }
 
         if (computedRequest.Type == "LeavingRoom") {
-            this.removePlayer(computedRequest.Metadata.playerId);
+            this.updateLeaderboard(computedRequest.Metadata.leaderboard,computedRequest.Metadata.players);
         }
 
     }
@@ -38,16 +38,12 @@ export class LeaderboardLogic extends messageSubscriber {
         return this.sender;
     }
 
-    addPlayer(playerId: any) {
-        this.leaderboard[playerId] = playerId;
-        this.onAddPlayer();
+    updateLeaderboard(newLeaderboard:any,players:any){
+        this.players = players;
+        this.leaderboard = newLeaderboard;
+        this.updateLeaderboardListener();
     }
 
-    removePlayer(playerId: any) {
-        
-        delete this.leaderboard[playerId];
-        this.onRemovePlayer();
-    }
 
     getLeaderboard() {
         return this.leaderboard;
@@ -62,18 +58,15 @@ export class LeaderboardLogic extends messageSubscriber {
         return html;
     }
 
-    onAddPlayer() {
+    updateLeaderboardListener() {
     }
 
     onRemovePlayer() {
     }
 
-    addOnNewPlayerListener(callback: any) {
-        this.onAddPlayer = callback;
+    addupdateLeaderboardListener(callback: any) {
+        this.updateLeaderboardListener = callback;
     }
 
-    addOnRemovePlayerListener(callback: any) {
-        this.onRemovePlayer = callback;
-    }
 
 }

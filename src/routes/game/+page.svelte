@@ -24,37 +24,19 @@
         let quitButton = document.getElementById('quitButton');
         if (quitButton != null){
             quitButton.addEventListener('click', () => {
+                const leaveRequest = gameRequestFactory.getLeavingRoomRequest();
+                leaveRequest.Metadata.clientID = ws.getClientID();
+                ws.send(leaveRequest);
                 window.location.assign("/");
             });
         }
 
-        let mockAddPlayer = document.getElementById('mockAddPlayer');
-        if (mockAddPlayer != null){
-            mockAddPlayer.addEventListener('click', () => {
-                LeaderboardLogic.getInstance().addPlayer({id:"mockPlayer" + Math.random()});
-            });
-        }
-
-        let mockRmPlayer = document.getElementById('mockRmPlayer');
-        if (mockRmPlayer != null){
-            mockRmPlayer.addEventListener('click', () => {
-                //get random from a any object :
-                var randomPlayer = ""
-                for (var key in LeaderboardLogic.getInstance().getLeaderboard()) {
-                    randomPlayer = key;
-                    break;
-                }
-                console.log(randomPlayer);
-                LeaderboardLogic.getInstance().removePlayer({id:randomPlayer});
-            });
-        }
-
         ws.getDispatcher().subscribe(LeaderboardLogic.getInstance());
-        LeaderboardLogic.getInstance().addOnNewPlayerListener(() => {updateLeaderboard();});
-        LeaderboardLogic.getInstance().addOnRemovePlayerListener(() => {updateLeaderboard();});
+        LeaderboardLogic.getInstance().addupdateLeaderboardListener(() => {updateLeaderboard();});
     });
 
     onDestroy(() => {
+
         ws.getDispatcher().unsubscribe(LeaderboardLogic.getInstance());
         ws.close();
     });
@@ -68,13 +50,6 @@
         <button id = quitButton class = "p-5  text-white  hover:scale-105 duration-75 hover:text-red-300"> disconnect <i class = "fa fa-sign-out "></i></button>
     </div>
 
-    <div class = "bg-black bg-opacity-40 rounded-lg p-2 flex m-auto hover:scale-105 duration-75" id=actions>
-        <button id = mockAddPlayer class = "p-5  text-white  hover:scale-105 duration-75 "> LOCAL TEST ONLY add player </button>
-    </div>
-
-    <div class = "bg-black bg-opacity-40 rounded-lg p-2 flex m-auto hover:scale-105 duration-75" id=actions>
-        <button id = mockRmPlayer class = "p-5  text-white  hover:scale-105 duration-75 "> LOCAL TEST ONLY rm player </button>
-    </div>
 
 
 </div>
