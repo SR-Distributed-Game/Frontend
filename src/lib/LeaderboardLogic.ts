@@ -1,4 +1,5 @@
 import { RequestSender } from "./RequestSender";
+import type { gameRequest } from "./gameRequest";
 import { gameRequestFactory } from "./gameRequestFactory";
 import { messageSubscriber } from "./messageSubscriber";
 
@@ -6,7 +7,7 @@ export class LeaderboardLogic extends messageSubscriber {
     static instance: LeaderboardLogic;
     private leaderboard: any = {};
     private sender: any;
-    history: any = {};
+    private players: any = {};
 
     public static getInstance() {
         if (!LeaderboardLogic.instance) {
@@ -21,15 +22,14 @@ export class LeaderboardLogic extends messageSubscriber {
     }
 
     onMessage(req: any): void {
+        var computedRequest:gameRequest = gameRequestFactory.createFromJson(req);
 
-        var computedRequest = gameRequestFactory.createFromJson(req);
-        
-        if (computedRequest.Type === "JoinRoom") {
-            this.addPlayer(computedRequest.Metadata.playerId);
+        if (computedRequest.Type == "JoinRoom") {
+            this.updateLeaderboard(computedRequest.Metadata.leaderboard,computedRequest.Metadata.players);
         }
 
-        if (computedRequest.Type === "LeavingRoom") {
-            this.removePlayer(computedRequest.Metadata.playerId);
+        if (computedRequest.Type == "LeavingRoom") {
+            this.updateLeaderboard(computedRequest.Metadata.leaderboard,computedRequest.Metadata.players);
         }
 
     }
@@ -38,16 +38,12 @@ export class LeaderboardLogic extends messageSubscriber {
         return this.sender;
     }
 
-    addPlayer(player: any) {
-        this.leaderboard[player.id] = player;
-        this.onAddPlayer();
+    updateLeaderboard(newLeaderboard:any,players:any){
+        this.players = players;
+        this.leaderboard = newLeaderboard;
+        this.updateLeaderboardListener();
     }
 
-    removePlayer(player: any) {
-        
-        delete this.leaderboard[player.id];
-        this.onRemovePlayer();
-    }
 
     getLeaderboard() {
         return this.leaderboard;
@@ -56,24 +52,21 @@ export class LeaderboardLogic extends messageSubscriber {
     asHTMLList() {
         var html = "<ul>";
         for (var key in this.leaderboard) {
-            html += "<li>" + key + " : " + this.leaderboard[key].id + "</li>";
+            html += "<li>" + key + " : " + this.leaderboard[key] + "</li>";
         }
         html += "</ul>";
         return html;
     }
 
-    onAddPlayer() {
+    updateLeaderboardListener() {
     }
 
     onRemovePlayer() {
     }
 
-    addOnNewPlayerListener(callback: any) {
-        this.onAddPlayer = callback;
+    addupdateLeaderboardListener(callback: any) {
+        this.updateLeaderboardListener = callback;
     }
 
-    addOnRemovePlayerListener(callback: any) {
-        this.onRemovePlayer = callback;
-    }
 
 }
