@@ -65,10 +65,10 @@ export class Vector2 {
         return Math.atan2(this.y, this.x);
     }
 
-    lerp(target:Vector2, alpha:number):Vector2 {
+    static lerp(start: Vector2, end: Vector2, factor: number): Vector2 {
         return new Vector2(
-            this.x + (target.x - this.x) * alpha,
-            this.y + (target.y - this.y) * alpha
+            start.x + (end.x - start.x) * factor,
+            start.y + (end.y - start.y) * factor
         );
     }
 
@@ -96,6 +96,10 @@ export class Vector2 {
         return new Vector2(Math.cos(angle), Math.sin(angle));
     }
 
+
+    copy(): Vector2 {
+        return new Vector2(this.x, this.y);
+    }
 
 
 

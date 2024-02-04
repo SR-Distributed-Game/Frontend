@@ -21,9 +21,10 @@ export class gameRequest {
 
     static fromJSON(json: any) {
         let req = new gameRequest(json.Type);
+        req.Type = json.Type;
         req.ClientID = json.ClientID;
         req.RoomID = json.RoomID;
-        req.Metadata = json.Metadata;
+        req.Metadata = json.metadata;
         return req;
     }
 

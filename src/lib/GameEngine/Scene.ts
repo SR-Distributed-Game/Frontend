@@ -3,6 +3,7 @@ import type p5 from "p5";
 import { Camera } from "./Camera";
 import { Game } from "./Game";
 import { GameObject } from "./GameObject";
+import type { SerializableGameObject } from "./SerializableGameObject";
 
 export class Scene {
     
@@ -34,7 +35,7 @@ export class Scene {
         obj.Mstart();
         this.gameObjects.push(obj);
         var request = gameRequestFactory.getSpawnRequest();
-        request.addMetadata("objectData", obj.asMetadata());
+        request.addMetadata("objectData", obj.toSerialized());
         this.sendToGame(request);
     }
 
@@ -42,7 +43,7 @@ export class Scene {
         obj.Mend();
         this.gameObjects = this.gameObjects.filter((o) => o!== obj);
         var request = gameRequestFactory.getDestroyRequest();
-        request.addMetadata("objectData", obj.asMetadata());
+        request.addMetadata("objectData", obj.toSerialized());
         this.sendToGame(request);
     }
 
@@ -51,25 +52,25 @@ export class Scene {
         obj.getTransform().getPosition().setY(y);
 
         var request = gameRequestFactory.getUpdateRequest();
-        request.addMetadata("objectData", obj.asMetadata());
+        request.addMetadata("objectData",obj.toSerialized());
         this.sendToGame(request);
     }
 
     asyncAddObject(obj: GameObject){
         var request = gameRequestFactory.getSpawnRequest();
-        request.addMetadata("objectData", obj.asMetadata());
+        request.addMetadata("objectData", obj.toSerialized());
         this.sendToGame(request);
     }
 
     asyncRemoveObject(obj: GameObject){
         var request = gameRequestFactory.getDestroyRequest();
-        request.addMetadata("objectData", obj.asMetadata());
+        request.addMetadata("objectData", obj.toSerialized());
         this.sendToGame(request);
     }
 
     asyncMoveObject(obj: GameObject, x: number, y: number){
         var request = gameRequestFactory.getUpdateRequest();
-        request.addMetadata("objectData", obj.asMetadata());
+        request.addMetadata("objectData", obj.toSerialized());
         this.sendToGame(request);
     }
 

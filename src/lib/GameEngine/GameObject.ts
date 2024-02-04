@@ -6,14 +6,22 @@ import { Game } from "./Game";
 import { Transform } from "./Transform";
 import { Vector2 } from "./Vector2";
 import type { drawComponent } from "./drawComponent";
+import { Serializable } from "./Serialized";
+import { SerializableGameObject } from "./SerializableGameObject";
+import { InterpolationComponent } from "./Components/InterpolationComponent";
 
-export class GameObject {
+export class GameObject extends SerializableGameObject{
+    @Serializable
     protected transform : Transform;
+    @Serializable
+    protected name: string;
+    @Serializable
+    protected id: number;
+
     protected localTransform:Transform;
     protected lastx : number;
     protected lasty: number;
-    protected name: string;
-    protected id: number;
+
     protected components: Component[];
     protected drawComponents: drawComponent[];
     colliderComponents: ColliderComponent[];
@@ -22,10 +30,9 @@ export class GameObject {
     private cameraAttached: boolean = false;
 
     constructor() {
-        
+        super();
         this.transform = new Transform(0, 0, 0, 0);
         this.localTransform = new Transform(0, 0, 0, 0);
-
         this.lastx = 0;
         this.lasty = 0;
         this.id = 0;
@@ -134,14 +141,6 @@ export class GameObject {
 
     onCollision(collider:ColliderComponent){
         
-    }
-
-    asMetadata(): any {
-        return {
-            "transform": this.transform.toJson(),
-            "targetedObjectId": this.id,
-            "objectType": this.constructor.name
-        }
     }
 
     Mend(){

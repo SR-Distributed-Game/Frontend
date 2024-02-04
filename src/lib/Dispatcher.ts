@@ -16,7 +16,7 @@ export class Dispatcher{
     }
 
     dispatch(req: any){ // later recieve a gameRequest
-        //var req = JSON.parse(req);
+        var req = JSON.parse(req);
         for(let subscriber of this.subscribers){
 
             subscriber.onMessage(req);
