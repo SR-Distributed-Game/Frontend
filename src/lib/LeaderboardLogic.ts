@@ -23,8 +23,7 @@ export class LeaderboardLogic extends messageSubscriber {
 
     onMessage(req: any): void {
         var computedRequest:gameRequest = gameRequestFactory.createFromJson(req);
-        console.log("LeaderboardLogic received message: " + computedRequest);
-            
+
         if (computedRequest.Type == "JoinRoom") {
             this.addPlayer(computedRequest.Metadata.playerId);
         }
@@ -39,14 +38,14 @@ export class LeaderboardLogic extends messageSubscriber {
         return this.sender;
     }
 
-    addPlayer(player: any) {
-        this.leaderboard[player.id] = player;
+    addPlayer(playerId: any) {
+        this.leaderboard[playerId] = playerId;
         this.onAddPlayer();
     }
 
-    removePlayer(player: any) {
+    removePlayer(playerId: any) {
         
-        delete this.leaderboard[player.id];
+        delete this.leaderboard[playerId];
         this.onRemovePlayer();
     }
 
@@ -57,7 +56,7 @@ export class LeaderboardLogic extends messageSubscriber {
     asHTMLList() {
         var html = "<ul>";
         for (var key in this.leaderboard) {
-            html += "<li>" + key + " : " + this.leaderboard[key].id + "</li>";
+            html += "<li>" + key + " : " + this.leaderboard[key] + "</li>";
         }
         html += "</ul>";
         return html;

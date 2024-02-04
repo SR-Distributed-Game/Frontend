@@ -3,6 +3,7 @@ import { Dispatcher } from "./Dispatcher";
 import { knownSockets } from "./Servers";
 import { gameRequestFactory } from "./gameRequestFactory";
 import type { gameRequest } from "./gameRequest";
+import { ClientStateLogic } from "./ClientStateLogic";
 
 export class SpringSocketServer{
 
@@ -36,6 +37,7 @@ export class SpringSocketServer{
 
     public async connectTo(socketName: string): Promise<void> {
         console.log(this.errorState);
+        this.dispatcher.subscribe(ClientStateLogic.getInstance());
         return new Promise((resolve, reject) => {
 
             if (knownSockets[socketName]) {
@@ -105,6 +107,7 @@ export class SpringSocketServer{
 
 
     private onClose = (event: CloseEvent) => {
+        this.dispatcher.unsubscribe(ClientStateLogic.getInstance());
         console.log("Socket disconnected");
     }
 
