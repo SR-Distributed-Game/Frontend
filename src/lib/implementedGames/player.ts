@@ -23,7 +23,7 @@ export class player extends GameObject {
         this.getTransform().getScale().setY(20);
         this.gfx = new DrawElipseComponent(this, "#b0ffb0b0");
         this.namegfx = new DrawTextComponent(this);
-        this.namegfx.setText(SpringSocketServer.getInstance().getPlayerName());
+        this.namegfx.setText(SpringSocketServer.getInstance().getPlayerName()+"");
         this.namegfx.setColor("white");
         this.namegfx.setSize(20);
     }

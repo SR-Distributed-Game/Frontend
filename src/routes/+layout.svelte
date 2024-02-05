@@ -17,6 +17,9 @@
 	setContext('ws', socket);
 
 	onMount(() => {
+		if( localStorage.getItem("playername") === null ) {
+			localStorage.setItem("playername", "Player" + Math.floor(Math.random() * 1000) );
+		}
 		$websocketStore.setPlayerName( localStorage.getItem("playername" ) as string );
 	});
 
