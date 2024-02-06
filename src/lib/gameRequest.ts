@@ -33,7 +33,6 @@ export class gameRequest {
         req.ClientID = json.ClientID;
         req.RoomID = json.RoomID;
         req.Metadata = json.metadata;
-        console.log("Request from JSON: " + JSON.stringify(req));
         return req;
     }
 

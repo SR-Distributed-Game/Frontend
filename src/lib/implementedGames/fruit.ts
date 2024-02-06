@@ -9,11 +9,10 @@ import { DrawElipseComponent } from "$lib/GameEngine/Components/DrawElipseCompon
 export class fruit extends GameObject {
     gfx:DrawRectangleComponent;
     randomColor:string;
-    constructor(x: number, y: number) {
+    constructor() {
         super();
         this.setName("fruit");
         this.setId((Math.random()*1000));
-        this.getTransform().setPosition(new Vector2(x,y));
         this.getTransform().getScale().setX(10);
         this.getTransform().getScale().setY(10);
         this.getTransform().setRotation(Math.random()*360);

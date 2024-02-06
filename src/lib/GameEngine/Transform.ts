@@ -57,5 +57,17 @@ export class Transform {
         this.position.getY() + this.scale.getY() > transform.position.getY();
     }
 
+    public updateFromData(data: any): void {
+        if (data.position) {
+            this.position = new Vector2(data.position.x, data.position.y);
+        }
+        if (data.scale) {
+            this.scale = new Vector2(data.scale.x, data.scale.y);
+        }
+        if (data.rotation !== undefined) {
+            this.rotation = data.rotation;
+        }
+    }
+
     
 }

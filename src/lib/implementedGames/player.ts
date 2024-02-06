@@ -19,6 +19,7 @@ export class player extends GameObject {
         this.speed = 5;
         this.points = 0;
         this.setName("player");
+        this.id = 5000000;
         this.getTransform().getScale().setX(20);
         this.getTransform().getScale().setY(20);
         this.gfx = new DrawElipseComponent(this, "#b0ffb0b0");

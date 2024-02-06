@@ -7,53 +7,34 @@ import type { SerializableGameObject } from "./SerializableGameObject";
 
 export class Scene {
     
-    gameObjects : GameObject[];
+    //now game objects will be stored in the game object with the id as the key
+
+    gameObjects:Map<number, GameObject>;;
+
+
     game?:Game;
 
     constructor() {
-        this.gameObjects = [];
+        this.gameObjects = new Map<number, GameObject>();
     }
 
     attachGame(game: Game){
         this.game = game;
     }
 
-    addLocalObject(obj: GameObject){
-        obj.Mstart();
-        this.gameObjects.push(obj);
-    }
-    removeLocalObject(obj: GameObject){
-        obj.Mend();
-        this.gameObjects = this.gameObjects.filter((o) => o!== obj);
-    }
-    moveLocalObject(obj: GameObject, x: number, y: number){
-        obj.getTransform().getPosition().setX(x);
-        obj.getTransform().getPosition().setY(y);
-    }
-
     addObject(obj: GameObject){
         obj.Mstart();
-        this.gameObjects.push(obj);
-        var request = gameRequestFactory.getSpawnRequest();
-        request.addMetadata("objectData", obj.toSerialized());
-        this.sendToGame(request);
+        this.gameObjects.set(obj.getId(),obj);
     }
-
+    
     removeObject(obj: GameObject){
         obj.Mend();
-        this.gameObjects = this.gameObjects.filter((o) => o!== obj);
-        var request = gameRequestFactory.getDestroyRequest();
-        request.addMetadata("objectData", obj.toSerialized());
-        this.sendToGame(request);
+        this.gameObjects.delete(obj.getId());
     }
 
     moveObject(obj: GameObject, x: number, y: number){
         obj.getTransform().getPosition().setX(x);
         obj.getTransform().getPosition().setY(y);
-
-        var request = gameRequestFactory.getUpdateRequest();
-        request.addMetadata("objectData",obj.toSerialized());
-        this.sendToGame(request);
     }
 
     asyncAddObject(obj: GameObject){
@@ -87,7 +68,7 @@ export class Scene {
     }
 
     Mupdate(p:p5){
-        for(var ob of this.gameObjects){
+        for(var ob of this.gameObjects.values()){
             ob.Mupdate(p);
             if (ob.shouldBeDestroyed()){
                 this.removeObject(ob);

@@ -1,5 +1,6 @@
 import { Game } from "./Game";
 import { GameObject } from "./GameObject";
+import { Transform } from "./Transform";
 import type { Vector2 } from "./Vector2";
 
 
@@ -19,12 +20,21 @@ export abstract class SerializableGameObject{
 
     static fromSerialized<T extends SerializableGameObject>(this: new () => T, data: any): T {
         const instance = new this();
-        const properties: string[] = Reflect.getMetadata('serializableProperties', this) || [];
-        properties.forEach((property) => {
-            if (data.hasOwnProperty(property)) {
+    
+        // Iterate over properties in data
+        Object.keys(data).forEach(property => {
+            if (data[property] instanceof Object && !(data[property] instanceof Array)) {
+                // Check if the property is a known class that needs instantiation
+                if (property === "transform" && instance[property] instanceof Transform) {
+                    instance[property].updateFromData(data[property]);
+                } else {
+                    // Handle other complex types similarly
+                }
+            } else {
                 (instance as any)[property] = data[property];
             }
         });
+    
         return instance;
     }
     

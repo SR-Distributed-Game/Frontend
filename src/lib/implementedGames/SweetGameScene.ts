@@ -21,11 +21,14 @@ export class sweetGameScene extends Scene {
     }
 
     start(p: p5) {
-        this.addLocalObject(new terrain(this.terrainSize));
+        this.addObject(new terrain(this.terrainSize));
         p.noStroke();
 
         p.mousePressed = () => {
-            this.addObject(new fruit(Game.getInstance().getMousePosition().getX(), Game.getInstance().getMousePosition().getY()));
+            const f:fruit = new fruit();
+            f.getTransform().getPosition().setX(Game.getInstance().getMousePosition().getX());
+            f.getTransform().getPosition().setY(Game.getInstance().getMousePosition().getY());
+            this.addObject(f);
         }
 
         /*for (let i = 0; i < 200; i++) {
@@ -33,13 +36,16 @@ export class sweetGameScene extends Scene {
         }*/
 
         //simulate server init
-        this.simulate();
+        //this.simulate();
     }
 
     simulate() {
         //simulation of server send fruit
         setInterval(() => {
-            this.addObject(new fruit(Math.random() * this.terrainSize.getX(), Math.random() * this.terrainSize.getY()));
+            const f:fruit = new fruit();
+            f.getTransform().getPosition().setX(Game.getInstance().getMousePosition().getX());
+            f.getTransform().getPosition().setY(Game.getInstance().getMousePosition().getY());
+            this.addObject(f);
         }, 1000);
 
         //simulation of server send enemy

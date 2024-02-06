@@ -8,7 +8,6 @@ import { Vector2 } from "./Vector2";
 import type { drawComponent } from "./drawComponent";
 import { Serializable } from "./Serialized";
 import { SerializableGameObject } from "./SerializableGameObject";
-import { InterpolationComponent } from "./Components/InterpolationComponent";
 
 export class GameObject extends SerializableGameObject{
     @Serializable

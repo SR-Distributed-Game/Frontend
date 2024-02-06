@@ -6,6 +6,8 @@ import { SpatialHashmap } from './SpatialHashmap';
 import { Vector2 } from './Vector2';
 import { Scene } from './Scene';
 import { defaultScene } from './defaultScene';
+import { fruit } from '$lib/implementedGames/fruit';
+import type { gameRequest } from '$lib/gameRequest';
 
 export class Game extends messageSubscriber{
 
@@ -43,15 +45,14 @@ export class Game extends messageSubscriber{
         return this.scene;
     }
 
-    
-
     getSender(): RequestSender {
         return this.sender;
     }
 
-    onMessage(req: any): void {
-
-        console.log("handling message: " + req);
+    onMessage(req: gameRequest): void {
+        if (req.Type == "SpawnObject"){
+            this.scene.addObject(fruit.fromSerialized(req.Metadata.objectData));
+        }
     }
 
     start(p:p5){

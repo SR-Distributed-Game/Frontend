@@ -2,7 +2,7 @@
 import { Dispatcher } from "./Dispatcher";
 import { knownSockets } from "./Servers";
 import { gameRequestFactory } from "./gameRequestFactory";
-import type { gameRequest } from "./gameRequest";
+import { gameRequest } from "./gameRequest";
 import { ClientStateLogic } from "./ClientStateLogic";
 
 export class SpringSocketServer{
@@ -110,7 +110,8 @@ export class SpringSocketServer{
     }
 
     private onMessage = (event: MessageEvent) => {
-        this.dispatcher.dispatch(event.data);
+        var req = JSON.parse(event.data);
+        this.dispatcher.dispatch(gameRequestFactory.createFromJson(req));
     }
 
     private onError = (event: Event) => {
