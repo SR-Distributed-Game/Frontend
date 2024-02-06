@@ -43,6 +43,12 @@ export class GameObject extends SerializableGameObject{
 
     }
 
+    getName(): string {
+        return this.name;
+    }
+
+    
+
     setId(id: number) {
         this.id = id;
     }

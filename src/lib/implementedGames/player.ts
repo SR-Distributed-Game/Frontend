@@ -7,6 +7,7 @@ import { GameObject } from "../GameEngine/GameObject";
 import  { Camera } from "$lib/GameEngine/Camera";
 import  { DrawTextComponent } from "$lib/GameEngine/Components/DrawTextComponent";
 import { SpringSocketServer } from "$lib/connectionManager";
+import { Game } from "$lib/GameEngine/Game";
 
 export class player extends GameObject {
     gfx:DrawRectangleComponent;
@@ -50,8 +51,8 @@ export class player extends GameObject {
 
 
     onCollision(collider: ColliderComponent): void {
-        collider.getParent().destroy();
-        this.setPoints(this.getPoints() + 1);
+         collider.getParent();
+         Game.getInstance().getScene().asyncRemoveObject(collider.getParent());
     }
 
     draw(p: p5, camera: Camera): void {

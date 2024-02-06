@@ -53,6 +53,12 @@ export class Game extends messageSubscriber{
         if (req.Type == "SpawnObject"){
             this.scene.addObject(fruit.fromSerialized(req.Metadata.objectData));
         }
+        if (req.Type == "DestroyObject"){
+            console.log("Destroying object");
+            console.log(req);
+            this.scene.removeObjectById(req.Metadata.objectData.id);
+        }
+
     }
 
     start(p:p5){

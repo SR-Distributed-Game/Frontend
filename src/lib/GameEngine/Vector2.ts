@@ -8,6 +8,10 @@ export class Vector2 {
         this.y = y;
     }
 
+    static FromVector2(v: Vector2): Vector2 {
+        return new Vector2(v.x, v.y);
+    }
+
     getX(): number {
         return this.x;
     }
@@ -21,7 +25,7 @@ export class Vector2 {
     }
     
     setY(y: number) {
-        this.y = y;
+        this.y =y;
     }
 
     add(v: Vector2): Vector2 {
@@ -43,6 +47,12 @@ export class Vector2 {
     scaldiv(s: number): Vector2 {
         return new Vector2(this.x / s, this.y / s);
     }
+
+    scalMul(s: number): Vector2 {
+        return new Vector2(this.x * s, this.y * s);
+    }
+
+
 
     dot(v: Vector2): number {
         return this.x * v.x + this.y * v.y;
@@ -100,6 +110,51 @@ export class Vector2 {
     copy(): Vector2 {
         return new Vector2(this.x, this.y);
     }
+
+
+    selfAdd(v: Vector2): void {
+        this.x += v.x;
+        this.y += v.y;
+    }
+
+    selfSub(v: Vector2): void {
+        this.x -= v.x;
+        this.y -= v.y;
+    }
+
+    selfMul(v: Vector2): void {
+        this.x *= v.x;
+        this.y *= v.y;
+    }
+
+
+    selfScalMul(s: number): void {
+        this.x *= s;
+        this.y *= s;
+    }
+
+    selfDiv(v: Vector2): void {
+        this.x /= v.x;
+        this.y /= v.y;
+    }
+
+    selfScaldiv(s: number): void {
+        this.x /= s;
+        this.y /= s;
+    }
+
+    selfNormalize(): void {
+        const l = this.length();
+        this.x /= l;
+        this.y /= l;
+    }
+
+    selfLerp(end: Vector2, factor: number): void {
+        this.x += (end.x - this.x) * factor;
+        this.y += (end.y - this.y) * factor;
+    }
+
+    
 
 
 

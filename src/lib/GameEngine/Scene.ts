@@ -26,10 +26,15 @@ export class Scene {
         obj.Mstart();
         this.gameObjects.set(obj.getId(),obj);
     }
-    
+
     removeObject(obj: GameObject){
         obj.Mend();
         this.gameObjects.delete(obj.getId());
+    }
+
+    removeObjectById(id: number){
+        this.gameObjects.get(id)?.Mend();
+        this.gameObjects.delete(id);
     }
 
     moveObject(obj: GameObject, x: number, y: number){
