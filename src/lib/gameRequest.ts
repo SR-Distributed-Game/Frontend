@@ -19,12 +19,21 @@ export class gameRequest {
         this.addMetadata("objectData", value);
     }
 
+    setClientID(id: number) {
+        this.ClientID = id;
+    }
+
+    getClientID(id: number):number {
+        return this.ClientID;
+    }
+
     static fromJSON(json: any) {
         let req = new gameRequest(json.Type);
         req.Type = json.Type;
         req.ClientID = json.ClientID;
         req.RoomID = json.RoomID;
         req.Metadata = json.metadata;
+        console.log("Request from JSON: " + JSON.stringify(req));
         return req;
     }
 

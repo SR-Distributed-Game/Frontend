@@ -124,8 +124,9 @@ export class SpringSocketServer{
 
     public send = (request:gameRequest ) => {
         if (this.socket.readyState === WebSocket.OPEN){
-            request.ClientID = this.getClientID();
+            request.setClientID(this.getClientID());
             request.RoomID = this.getRoomId();
+            
             this.socket.send( JSON.stringify(request));
         }
     }

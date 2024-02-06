@@ -24,10 +24,10 @@ export class Enemy extends GameObject {
         this.points = 0;
         this.setPoints( Math.random()*1000);
         this.gfx = new DrawElipseComponent(this, "red");
-        //this.namegfx = new DrawTextComponent(this);
-        //this.namegfx.setText("enemy pas beau");
-        //this.namegfx.setColor("white");
-        //this.namegfx.setSize(20);
+        this.namegfx = new DrawTextComponent(this);
+        this.namegfx.setText("enemy pas beau");
+        this.namegfx.setColor("white");
+        this.namegfx.setSize(20);
         this.addComponent(new InterpolationComponent(this));
     }
 
@@ -43,7 +43,7 @@ export class Enemy extends GameObject {
 
     start(): void {
         this.addDrawComponent(this.gfx);
-        //this.addDrawComponent(this.namegfx);
+        this.addDrawComponent(this.namegfx);
         this.addColliderComponent(new ColliderComponent(this));
     }
 
