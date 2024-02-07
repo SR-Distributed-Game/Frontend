@@ -30,11 +30,12 @@ export class GameObject extends SerializableGameObject{
 
     constructor() {
         super();
+        this.id = -1;
         this.transform = new Transform(0, 0, 0, 0);
         this.localTransform = new Transform(0, 0, 0, 0);
         this.lastx = 0;
         this.lasty = 0;
-        this.id = 0;
+
         this.name = "object";
         this.components = [];
         this.drawComponents = [];

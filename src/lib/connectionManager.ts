@@ -22,7 +22,6 @@ export class SpringSocketServer{
     private errorState:boolean;
 
     constructor(){
-        console.log("Creating socket server")
         this.dispatcher = new Dispatcher();
         this.errorState = false;
     }
@@ -44,7 +43,6 @@ export class SpringSocketServer{
                 this.connect(knownSockets[socketName]);
                 this.socket.onopen = () => {
                     resolve();
-                    console.log("Socket connected");
                     var request = gameRequestFactory.getSuccesConnectionRequest();
                     request.Metadata = {
                         playername: this.playername
@@ -59,7 +57,6 @@ export class SpringSocketServer{
 
     private connect = async (url: string) => {
         try{
-            console.log("Connecting to " + url);
             this.socket = new WebSocket(url);
         }catch(error){
             throw new Error("Socket not found");
@@ -106,11 +103,13 @@ export class SpringSocketServer{
 
     private onClose = (event: CloseEvent) => {
         this.dispatcher.unsubscribe(ClientStateLogic.getInstance());
+        //alert("Connection with server closed");
         console.log("Socket disconnected");
     }
 
     private onMessage = (event: MessageEvent) => {
         var req = JSON.parse(event.data);
+        console.log(req);
         this.dispatcher.dispatch(gameRequestFactory.createFromJson(req));
     }
 

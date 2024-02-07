@@ -34,6 +34,10 @@ export class gameRequestFactory {
         return new gameRequest("ConnectSucces");
     }
 
+    static getFullStateRequest():gameRequest{
+        return new gameRequest("FullState");
+    }
+
     static createFromJson(req:any):gameRequest{
         return gameRequest.fromJSON(req);
     }

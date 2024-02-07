@@ -1,9 +1,9 @@
 import { GameObject } from "./GameObject";
 import { Transform } from "./Transform";
 
-export class Camera extends GameObject {
+export class Camera {
+    transform: Transform;
     constructor() {
-        super();
         this.transform = new Transform(0, 0, 0, 0);
     }
 

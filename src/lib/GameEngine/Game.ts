@@ -8,6 +8,8 @@ import { Scene } from './Scene';
 import { defaultScene } from './defaultScene';
 import { fruit } from '$lib/implementedGames/fruit';
 import type { gameRequest } from '$lib/gameRequest';
+import { GameObject } from './GameObject';
+import { gameRequestFactory } from '$lib/gameRequestFactory';
 
 export class Game extends messageSubscriber{
 
@@ -51,23 +53,31 @@ export class Game extends messageSubscriber{
 
     onMessage(req: gameRequest): void {
         if (req.Type == "SpawnObject"){
-            this.scene.addObject(fruit.fromSerialized(req.Metadata.objectData));
+            var cls:any = this.scene.getTypeRegistry().getTypeClass(req.Metadata.objectData.Type)
+            this.scene.addObject((cls)!.fromSerialized(req.Metadata.objectData));
+
         }
+
         if (req.Type == "DestroyObject"){
-            console.log("Destroying object");
-            console.log(req);
             this.scene.removeObjectById(req.Metadata.objectData.id);
+        }
+
+        if(req.Type == "FullState"){
+            this.scene.UpdateState(req.Metadata.objectData);
         }
 
     }
 
     start(p:p5){
+        
+        this.sender.sendRequest(gameRequestFactory.getFullStateRequest());
 
     }
 
     Mstart(p:p5){
-        this.scene.Mstart(p);
         this.start(p);
+        this.scene.Mstart(p);
+        
     }
 
 
@@ -100,5 +110,9 @@ export class Game extends messageSubscriber{
     runFrame(p:p5){
         this.Mupdate(p);
         this.draw(p);
+    }
+
+    getnewLocalObjectId(): number {
+        return this.scene.getnewLocalObjectId();
     }
 }

@@ -3,14 +3,20 @@ import type p5 from "p5";
 import { Camera } from "./Camera";
 import { Game } from "./Game";
 import { GameObject } from "./GameObject";
-import type { SerializableGameObject } from "./SerializableGameObject";
+import { fruit } from "$lib/implementedGames/fruit";
+import type { Class } from "estree";
+import { TypeRegistry } from "./TypeRegistry";
 
-export class Scene {
+export abstract class Scene {
+
+    //this counter will be decrease to avoid id conflicts with server objects
+    LocalObjectIdCounter: number = -100;
     
     //now game objects will be stored in the game object with the id as the key
 
     gameObjects:Map<number, GameObject>;;
 
+    typeRegistry = new TypeRegistry();
 
     game?:Game;
 
@@ -24,6 +30,9 @@ export class Scene {
 
     addObject(obj: GameObject){
         obj.Mstart();
+        if (obj.getId() == -1){
+            obj.setId(this.getnewLocalObjectId());
+        }
         this.gameObjects.set(obj.getId(),obj);
     }
 
@@ -60,6 +69,35 @@ export class Scene {
         this.sendToGame(request);
     }
 
+    UpdateState(serverState: any) {
+        const serverIds = new Set<number>();
+    
+        // Iterate over server state to update and add new objects
+        for (const key in serverState) {
+            if (serverState.hasOwnProperty(key)) {
+                const obj = serverState[key];
+                const type = obj.Type;
+                const cls: any = this.getTypeRegistry().getTypeClass(type);
+                if (cls) {
+                    // Assuming `fromSerialized` is a static method that correctly instantiates objects
+                    const gameObject = cls.fromSerialized(obj);
+                    this.addObject(gameObject);
+                    
+                    serverIds.add(gameObject.getId());
+                }
+            }
+        }
+    
+        // Collect all local object IDs
+        const localObjectIds = new Set<number>(this.gameObjects.keys());
+    
+        // Determine objects missing from server state
+        const objectsToRemove = Array.from(localObjectIds).filter(id => !serverIds.has(id) && id > 0);
+    
+        // Remove objects not present in server state
+        objectsToRemove.forEach(id => this.removeObjectById(id));
+    }
+
 
     sendToGame(req: any){
         Game.getInstance().getSender().sendRequest(req);
@@ -92,6 +130,15 @@ export class Scene {
 
     draw(p:p5,camera: Camera){
     
+    }
+
+    getnewLocalObjectId(): number {
+        console.log("new local object id: " + this.LocalObjectIdCounter);
+        return this.LocalObjectIdCounter--;
+    }
+
+    getTypeRegistry(): TypeRegistry {
+        return this.typeRegistry;
     }
 
 }
