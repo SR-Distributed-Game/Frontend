@@ -11,24 +11,24 @@ import { Game } from "$lib/GameEngine/Game";
 import { Serializable } from "$lib/GameEngine/Serialized";
 
 export class player extends GameObject {
-    gfx:DrawRectangleComponent;
     namegfx:DrawTextComponent;
 
+    @Serializable
     private points: number;
+    @Serializable
     private speed: number;
+
+    @Serializable
+    private clientID: number;
 
     constructor() {
         super();
+        console.log("player created in constructor");
+        this.clientID = SpringSocketServer.getInstance().getClientID(); 
         this.speed = 5;
         this.points = 0;
-        this.setName(SpringSocketServer.getInstance().getPlayerName()+"");
-        this.getTransform().getScale().setX(20);
-        this.getTransform().getScale().setY(20);
-        this.gfx = new DrawElipseComponent(this, "#b0ffb0b0");
         this.namegfx = new DrawTextComponent(this);
-        this.namegfx.setText(this.getName());
-        this.namegfx.setColor("white");
-        this.namegfx.setSize(20);
+        this.setName(SpringSocketServer.getInstance().getPlayerName()+"");
     }
 
     setPoints(points: number): void {
@@ -43,22 +43,37 @@ export class player extends GameObject {
 
     start(): void {
         console.log("player started");
-        this.addDrawComponent(this.gfx);
+        
         this.addDrawComponent(this.namegfx);
-        this.addComponent(new PlayerMovementComponent(this,this.speed));
+        if (this.clientID == SpringSocketServer.getInstance().getClientID()){
+            this.addComponent(new PlayerMovementComponent(this,this.speed));
+            this.attachCamera();
+        }
+        this.addDrawComponent(new DrawElipseComponent(this, "#b0ffb0b0"));
         this.addColliderComponent(new ColliderComponent(this));
-        this.attachCamera();
+        this.getTransform().getScale().setX(20);
+        this.getTransform().getScale().setY(20);
+
+        this.namegfx.setText(this.getName());
+        this.namegfx.setColor("white");
+        this.namegfx.setSize(20);
+        
     }
 
 
     onCollision(collider: ColliderComponent): void {
-         collider.getParent();
-         Game.getInstance().getScene().asyncRemoveObject(collider.getParent());
+        if (this.clientID == SpringSocketServer.getInstance().getClientID()){
+            if (collider.getParent().getName() == "fruit"){
+                Game.getInstance().getScene().asyncRemoveObject(collider.getParent());
+            }
+        }
     }
 
     draw(p: p5, camera: Camera): void {
-        p.textSize(20);
-        p.text("playerID:" + this.getId() +"Points: " + this.points, 10, 20);
+        if(this.clientID == SpringSocketServer.getInstance().getClientID()){
+            p.textSize(20);
+            p.text("playerID:" + this.getId() +"Points: " + this.points, 10, 20);
+        }
     }
 
 }

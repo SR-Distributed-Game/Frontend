@@ -35,9 +35,22 @@ export abstract class SerializableGameObject{
     
     updateFromRequest(data: any): void {
         const properties: string[] = Reflect.getMetadata('serializableProperties', this.constructor) || [];
+
         properties.forEach((property) => {
             if (data.hasOwnProperty(property)) {
-                this[property] = data[property];
+                const propertyValue = data[property];
+                // Check if the property is a complex object and needs special handling
+                if (propertyValue instanceof Object && !(propertyValue instanceof Array)) {
+                    // Assuming a generic method like `updateFromData` exists for complex types
+                    if (this[property] instanceof Transform || this[property]?.updateFromData) {
+                        this[property].updateFromData(propertyValue);
+                    } else {
+                        // Handle other complex types here
+                    }
+                } else {
+                    // Direct assignment for primitives and simple types
+                    this[property] = propertyValue;
+                }
             }
         });
     }

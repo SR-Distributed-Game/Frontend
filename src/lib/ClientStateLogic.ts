@@ -26,7 +26,8 @@ export class ClientStateLogic extends messageSubscriber {
         var computedRequest:gameRequest = gameRequestFactory.createFromJson(req);
         
         if (computedRequest.Type == "ConnectSucces") {
-            SpringSocketServer.getInstance().setClientID(computedRequest.Metadata.clientID);
+            if (SpringSocketServer.getInstance().getClientID() == -1)
+                SpringSocketServer.getInstance().setClientID(computedRequest.Metadata.clientID);
         }
 
     }

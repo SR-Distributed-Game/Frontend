@@ -64,12 +64,16 @@ export abstract class Scene {
     }
 
     asyncMoveObject(obj: GameObject, x: number, y: number){
+
+        obj.getTransform().getPosition().setX(x);
+        obj.getTransform().getPosition().setY(y);
         var request = gameRequestFactory.getUpdateRequest();
         request.addMetadata("objectData", obj.toSerialized());
         this.sendToGame(request);
     }
 
     UpdateState(serverState: any) {
+        console.log("updating state");
         const serverIds = new Set<number>();
     
         // Iterate over server state to update and add new objects
@@ -80,22 +84,26 @@ export abstract class Scene {
                 const cls: any = this.getTypeRegistry().getTypeClass(type);
                 if (cls) {
                     // Assuming `fromSerialized` is a static method that correctly instantiates objects
-                    const gameObject = cls.fromSerialized(obj);
-                    this.addObject(gameObject);
                     
-                    serverIds.add(gameObject.getId());
+                    if (this.gameObjects.has(obj.id)) {
+                        console.log("updating from request");
+
+                        this.gameObjects.get(obj.id)?.updateFromRequest(obj);
+                    } else {
+                        const gameObject = cls.fromSerialized(obj);
+                        this.addObject(gameObject);
+                    }
+                    serverIds.add(obj.id);
                 }
             }
         }
-    
-        // Collect all local object IDs
         const localObjectIds = new Set<number>(this.gameObjects.keys());
-    
-        // Determine objects missing from server state
         const objectsToRemove = Array.from(localObjectIds).filter(id => !serverIds.has(id) && id > 0);
-    
-        // Remove objects not present in server state
         objectsToRemove.forEach(id => this.removeObjectById(id));
+    }
+
+    updateObject(id:number, state:any){
+        this.gameObjects.get(id)?.updateFromRequest(state);
     }
 
 

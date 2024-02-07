@@ -97,7 +97,7 @@ export class GameObject extends SerializableGameObject{
         if (vec.getX() == this.lastx && vec.getY() == this.lasty) {
             return;
         }
-        Game.getInstance().getScene().moveObject(this, vec.getX(),vec.getY());
+        Game.getInstance().getScene().asyncMoveObject(this, vec.getX(),vec.getY());
         this.lastx = vec.getX();
         this.lasty = vec.getY();
     }

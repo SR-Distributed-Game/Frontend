@@ -18,7 +18,7 @@ export class sweetGameScene extends Scene {
         this.pl1 = new player();
         this.pl1.getTransform().getPosition().setX(100);
         this.pl1.getTransform().getPosition().setY(100);
-        this.addObject(this.pl1);
+        this.asyncAddObject(this.pl1);
         this.terrainSize = new Vector2(2000, 2000);
     }
 
