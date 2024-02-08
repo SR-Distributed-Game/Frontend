@@ -72,7 +72,7 @@
 
 <div class = "flex" id=rules>
 
-    <div class = "bg-black bg-opacity-40 rounded-lg p-2 flex hover:bg-red-800 hover:scale-105 duration-75 absolute right-0" id=actions>
+    <div class = "bg-black bg-opacity-40 rounded-lg p-2 flex hover:bg-red-800 hover:scale-105 duration-75 absolute right-10 top-10" id=actions>
         <a href =/ id = quitButton class = "p-5  text-white  hover:scale-105 duration-75 hover:text-red-300"> disconnect <i class = "fa fa-sign-out "></i></a>  
     </div>
 
