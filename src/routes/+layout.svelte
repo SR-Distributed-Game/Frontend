@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Navigation from "../lib/Navigation.svelte"
-	import MFooter from "$lib/MFooter.svelte";
 	import { onMount } from'svelte';
 	import websocketStore from "../stores/websocket";
 	import '../app.css';
@@ -28,8 +26,6 @@
 </script>
 
 
-
-<Navigation/>
 
 <slot/>
 

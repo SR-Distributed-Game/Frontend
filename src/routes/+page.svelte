@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import websocketStore from '../stores/websocket.js';
   import { knownSockets } from '../lib/Servers';
+  import Navigation from "../lib/Navigation.svelte"
   
   const ws = $websocketStore; 
   let connError = false;
@@ -47,6 +48,9 @@
   });
 
 </script>
+
+
+<Navigation/>
 
 <div class = "flex">
 

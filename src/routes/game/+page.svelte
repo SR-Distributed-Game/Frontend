@@ -22,7 +22,7 @@
 
         if (quitButton != null){
             quitButton.addEventListener('click', () => {
-                endGame();
+                window.location.assign("/");
             });
         }
 
@@ -33,15 +33,12 @@
         
             game.setScene(new sweetGameScene());
             p.setup = () => {
-                var newValue = Math.min(p.windowWidth/1.2, p.windowHeight/1.4);
-                let canvas = p.createCanvas(p.windowWidth/1.2, newValue);
-                canvas.addClass('rounded-lg');
-                canvas.addClass('shadow-xl');
+                let canvas = p.createCanvas(p.windowWidth, p.windowHeight);
                 canvas.parent('canvas-container');
 
                 p.windowResized = () => {
-                    var newValue = Math.min(p.windowWidth, p.windowHeight/1.4);
-                    p.resizeCanvas(p.windowWidth/1.2, newValue);
+                    var newValue = Math.min(p.windowWidth, p.windowHeight);
+                    p.resizeCanvas(p.windowWidth, p.windowHeight);
                 };
                 game.Mstart(p); 
             };
@@ -54,33 +51,31 @@
 
         new p5(sketch);
 
+        let endGame = () => {
+            Game.getInstance().end();
+            window.location.assign("/");
+        }
     });
 
     onDestroy(() => {
+        Game.getInstance().end();
         ws.getDispatcher().unsubscribe(Game.getInstance());
         ws.getDispatcher().unsubscribe(LeaderboardLogic.getInstance());
         ws.close();
+
     });
 
-    let endGame = () => {
-        Game.getInstance().end();
-        window.location.assign("/");
-    }
+
 
 </script>
 
 
-<div class = "flex mt-2" id=rules>
+<div class = "flex" id=rules>
 
-    <div class = " bg-black bg-opacity-30 p-2 rounded-xl m-auto text-white text-2xl" >move with keyboard arrow to eat</div>
-    <div class = " bg-black bg-opacity-30 p-2 rounded-xl m-auto text-white text-2xl" >click to activate traps</div>
-    <div class = "bg-black bg-opacity-40 rounded-lg p-2 flex m-auto hover:bg-red-800 hover:scale-105 duration-75" id=actions>
-        <button id = quitButton class = "p-5  text-white  hover:scale-105 duration-75 hover:text-red-300"> disconnect <i class = "fa fa-sign-out "></i></button>  
+    <div class = "bg-black bg-opacity-40 rounded-lg p-2 flex hover:bg-red-800 hover:scale-105 duration-75 absolute right-0" id=actions>
+        <a href =/ id = quitButton class = "p-5  text-white  hover:scale-105 duration-75 hover:text-red-300"> disconnect <i class = "fa fa-sign-out "></i></a>  
     </div>
 
 </div>
-<div class = "flex mt-10">
-    <div class = "m-auto" id=canvacontainer>
-        <div id="canvas-container"></div>
-    </div>
-</div>
+
+<div id="canvas-container"></div>

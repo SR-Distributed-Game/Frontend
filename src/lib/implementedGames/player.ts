@@ -9,14 +9,20 @@ import  { DrawTextComponent } from "$lib/GameEngine/Components/DrawTextComponent
 import { SpringSocketServer } from "$lib/connectionManager";
 import { Game } from "$lib/GameEngine/Game";
 import { Serializable } from "$lib/GameEngine/Serialized";
+import { PlayerMovementMouseComponent } from "$lib/GameEngine/Components/PlayerMovementMouseComponent";
+import { GameStateManager } from "./GameStateManager";
 
 export class player extends GameObject {
     namegfx:DrawTextComponent;
 
     @Serializable
     private points: number;
+
     @Serializable
     private speed: number;
+
+    @Serializable
+    private hasBeenEaten: boolean = false;
 
     @Serializable
     private clientID: number;
@@ -24,6 +30,7 @@ export class player extends GameObject {
     constructor() {
         super();
         console.log("player created in constructor");
+        this.tag = "player";
         this.clientID = SpringSocketServer.getInstance().getClientID(); 
         this.speed = 5;
         this.points = 0;
@@ -46,7 +53,8 @@ export class player extends GameObject {
         
         this.addDrawComponent(this.namegfx);
         if (this.clientID == SpringSocketServer.getInstance().getClientID()){
-            this.addComponent(new PlayerMovementComponent(this,this.speed));
+            //this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
+            this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
             this.attachCamera();
         }
         this.addDrawComponent(new DrawElipseComponent(this, "#b0ffb0b0"));
@@ -64,20 +72,27 @@ export class player extends GameObject {
     onCollision(collider: ColliderComponent): void {
         if (this.clientID == SpringSocketServer.getInstance().getClientID()){
             if (collider.getParent().getName() == "fruit"){
-                Game.getInstance().getScene().asyncRemoveObject(collider.getParent());
+                //Game.getInstance().getScene().asyncRemoveObject(collider.getParent());
             }
         }
     }
 
     draw(p: p5, camera: Camera): void {
+    }
+
+    update(p: p5): void {
         if(this.clientID == SpringSocketServer.getInstance().getClientID()){
-            p.textSize(20);
-            p.text("playerID:" + this.getId() +"Points: " + this.points, 10, 20);
+            if (this.hasBeenEaten){
+                console.log("player has been eaten");
+                GameStateManager.getInstance().setEndGameState();
+            }
         }
+    
     }
 
     end(): void {
         if(this.clientID == SpringSocketServer.getInstance().getClientID()){
+
             Game.getInstance().getScene().asyncRemoveObject(this);
         }
     }

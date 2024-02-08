@@ -6,7 +6,7 @@ import { Game } from "../GameEngine/Game";
 import { fruit } from "./fruit";
 import { player } from "./player";
 import { terrain } from "./terrain";
-import { Enemy } from "./Enemy";
+import { Leaderboard } from "./Leaderboard";
 
 export class sweetGameScene extends Scene {
 
@@ -26,6 +26,7 @@ export class sweetGameScene extends Scene {
         //super important
         this.typeRegistry.registerType("fruit", fruit);
         this.typeRegistry.registerType("player", player);
+        this.typeRegistry.registerType("Leaderboard", Leaderboard);
 
         this.addObject(new terrain(this.terrainSize));
         p.noStroke();
@@ -60,5 +61,7 @@ export class sweetGameScene extends Scene {
         }
         
     }
+
+
 
 }

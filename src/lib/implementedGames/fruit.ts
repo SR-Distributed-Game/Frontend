@@ -17,9 +17,13 @@ export class fruit extends GameObject {
     @Serializable
     public SerializationTest: string;
 
+    @Serializable
+    private lifeTime: number = 1;
+
     constructor() {
         super();
         this.plRef = null;
+        this.tag = "fruit";
         this.SerializationTest = "";
         this.setName("fruit");
         this.setId(-1);

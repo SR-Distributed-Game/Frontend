@@ -142,7 +142,6 @@ export abstract class Scene {
     }
 
     getnewLocalObjectId(): number {
-        console.log("new local object id: " + this.LocalObjectIdCounter);
         return this.LocalObjectIdCounter--;
     }
 

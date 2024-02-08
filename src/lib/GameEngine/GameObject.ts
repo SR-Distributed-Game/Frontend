@@ -17,6 +17,9 @@ export class GameObject extends SerializableGameObject{
     @Serializable
     protected id: number;
 
+    @Serializable
+    protected tag: string;
+
     protected localTransform:Transform;
     protected lastx : number;
     protected lasty: number;
@@ -35,7 +38,7 @@ export class GameObject extends SerializableGameObject{
         this.localTransform = new Transform(0, 0, 0, 0);
         this.lastx = 0;
         this.lasty = 0;
-
+        this.tag = "Untagged";
         this.name = "object";
         this.components = [];
         this.drawComponents = [];
@@ -110,15 +113,17 @@ export class GameObject extends SerializableGameObject{
     }
 
     update(p:p5) {
-        // Update logic for the object
     }
 
     Mupdate(p:p5) {
+        if (this.shouldBeDestroyed()){
+            return;
+        }
         this.colliderComponents.forEach(component => component.update(p));
         this.components.forEach(component => component.update(p));
         this.update(p);
         if (this.cameraAttached) {
-            Game.getInstance().getCamera().getTransform().setPosition(this.getTransform().getPosition().sub(new Vector2(p.width/2,p.height/2)));
+            Game.getInstance().getCamera().getTransform().setPosition(this.getTransform().getPosition().sub(new Vector2(p.width/2,p.height/2).sub(this.getTransform().getScale().scalMul(0.5))));
         }
     }
 

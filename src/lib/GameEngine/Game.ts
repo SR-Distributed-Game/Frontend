@@ -6,9 +6,7 @@ import { SpatialHashmap } from './SpatialHashmap';
 import { Vector2 } from './Vector2';
 import { Scene } from './Scene';
 import { defaultScene } from './defaultScene';
-import { fruit } from '$lib/implementedGames/fruit';
 import type { gameRequest } from '$lib/gameRequest';
-import { GameObject } from './GameObject';
 import { gameRequestFactory } from '$lib/gameRequestFactory';
 
 export class Game extends messageSubscriber{
@@ -34,7 +32,7 @@ export class Game extends messageSubscriber{
         super();
         this.camera = new Camera();
         this.sender = new RequestSender();
-        this.collisionSystem = new SpatialHashmap(50);
+        this.collisionSystem = new SpatialHashmap(100);
         this.scene = new defaultScene(); 
     }
 
