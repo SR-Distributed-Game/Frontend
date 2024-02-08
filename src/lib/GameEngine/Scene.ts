@@ -100,6 +100,7 @@ export abstract class Scene {
         const localObjectIds = new Set<number>(this.gameObjects.keys());
         const objectsToRemove = Array.from(localObjectIds).filter(id => !serverIds.has(id) && id > 0);
         objectsToRemove.forEach(id => this.removeObjectById(id));
+
     }
 
     updateObject(id:number, state:any){
@@ -148,5 +149,17 @@ export abstract class Scene {
     getTypeRegistry(): TypeRegistry {
         return this.typeRegistry;
     }
+
+    Mend(){
+        for(var ob of this.gameObjects.values()){
+            ob.Mend();
+        }
+        this.end()
+    }
+
+    end(){
+
+    }
+    
 
 }

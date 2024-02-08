@@ -22,7 +22,7 @@
 
         if (quitButton != null){
             quitButton.addEventListener('click', () => {
-                window.location.assign("/");
+                endGame();
             });
         }
 
@@ -61,6 +61,11 @@
         ws.getDispatcher().unsubscribe(LeaderboardLogic.getInstance());
         ws.close();
     });
+
+    let endGame = () => {
+        Game.getInstance().end();
+        window.location.assign("/");
+    }
 
 </script>
 

@@ -153,9 +153,4 @@ export class Vector2 {
         this.x += (end.x - this.x) * factor;
         this.y += (end.y - this.y) * factor;
     }
-
-    
-
-
-
 }

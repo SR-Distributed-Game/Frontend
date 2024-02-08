@@ -76,4 +76,11 @@ export class player extends GameObject {
         }
     }
 
+    end(): void {
+        if(this.clientID == SpringSocketServer.getInstance().getClientID()){
+            console.log("player ended" + this.getName() +"with id"+ this.getId());
+            Game.getInstance().getScene().asyncRemoveObject(this);
+        }
+    }
+
 }

@@ -119,4 +119,9 @@ export class Game extends messageSubscriber{
     getnewLocalObjectId(): number {
         return this.scene.getnewLocalObjectId();
     }
+
+    end(){
+        this.scene.Mend();
+    }
+
 }
