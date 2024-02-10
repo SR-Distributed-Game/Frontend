@@ -12,6 +12,10 @@ import { SerializableGameObject } from "./SerializableGameObject";
 export class GameObject extends SerializableGameObject{
     @Serializable
     protected transform : Transform;
+
+    @Serializable
+    protected futurtransform : Transform;
+    
     @Serializable
     protected name: string;
     @Serializable
@@ -36,6 +40,8 @@ export class GameObject extends SerializableGameObject{
         this.id = -1;
         this.transform = new Transform(0, 0, 0, 0);
         this.localTransform = new Transform(0, 0, 0, 0);
+        this.futurtransform = new Transform(0, 0, 0, 0);
+
         this.lastx = 0;
         this.lasty = 0;
         this.tag = "Untagged";
@@ -45,6 +51,10 @@ export class GameObject extends SerializableGameObject{
         this.colliderComponents = [];
         this.children = [];
 
+    }
+
+    getFutureTransform(): Transform {
+        return this.futurtransform;
     }
 
     getTag(): string {
@@ -93,7 +103,7 @@ export class GameObject extends SerializableGameObject{
 
 
     start(){
-        
+
     }
 
     Mstart(){
