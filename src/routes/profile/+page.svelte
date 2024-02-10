@@ -48,6 +48,9 @@ onMount(() => {
 
 
 </script>
+
+<Navigation/>
+
 <div class = "flex mt-10">
     <div class = "block m-auto scrollBox bg-black bg-opacity-10 p-10 rounded-lg">
 

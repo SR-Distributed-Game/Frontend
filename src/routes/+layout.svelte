@@ -15,6 +15,11 @@
 	setContext('ws', socket);
 
 	onMount(() => {
+
+		if (localStorage.getItem("bestScore") === null) {
+			localStorage.setItem("bestScore","0");
+		}
+
 		if( localStorage.getItem("playername") === null ) {
 			localStorage.setItem("playername", "Player" + Math.floor(Math.random() * 1000) );
 		}

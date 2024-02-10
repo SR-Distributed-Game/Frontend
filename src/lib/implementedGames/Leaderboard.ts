@@ -9,8 +9,6 @@ export class Leaderboard extends GameObject {
     @Serializable
     private leaderboard: any;
 
-    @Serializable
-    playercount:number;
     
     constructor() {
         super();

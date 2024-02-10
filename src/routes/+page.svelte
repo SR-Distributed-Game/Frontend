@@ -7,7 +7,10 @@
   
   const ws = $websocketStore; 
   let connError = false;
+  let bestScore:string;
   onMount(() => {
+
+    bestScore = localStorage.getItem("bestScore") as string;
 
     async function connect() {
       try {
@@ -68,7 +71,12 @@
 
     <div class = "mainbox mx-10 ">
       <div class = flex>
+        <div class = block>
         <h1 class = "m-auto text-[50px] text-white p-1 rounded-lg my-10 text-center">Choose a server in the list and start to play !</h1>
+        <div class = "m-auto text-center">
+          best score : <span class = "text-white text-3xl">{bestScore}</span>
+        </div>
+      </div>
       </div>
         <div class = "flex">
           <div class = "m-auto">

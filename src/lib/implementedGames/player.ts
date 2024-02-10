@@ -53,8 +53,7 @@ export class player extends GameObject {
         
         this.addDrawComponent(this.namegfx);
         if (this.clientID == SpringSocketServer.getInstance().getClientID()){
-            //this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
-            this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
+            this.addComponent(new PlayerMovementComponent(this,this.speed));
             this.attachCamera();
         }
         this.addDrawComponent(new DrawElipseComponent(this, "#b0ffb0b0"));
@@ -69,17 +68,6 @@ export class player extends GameObject {
     }
 
 
-    onCollision(collider: ColliderComponent): void {
-        if (this.clientID == SpringSocketServer.getInstance().getClientID()){
-            if (collider.getParent().getName() == "fruit"){
-                //Game.getInstance().getScene().asyncRemoveObject(collider.getParent());
-            }
-        }
-    }
-
-    draw(p: p5, camera: Camera): void {
-    }
-
     update(p: p5): void {
         if(this.clientID == SpringSocketServer.getInstance().getClientID()){
             if (this.hasBeenEaten){
@@ -92,8 +80,9 @@ export class player extends GameObject {
 
     end(): void {
         if(this.clientID == SpringSocketServer.getInstance().getClientID()){
-
             Game.getInstance().getScene().asyncRemoveObject(this);
+            localStorage.setItem("bestScore", this.points+"");
+            window.location.assign("/");
         }
     }
 

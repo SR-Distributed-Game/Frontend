@@ -47,6 +47,14 @@ export class GameObject extends SerializableGameObject{
 
     }
 
+    getTag(): string {
+        return this.tag;
+    }
+
+    setTag(tag: string) {
+        this.tag = tag;
+    }
+
     getName(): string {
         return this.name;
     }
