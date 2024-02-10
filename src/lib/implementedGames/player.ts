@@ -54,7 +54,7 @@ export class player extends GameObject {
         this.addDrawComponent(this.namegfx);
         if (this.clientID == SpringSocketServer.getInstance().getClientID()){
             //this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
-            this.addComponent(new PlayerMovementComponent(this,this.speed));
+            this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
             this.attachCamera();
         }
         this.addDrawComponent(new DrawElipseComponent(this, "#b0ffb0b0"));
