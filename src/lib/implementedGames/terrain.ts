@@ -8,6 +8,7 @@ export class terrain extends GameObject {
     constructor(size: Vector2) {
         super();
         this.setName("terrain");
+        this.setTag("terrain");
         this.getTransform().setPosition(new Vector2(0,0));
         this.getTransform().setScale(new Vector2(size.getX(),size.getY()));
 

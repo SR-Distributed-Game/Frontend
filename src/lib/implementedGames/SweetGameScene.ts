@@ -41,24 +41,7 @@ export class sweetGameScene extends Scene {
     }
 
     update(p: p5): void {
-        var currentx = this.pl1.getTransform().getPosition().getX();
-        var currenty = this.pl1.getTransform().getPosition().getY();
-        var currentdx = this.pl1.getTransform().getScale().getX();
-        var currentdy = this.pl1.getTransform().getScale().getY();
-        
-        //checkCollision with the terrain
-        if ( currentx < 0 ){
-            this.pl1.getTransform().getPosition().setX(0);
-        }
-        if ( currenty < 0 ){
-            this.pl1.getTransform().getPosition().setY(0);
-        }
-        if ( currentx + currentdx > this.terrainSize.getX() ){
-            this.pl1.getTransform().getPosition().setX(this.terrainSize.getX() - currentdx);
-        }
-        if ( currenty + currentdy > this.terrainSize.getY() ){
-            this.pl1.getTransform().getPosition().setY(this.terrainSize.getY() - currentdy);
-        }
+
         
     }
 

@@ -74,7 +74,7 @@
         <div class = block>
         <h1 class = "m-auto text-[50px] text-white p-1 rounded-lg my-10 text-center">Choose a server in the list and start to play !</h1>
         <div class = "m-auto text-center">
-          best score : <span class = "text-white text-3xl">{bestScore}</span>
+           <span class = "text-white text-3xl">All time best : {bestScore}</span>
         </div>
       </div>
       </div>

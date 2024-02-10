@@ -53,6 +53,7 @@ export class player extends GameObject {
         
         this.addDrawComponent(this.namegfx);
         if (this.clientID == SpringSocketServer.getInstance().getClientID()){
+            //this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
             this.addComponent(new PlayerMovementComponent(this,this.speed));
             this.attachCamera();
         }
@@ -81,7 +82,9 @@ export class player extends GameObject {
     end(): void {
         if(this.clientID == SpringSocketServer.getInstance().getClientID()){
             Game.getInstance().getScene().asyncRemoveObject(this);
-            localStorage.setItem("bestScore", this.points+"");
+            if (parseInt(localStorage.getItem("bestScore")+"") < this.points){
+                localStorage.setItem("bestScore", this.points+"");
+            }
             window.location.assign("/");
         }
     }

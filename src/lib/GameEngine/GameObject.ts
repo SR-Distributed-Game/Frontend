@@ -93,6 +93,7 @@ export class GameObject extends SerializableGameObject{
 
 
     start(){
+        
     }
 
     Mstart(){
@@ -101,11 +102,6 @@ export class GameObject extends SerializableGameObject{
     }
 
     asyncMove(vec:Vector2) {
-        this.getTransform().getPosition().setX(vec.getX());
-        this.getTransform().getPosition().setY(vec.getY());
-        if (vec.getX() == this.lastx && vec.getY() == this.lasty) {
-            return;
-        }
         Game.getInstance().getScene().asyncMoveObject(this, vec.getX(),vec.getY());
         this.lastx = vec.getX();
         this.lasty = vec.getY();
