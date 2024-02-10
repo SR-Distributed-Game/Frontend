@@ -54,7 +54,6 @@ export class fruit extends GameObject {
     }
 
     onCollision(collider: ColliderComponent): void {
-        console.log("fruit collided with " + collider.getParent().getName());
         this.randomColor = this.getRandomHexColor();
         if (collider.getParent().getTag() == "player"){
             this.gfx.setColor("#00000000");

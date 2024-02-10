@@ -11,6 +11,8 @@ import { Game } from "$lib/GameEngine/Game";
 import { Serializable } from "$lib/GameEngine/Serialized";
 import { PlayerMovementMouseComponent } from "$lib/GameEngine/Components/PlayerMovementMouseComponent";
 import { GameStateManager } from "./GameStateManager";
+import type { terrain } from "./terrain";
+import { Vector2 } from "$lib/GameEngine/Vector2";
 
 export class player extends GameObject {
     namegfx:DrawTextComponent;
@@ -27,6 +29,8 @@ export class player extends GameObject {
     @Serializable
     private clientID: number;
 
+    terrain? : terrain;
+
     constructor() {
         super();
         console.log("player created in constructor");
@@ -36,6 +40,7 @@ export class player extends GameObject {
         this.points = 0;
         this.namegfx = new DrawTextComponent(this);
         this.setName(SpringSocketServer.getInstance().getPlayerName()+"");
+        this.terrain = undefined;
     }
 
     setPoints(points: number): void {
@@ -49,8 +54,8 @@ export class player extends GameObject {
     }
 
     start(): void {
-        console.log("player started");
-        
+        this.terrain = Game.getInstance().getScene().getObjectsByTag("terrain").at(0) as terrain;
+        console.log(this.terrain!.getTransform().toJson());
         this.addDrawComponent(this.namegfx);
         if (this.clientID == SpringSocketServer.getInstance().getClientID()){
             //this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
@@ -72,9 +77,23 @@ export class player extends GameObject {
     update(p: p5): void {
         if(this.clientID == SpringSocketServer.getInstance().getClientID()){
             if (this.hasBeenEaten){
-                console.log("player has been eaten");
                 GameStateManager.getInstance().setEndGameState();
             }
+            var posx = this.getTransform().getPosition().getX();
+            var posy = this.getTransform().getPosition().getY();
+            if (posx < 0){
+                posx = 0;
+            }
+            if (posy < 0){
+                posy = 0;
+            }
+            if (posx > this.terrain!.getTransform().getScale().getX() - this.getTransform().getScale().getX()){
+                posx = this.terrain!.getTransform().getScale().getX() - this.getTransform().getScale().getX();
+            }
+            if (posy > this.terrain!.getTransform().getScale().getY() - this.getTransform().getScale().getY()){
+                posy = this.terrain!.getTransform().getScale().getY() - this.getTransform().getScale().getY();
+            }
+            this.asyncMove(new Vector2(posx, posy));
         }
     
     }

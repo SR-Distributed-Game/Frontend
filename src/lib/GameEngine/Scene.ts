@@ -40,6 +40,11 @@ export abstract class Scene {
         this.objectsByTag.get(obj.getTag())?.push(obj);
     }
 
+
+    getObjectsByTag(tag: string): GameObject[]{
+        return this.objectsByTag.get(tag) || [];
+    }
+
     removeObjectByTag(obj: GameObject){
         this.objectsByTag.get(obj.getTag())?.splice(this.objectsByTag.get(obj.getTag())?.indexOf(obj)!, 1);
     }

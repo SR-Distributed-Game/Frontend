@@ -43,7 +43,5 @@ export class terrain extends GameObject {
             p.line(this.getTransform().getPosition().getX() - camera.getTransform().getPosition().getX(), this.getTransform().getPosition().getY() + i - camera.getTransform().getPosition().getY(), this.getTransform().getPosition().getX() + this.getTransform().getScale().getX() - camera.getTransform().getPosition().getX(), this.getTransform().getPosition().getY() + i - camera.getTransform().getPosition().getY());
         }
         p.noStroke();
-
-
     }
 }
