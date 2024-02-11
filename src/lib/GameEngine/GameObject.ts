@@ -8,15 +8,21 @@ import { Vector2 } from "./Vector2";
 import type { drawComponent } from "./drawComponent";
 import { Serializable } from "./Serialized";
 import { SerializableGameObject } from "./SerializableGameObject";
-import { InterpolationComponent } from "./Components/InterpolationComponent";
 
 export class GameObject extends SerializableGameObject{
     @Serializable
     protected transform : Transform;
+
+    @Serializable
+    protected futurtransform : Transform;
+    
     @Serializable
     protected name: string;
     @Serializable
     protected id: number;
+
+    @Serializable
+    protected tag: string;
 
     protected localTransform:Transform;
     protected lastx : number;
@@ -31,17 +37,36 @@ export class GameObject extends SerializableGameObject{
 
     constructor() {
         super();
+        this.id = -1;
         this.transform = new Transform(0, 0, 0, 0);
         this.localTransform = new Transform(0, 0, 0, 0);
+        this.futurtransform = new Transform(0, 0, 0, 0);
+
         this.lastx = 0;
         this.lasty = 0;
-        this.id = 0;
+        this.tag = "Untagged";
         this.name = "object";
         this.components = [];
         this.drawComponents = [];
         this.colliderComponents = [];
         this.children = [];
 
+    }
+
+    getFutureTransform(): Transform {
+        return this.futurtransform;
+    }
+
+    getTag(): string {
+        return this.tag;
+    }
+
+    setTag(tag: string) {
+        this.tag = tag;
+    }
+
+    getName(): string {
+        return this.name;
     }
 
     setId(id: number) {
@@ -78,6 +103,7 @@ export class GameObject extends SerializableGameObject{
 
 
     start(){
+
     }
 
     Mstart(){
@@ -86,12 +112,7 @@ export class GameObject extends SerializableGameObject{
     }
 
     asyncMove(vec:Vector2) {
-        this.getTransform().getPosition().setX(vec.getX());
-        this.getTransform().getPosition().setY(vec.getY());
-        if (vec.getX() == this.lastx && vec.getY() == this.lasty) {
-            return;
-        }
-        Game.getInstance().getScene().moveObject(this, vec.getX(),vec.getY());
+        Game.getInstance().getScene().asyncMoveObject(this, vec.getX(),vec.getY());
         this.lastx = vec.getX();
         this.lasty = vec.getY();
     }
@@ -106,15 +127,17 @@ export class GameObject extends SerializableGameObject{
     }
 
     update(p:p5) {
-        // Update logic for the object
     }
 
     Mupdate(p:p5) {
+        if (this.shouldBeDestroyed()){
+            return;
+        }
         this.colliderComponents.forEach(component => component.update(p));
         this.components.forEach(component => component.update(p));
         this.update(p);
         if (this.cameraAttached) {
-            Game.getInstance().getCamera().getTransform().setPosition(this.getTransform().getPosition().sub(new Vector2(p.width/2,p.height/2)));
+            Game.getInstance().getCamera().getTransform().setPosition(this.getTransform().getPosition().sub(new Vector2(p.width/2,p.height/2).sub(this.getTransform().getScale().scalMul(0.5))));
         }
     }
 

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Navigation from "../lib/Navigation.svelte"
-	import MFooter from "$lib/MFooter.svelte";
 	import { onMount } from'svelte';
 	import websocketStore from "../stores/websocket";
 	import '../app.css';
@@ -17,6 +15,11 @@
 	setContext('ws', socket);
 
 	onMount(() => {
+
+		if (localStorage.getItem("bestScore") === null) {
+			localStorage.setItem("bestScore","0");
+		}
+
 		if( localStorage.getItem("playername") === null ) {
 			localStorage.setItem("playername", "Player" + Math.floor(Math.random() * 1000) );
 		}
@@ -28,8 +31,6 @@
 </script>
 
 
-
-<Navigation/>
 
 <slot/>
 

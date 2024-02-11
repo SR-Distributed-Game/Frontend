@@ -28,6 +28,7 @@ export class PlayerMovementComponent extends Component {
         }
         amountToMove.normalize();
         this.getParent().asyncMove( this.getParent().getTransform().getPosition().add(amountToMove));
+        
 
     }
 }

@@ -2,7 +2,7 @@
 import { Dispatcher } from "./Dispatcher";
 import { knownSockets } from "./Servers";
 import { gameRequestFactory } from "./gameRequestFactory";
-import type { gameRequest } from "./gameRequest";
+import { gameRequest } from "./gameRequest";
 import { ClientStateLogic } from "./ClientStateLogic";
 
 export class SpringSocketServer{
@@ -22,7 +22,6 @@ export class SpringSocketServer{
     private errorState:boolean;
 
     constructor(){
-        console.log("Creating socket server")
         this.dispatcher = new Dispatcher();
         this.errorState = false;
     }
@@ -44,7 +43,6 @@ export class SpringSocketServer{
                 this.connect(knownSockets[socketName]);
                 this.socket.onopen = () => {
                     resolve();
-                    console.log("Socket connected");
                     var request = gameRequestFactory.getSuccesConnectionRequest();
                     request.Metadata = {
                         playername: this.playername
@@ -59,7 +57,6 @@ export class SpringSocketServer{
 
     private connect = async (url: string) => {
         try{
-            console.log("Connecting to " + url);
             this.socket = new WebSocket(url);
         }catch(error){
             throw new Error("Socket not found");
@@ -106,11 +103,14 @@ export class SpringSocketServer{
 
     private onClose = (event: CloseEvent) => {
         this.dispatcher.unsubscribe(ClientStateLogic.getInstance());
+        //alert("Connection with server closed");
+        this.resetClientID();
         console.log("Socket disconnected");
     }
 
     private onMessage = (event: MessageEvent) => {
-        this.dispatcher.dispatch(event.data);
+        var req = JSON.parse(event.data);
+        this.dispatcher.dispatch(gameRequestFactory.createFromJson(req));
     }
 
     private onError = (event: Event) => {
@@ -134,13 +134,14 @@ export class SpringSocketServer{
     public close = () => {
         if (this.socket){
             if (this.socket.readyState === WebSocket.OPEN){
-                var request = gameRequestFactory.getClosingRequest();
-                request.addMetadata("playername",this.getPlayerName()),
-                request.ClientID =  this.getClientID(),
-                this.send(request);
                 this.socket.close();
+                this.resetClientID();
             }
         }
+    }
+
+    public resetClientID = () => {
+        this.clientID = -1;
     }
 }
 

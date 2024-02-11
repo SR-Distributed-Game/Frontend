@@ -5,20 +5,38 @@ import type p5 from "p5";
 import { GameObject } from "../GameEngine/GameObject";
 
 import { DrawElipseComponent } from "$lib/GameEngine/Components/DrawElipseComponent";
+import { Serializable } from "$lib/GameEngine/Serialized";
+import { InertiaFrictionComponent } from "$lib/GameEngine/Components/InnertiaComponent";
+import type { player } from "./player";
+import { DrawTextComponent } from "$lib/GameEngine/Components/DrawTextComponent";
 
 export class fruit extends GameObject {
     gfx:DrawRectangleComponent;
     randomColor:string;
-    constructor(x: number, y: number) {
+    plRef:player | null;
+    @Serializable
+    public SerializationTest: string;
+
+    @Serializable
+    private lifeTime: number;
+
+    constructor() {
         super();
+        this.plRef = null;
+        this.tag = "fruit";
+        this.SerializationTest = "";
         this.setName("fruit");
-        this.setId((Math.random()*1000));
-        this.getTransform().setPosition(new Vector2(x,y));
+        this.setId(-1);
         this.getTransform().getScale().setX(10);
         this.getTransform().getScale().setY(10);
-        this.getTransform().setRotation(Math.random()*360);
+        this.lifeTime = 0;
         this.randomColor = this.getRandomHexColor();
         this.gfx = new DrawElipseComponent(this, this.randomColor);
+
+    }
+
+    setPlayerRef(pl:player){
+        this.plRef = pl;
     }
 
     getRandomHexColor(): string {
@@ -28,16 +46,18 @@ export class fruit extends GameObject {
     start(): void {
         this.addDrawComponent(this.gfx);
         this.addComponent( new ColliderComponent(this));
-
+        
     }
 
     update(p: p5): void {
-        
         this.gfx.setColor(this.randomColor);
     }
 
     onCollision(collider: ColliderComponent): void {
         this.randomColor = this.getRandomHexColor();
+        if (collider.getParent().getTag() == "player"){
+            this.gfx.setColor("#00000000");
+        }
     }
 
 }

@@ -3,6 +3,7 @@
     import { goto } from '$app/navigation';
     import websocketStore from '../../stores/websocket.js';
     import { knownSockets } from '../../lib/Servers';
+    import Navigation from '$lib/Navigation.svelte';
     
   
     onMount(() => {
@@ -35,6 +36,8 @@
     });
   
   </script>
+
+<Navigation/>
   
   <div class = "flex">
   

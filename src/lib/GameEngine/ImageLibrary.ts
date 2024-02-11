@@ -7,6 +7,7 @@ export class ImageLibrary {
     constructor() {
         this.images = {};
     }
+    
     getImage(name:string) {
         return this.images[name];
     }

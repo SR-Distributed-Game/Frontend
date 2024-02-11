@@ -1,3 +1,4 @@
+import type { gameRequest } from "./gameRequest";
 import type { messageSubscriber } from "./messageSubscriber";
 
 export class Dispatcher{
@@ -15,8 +16,8 @@ export class Dispatcher{
     constructor(){
     }
 
-    dispatch(req: any){ // later recieve a gameRequest
-        var req = JSON.parse(req);
+    dispatch(req: gameRequest){ // later recieve a gameRequest
+        
         for(let subscriber of this.subscribers){
 
             subscriber.onMessage(req);

@@ -7,25 +7,40 @@ import { GameObject } from "../GameEngine/GameObject";
 import  { Camera } from "$lib/GameEngine/Camera";
 import  { DrawTextComponent } from "$lib/GameEngine/Components/DrawTextComponent";
 import { SpringSocketServer } from "$lib/connectionManager";
+import { Game } from "$lib/GameEngine/Game";
+import { Serializable } from "$lib/GameEngine/Serialized";
+import { PlayerMovementMouseComponent } from "$lib/GameEngine/Components/PlayerMovementMouseComponent";
+import { GameStateManager } from "./GameStateManager";
+import type { terrain } from "./terrain";
+import { Vector2 } from "$lib/GameEngine/Vector2";
 
 export class player extends GameObject {
-    gfx:DrawRectangleComponent;
     namegfx:DrawTextComponent;
+
+    @Serializable
     private points: number;
+
+    @Serializable
     private speed: number;
 
-    constructor(x: number, y: number) {
+    @Serializable
+    private hasBeenEaten: boolean = false;
+
+    @Serializable
+    private clientID: number;
+
+    terrain? : terrain;
+
+    constructor() {
         super();
+        console.log("player created in constructor");
+        this.tag = "player";
+        this.clientID = SpringSocketServer.getInstance().getClientID(); 
         this.speed = 5;
         this.points = 0;
-        this.setName("player");
-        this.getTransform().getScale().setX(20);
-        this.getTransform().getScale().setY(20);
-        this.gfx = new DrawElipseComponent(this, "#b0ffb0b0");
         this.namegfx = new DrawTextComponent(this);
-        this.namegfx.setText(SpringSocketServer.getInstance().getPlayerName()+"");
-        this.namegfx.setColor("white");
-        this.namegfx.setSize(20);
+        this.setName(SpringSocketServer.getInstance().getPlayerName()+"");
+        this.terrain = undefined;
     }
 
     setPoints(points: number): void {
@@ -39,23 +54,58 @@ export class player extends GameObject {
     }
 
     start(): void {
-        console.log("player started");
-        this.addDrawComponent(this.gfx);
+        this.terrain = Game.getInstance().getScene().getObjectsByTag("terrain").at(0) as terrain;
+        console.log(this.terrain!.getTransform().toJson());
         this.addDrawComponent(this.namegfx);
-        this.addComponent(new PlayerMovementComponent(this,this.speed));
+        if (this.clientID == SpringSocketServer.getInstance().getClientID()){
+            //this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
+            this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
+            this.attachCamera();
+        }
+        this.addDrawComponent(new DrawElipseComponent(this, "#b0ffb0b0"));
         this.addColliderComponent(new ColliderComponent(this));
-        this.attachCamera();
+        this.getTransform().getScale().setX(20);
+        this.getTransform().getScale().setY(20);
+
+        this.namegfx.setText(this.getName());
+        this.namegfx.setColor("white");
+        this.namegfx.setSize(20);
+        
     }
 
 
-    onCollision(collider: ColliderComponent): void {
-        collider.getParent().destroy();
-        this.setPoints(this.getPoints() + 1);
+    update(p: p5): void {
+        if(this.clientID == SpringSocketServer.getInstance().getClientID()){
+            if (this.hasBeenEaten){
+                GameStateManager.getInstance().setEndGameState();
+            }
+            var posx = this.getTransform().getPosition().getX();
+            var posy = this.getTransform().getPosition().getY();
+            if (posx < 0){
+                posx = 0;
+            }
+            if (posy < 0){
+                posy = 0;
+            }
+            if (posx > this.terrain!.getTransform().getScale().getX() - this.getTransform().getScale().getX()){
+                posx = this.terrain!.getTransform().getScale().getX() - this.getTransform().getScale().getX();
+            }
+            if (posy > this.terrain!.getTransform().getScale().getY() - this.getTransform().getScale().getY()){
+                posy = this.terrain!.getTransform().getScale().getY() - this.getTransform().getScale().getY();
+            }
+            this.asyncMove(new Vector2(posx, posy));
+        }
+    
     }
 
-    draw(p: p5, camera: Camera): void {
-        p.textSize(20);
-        p.text("Points: " + this.points, 10, 20);
+    end(): void {
+        if(this.clientID == SpringSocketServer.getInstance().getClientID()){
+            Game.getInstance().getScene().asyncRemoveObject(this);
+            if (parseInt(localStorage.getItem("bestScore")+"") < this.points){
+                localStorage.setItem("bestScore", this.points+"");
+            }
+            window.location.assign("/");
+        }
     }
 
 }

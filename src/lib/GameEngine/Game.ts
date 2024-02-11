@@ -6,6 +6,8 @@ import { SpatialHashmap } from './SpatialHashmap';
 import { Vector2 } from './Vector2';
 import { Scene } from './Scene';
 import { defaultScene } from './defaultScene';
+import { gameRequest } from '$lib/gameRequest';
+import { gameRequestFactory } from '$lib/gameRequestFactory';
 
 export class Game extends messageSubscriber{
 
@@ -14,6 +16,8 @@ export class Game extends messageSubscriber{
     private camera: Camera;
     private collisionSystem: SpatialHashmap;
     private scene: Scene;
+
+    private RemoteRequestQueue: gameRequest[] = [];
 
     private mousePosition:Vector2 = new Vector2(0,0); 
 
@@ -30,7 +34,7 @@ export class Game extends messageSubscriber{
         super();
         this.camera = new Camera();
         this.sender = new RequestSender();
-        this.collisionSystem = new SpatialHashmap(50);
+        this.collisionSystem = new SpatialHashmap(100);
         this.scene = new defaultScene(); 
     }
 
@@ -43,28 +47,52 @@ export class Game extends messageSubscriber{
         return this.scene;
     }
 
-    
-
     getSender(): RequestSender {
         return this.sender;
     }
 
-    onMessage(req: any): void {
+    onMessage(req: gameRequest): void {
+        this.RemoteRequestQueue.push(req);
+    }
 
-        console.log("handling message: " + req);
+    handleRemoteRequests(){
+        for (var req of this.RemoteRequestQueue){
+            if (req.Type == "SpawnObject"){
+                var cls:any = this.scene.getTypeRegistry().getTypeClass(req.Metadata.objectData.Type)
+                this.scene.addObject((cls)!.fromSerialized(req.Metadata.objectData));
+            }else
+
+            if (req.Type == "DestroyObject"){
+                this.scene.removeObjectById(req.Metadata.objectData.id);
+            }else
+
+            if(req.Type == "FullState"){
+                this.scene.UpdateState(req.Metadata.objectData);
+            }else
+
+            if (req.Type == "UpdateObject"){
+                //console.log(req.Metadata);
+                this.scene.updateObject(req.Metadata.objectData.id,req.Metadata.objectData);
+            }
+        }
+        this.RemoteRequestQueue = [];
     }
 
     start(p:p5){
+        
+        this.sender.sendRequest(gameRequestFactory.getFullStateRequest());
 
     }
 
     Mstart(p:p5){
-        this.scene.Mstart(p);
         this.start(p);
+        this.scene.Mstart(p);
+        
     }
 
 
     Mupdate(p:p5){
+        this.handleRemoteRequests();
         this.mousePosition.setX(p.mouseX + this.camera.getTransform().getPosition().getX());
         this.mousePosition.setY(p.mouseY + this.camera.getTransform().getPosition().getY());
         
@@ -94,4 +122,13 @@ export class Game extends messageSubscriber{
         this.Mupdate(p);
         this.draw(p);
     }
+
+    getnewLocalObjectId(): number {
+        return this.scene.getnewLocalObjectId();
+    }
+
+    end(){
+        this.scene.Mend();
+    }
+
 }
