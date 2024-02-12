@@ -30,18 +30,23 @@ export class player extends GameObject {
     @Serializable
     private clientID: number;
 
+    @Serializable
+    private color: string;
+
     terrain? : terrain;
 
     constructor() {
         super();
         console.log("player created in constructor");
         this.tag = "player";
+        this.color = "white";
         this.clientID = SpringSocketServer.getInstance().getClientID(); 
         this.speed = 0.2;
         this.points = 0;
         this.namegfx = new DrawTextComponent(this);
         this.setName(SpringSocketServer.getInstance().getPlayerName()+"");
         this.terrain = undefined;
+        this.color = JSON.parse(localStorage.getItem("playerInfo")+"").color;
     }
 
     setPoints(points: number): void {
@@ -63,10 +68,9 @@ export class player extends GameObject {
             this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
             this.addComponent(new InterpolationComponent(this,0.05));
             this.attachCamera();
-            plcolor = JSON.parse(localStorage.getItem("playerInfo")+"").color;
         }
 
-        this.addDrawComponent(new DrawElipseComponent(this,plcolor));
+        this.addDrawComponent(new DrawElipseComponent(this,this.color));
         this.addColliderComponent(new ColliderComponent(this));
         this.getTransform().getScale().setX(20);
         this.getTransform().getScale().setY(20);
