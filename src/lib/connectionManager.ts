@@ -19,11 +19,22 @@ export class SpringSocketServer{
 
     private dispatcher: Dispatcher;
 
+    private clientColor: string = "black";
+
     private errorState:boolean;
 
     constructor(){
         this.dispatcher = new Dispatcher();
         this.errorState = false;
+    }
+
+    public setClientColor(color: string){
+        this.clientColor = color;
+        document.documentElement.style.setProperty('--theme-color', color);
+    }
+
+    public getClientColor(){
+        return this.clientColor;
     }
 
     public getDispatcher() : Dispatcher {

@@ -97,8 +97,6 @@ export abstract class Scene {
         var request = gameRequestFactory.getUpdateRequest();
         request.addMetadata("objectData", obj.toSerialized());
         this.sendToGame(request);
-        //obj.getTransform().getPosition().setX(oldx);
-        //obj.getTransform().getPosition().setY(oldy);
     }
 
     UpdateState(serverState: any) {
@@ -112,7 +110,6 @@ export abstract class Scene {
                 const type = obj.Type;
                 const cls: any = this.getTypeRegistry().getTypeClass(type);
                 if (cls) {
-                    // Assuming `fromSerialized` is a static method that correctly instantiates objects
                     
                     if (this.gameObjects.has(obj.id)) {
                         console.log("updating from request");
@@ -126,9 +123,9 @@ export abstract class Scene {
                 }
             }
         }
-        const localObjectIds = new Set<number>(this.gameObjects.keys());
-        const objectsToRemove = Array.from(localObjectIds).filter(id => !serverIds.has(id) && id > 0);
-        objectsToRemove.forEach(id => this.removeObjectById(id));
+        //const localObjectIds = new Set<number>(this.gameObjects.keys());
+        //const objectsToRemove = Array.from(localObjectIds).filter(id => !serverIds.has(id) && id > 0);
+        //objectsToRemove.forEach(id => this.removeObjectById(id));
 
     }
 

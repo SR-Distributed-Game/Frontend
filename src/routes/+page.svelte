@@ -8,9 +8,11 @@
   const ws = $websocketStore; 
   let connError = false;
   let bestScore:string;
+  let lastScore:string;
   onMount(() => {
 
-    bestScore = localStorage.getItem("bestScore") as string;
+    bestScore = JSON.parse(localStorage.getItem("playerInfo")+"").bestScore;
+    lastScore = JSON.parse(localStorage.getItem("playerInfo")+"").lastScore;
 
     async function connect() {
       try {
@@ -74,7 +76,14 @@
         <div class = block>
         <h1 class = "m-auto text-[50px] text-white p-1 rounded-lg my-10 text-center">Choose a server in the list and start to play !</h1>
         <div class = "m-auto text-center">
-           <span class = "text-white text-3xl">All time best : {bestScore}</span>
+          <div class = "block text-center">
+            <div class = "flex text-center">
+              <span class = "text-white text-3xl m-auto">All time best : {bestScore}</span>
+            </div>
+            <div class = "flex text-center">
+              <span class = "text-white text-3xl m-auto">Last Score : {lastScore}</span>
+            </div>
+          </div>
         </div>
       </div>
       </div>

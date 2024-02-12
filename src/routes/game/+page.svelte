@@ -22,7 +22,7 @@
 
         if (quitButton != null){
             quitButton.addEventListener('click', () => {
-                window.location.assign("/");
+                Game.getInstance().end();
             });
         }
 
@@ -53,7 +53,6 @@
 
         let endGame = () => {
             Game.getInstance().end();
-            window.location.assign("/");
         }
     });
 
@@ -68,7 +67,6 @@
 
 
 </script>
-
 
 <div class = "flex" id=rules>
 

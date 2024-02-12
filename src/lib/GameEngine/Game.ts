@@ -71,7 +71,6 @@ export class Game extends messageSubscriber{
             }else
 
             if (req.Type == "UpdateObject"){
-                //console.log(req.Metadata);
                 this.scene.updateObject(req.Metadata.objectData.id,req.Metadata.objectData);
             }
         }
@@ -107,6 +106,8 @@ export class Game extends messageSubscriber{
         this.collisionSystem.update();
     }
     
+
+
 
     getMousePosition():Vector2{
         return this.mousePosition;

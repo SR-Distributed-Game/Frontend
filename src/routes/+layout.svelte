@@ -15,10 +15,17 @@
 	setContext('ws', socket);
 
 	onMount(() => {
-
-		if (localStorage.getItem("bestScore") === null) {
-			localStorage.setItem("bestScore","0");
+		var playerInfo = {
+			bestPos:"0/0",
+			bestScore: 0,
+			lastScore: 0,
+			color : "#1c6283"
 		}
+		if (localStorage.getItem("playerInfo") === null) {
+			localStorage.setItem("playerInfo",JSON.stringify(playerInfo));
+		}
+		
+		document.documentElement.style.setProperty('--theme-color', JSON.parse(localStorage.getItem("playerInfo")+"").color);
 
 		if( localStorage.getItem("playername") === null ) {
 			localStorage.setItem("playername", "Player" + Math.floor(Math.random() * 1000) );
