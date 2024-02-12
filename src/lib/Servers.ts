@@ -1,1 +1,1 @@
-export let knownSockets: { [key: string]: string } = {"prod - vm": "ws://148.60.11.74:80/game","dev - game": "ws://localhost:8080/game"};
+export let knownSockets: { [key: string]: string } = {"prod - vm": "ws://148.60.11.74:80/game","dev - game": "ws://localhost:8080/game","dev - rt": "ws://minecraft.ronantremoureux.fr:25565/game"};

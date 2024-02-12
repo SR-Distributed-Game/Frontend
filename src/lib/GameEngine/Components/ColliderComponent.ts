@@ -8,7 +8,7 @@ export class ColliderComponent extends Component {
         super(parent);
     }
     
-    update(p:p5) {
+    update(p:p5,dt:number) {
         Game.getInstance().getCollisionSystem().insert(this);
     }
 

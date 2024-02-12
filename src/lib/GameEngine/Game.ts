@@ -90,16 +90,23 @@ export class Game extends messageSubscriber{
         
     }
 
-
+    private lastUpdateTime: number = Date.now(); 
+    deltaTime = 0;
     Mupdate(p:p5){
+        
+        const now = Date.now();
+        this.deltaTime = now - this.lastUpdateTime;
+        this.lastUpdateTime = now; 
+    
         this.handleRemoteRequests();
         this.mousePosition.setX(p.mouseX + this.camera.getTransform().getPosition().getX());
         this.mousePosition.setY(p.mouseY + this.camera.getTransform().getPosition().getY());
         
         this.collisionSystem.getHashMap().clear();
-        this.scene.Mupdate(p);
+        this.scene.Mupdate(p, this.deltaTime );
         this.collisionSystem.update();
     }
+    
 
     getMousePosition():Vector2{
         return this.mousePosition;
@@ -116,6 +123,9 @@ export class Game extends messageSubscriber{
     draw(p:p5) {
         this.scene.Mdraw(p,this.camera);
         //this.collisionSystem.draw(p);
+        p.textSize(32);
+        p.fill("black");
+        p.text("FPS: " + Math.round(1000/this.deltaTime), 500, 30);
     }
     
     runFrame(p:p5){

@@ -11,12 +11,13 @@ export class PlayerMovementMouseComponent extends Component {
         this.speed = speed;
     }
     
-    update(p:p5) {
+    update(p:p5,dt:number) {
+        var scaledSpeed = this.speed * dt;
         var amountToMove:Vector2;
         amountToMove = Game.getInstance().getMousePosition().copy();
         amountToMove.selfSub( new Vector2 (this.getParent().getTransform().getPosition().getX(), this.getParent().getTransform().getPosition().getY()));
         amountToMove.selfNormalize();
-        amountToMove.selfScalMul(this.speed);
+        amountToMove.selfScalMul(scaledSpeed);
         this.getParent().asyncMove( this.getParent().getTransform().getPosition().add(amountToMove));
     }
 }

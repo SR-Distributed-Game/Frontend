@@ -49,7 +49,7 @@ export class fruit extends GameObject {
         
     }
 
-    update(p: p5): void {
+    update(p: p5,dt:number): void {
         this.gfx.setColor(this.randomColor);
     }
 

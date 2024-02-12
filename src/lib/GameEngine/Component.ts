@@ -15,7 +15,7 @@ export class Component {
     start() {
     }
 
-    update(p: p5) {
+    update(p: p5,dt:number) {
     
     }
 

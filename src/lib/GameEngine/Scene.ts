@@ -89,12 +89,16 @@ export abstract class Scene {
     }
 
     asyncMoveObject(obj: GameObject, x: number, y: number){
-        
+        var oldx = obj.getTransform().getPosition().getX();
+        var oldy = obj.getTransform().getPosition().getY();
         obj.getTransform().getPosition().setX(x);
         obj.getTransform().getPosition().setY(y);
+        obj.setFutureTransform(obj.getTransform().copy());
         var request = gameRequestFactory.getUpdateRequest();
         request.addMetadata("objectData", obj.toSerialized());
         this.sendToGame(request);
+        //obj.getTransform().getPosition().setX(oldx);
+        //obj.getTransform().getPosition().setY(oldy);
     }
 
     UpdateState(serverState: any) {
@@ -144,17 +148,17 @@ export abstract class Scene {
     start(p:p5){
     }
 
-    Mupdate(p:p5){
+    Mupdate(p:p5,dt:number){
         for(var ob of this.gameObjects.values()){
-            ob.Mupdate(p);
+            ob.Mupdate(p,dt);
             if (ob.shouldBeDestroyed()){
                 this.removeObject(ob);
             }
         }
-        this.update(p);
+        this.update(p,dt);
     }
 
-    update(p:p5){
+    update(p:p5,dt:number){
     }
 
     Mdraw(p:p5,camera: Camera){

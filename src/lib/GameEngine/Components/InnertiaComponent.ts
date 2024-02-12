@@ -14,7 +14,7 @@ export class InertiaFrictionComponent extends Component {
         this.friction = 0.01;
     }
 
-    update(p:p5) {
+    update(p:p5,dt:number) {
         this.velocity.selfAdd(this.acceleration);
         this.velocity.selfScalMul(1-this.friction);
         this.getParent().getTransform().getPosition().add(this.velocity);

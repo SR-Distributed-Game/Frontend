@@ -13,6 +13,7 @@ import { PlayerMovementMouseComponent } from "$lib/GameEngine/Components/PlayerM
 import { GameStateManager } from "./GameStateManager";
 import type { terrain } from "./terrain";
 import { Vector2 } from "$lib/GameEngine/Vector2";
+import { InterpolationComponent } from "$lib/GameEngine/Components/InterpolationComponent";
 
 export class player extends GameObject {
     namegfx:DrawTextComponent;
@@ -36,7 +37,7 @@ export class player extends GameObject {
         console.log("player created in constructor");
         this.tag = "player";
         this.clientID = SpringSocketServer.getInstance().getClientID(); 
-        this.speed = 5;
+        this.speed = 0.2;
         this.points = 0;
         this.namegfx = new DrawTextComponent(this);
         this.setName(SpringSocketServer.getInstance().getPlayerName()+"");
@@ -55,11 +56,11 @@ export class player extends GameObject {
 
     start(): void {
         this.terrain = Game.getInstance().getScene().getObjectsByTag("terrain").at(0) as terrain;
-        console.log(this.terrain!.getTransform().toJson());
         this.addDrawComponent(this.namegfx);
         if (this.clientID == SpringSocketServer.getInstance().getClientID()){
             //this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
             this.addComponent(new PlayerMovementMouseComponent(this,this.speed));
+            //this.addComponent(new InterpolationComponent(this,0.5));
             this.attachCamera();
         }
         this.addDrawComponent(new DrawElipseComponent(this, "#b0ffb0b0"));
@@ -74,7 +75,7 @@ export class player extends GameObject {
     }
 
 
-    update(p: p5): void {
+    update(p: p5,dt:number): void {
         if(this.clientID == SpringSocketServer.getInstance().getClientID()){
             if (this.hasBeenEaten){
                 GameStateManager.getInstance().setEndGameState();

@@ -40,11 +40,4 @@ export class sweetGameScene extends Scene {
         }
     }
 
-    update(p: p5): void {
-
-        
-    }
-
-
-
 }

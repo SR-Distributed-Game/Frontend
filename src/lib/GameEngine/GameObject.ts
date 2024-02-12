@@ -57,6 +57,10 @@ export class GameObject extends SerializableGameObject{
         return this.futurtransform;
     }
 
+    setFutureTransform(transform: Transform) {
+        this.futurtransform = transform;
+    }
+
     getTag(): string {
         return this.tag;
     }
@@ -126,16 +130,16 @@ export class GameObject extends SerializableGameObject{
         this.name = name;
     }
 
-    update(p:p5) {
+    update(p:p5,dt:number) {
     }
 
-    Mupdate(p:p5) {
+    Mupdate(p:p5,dt:number) {
         if (this.shouldBeDestroyed()){
             return;
         }
-        this.colliderComponents.forEach(component => component.update(p));
-        this.components.forEach(component => component.update(p));
-        this.update(p);
+        this.colliderComponents.forEach(component => component.update(p,dt));
+        this.components.forEach(component => component.update(p,dt));
+        this.update(p,dt);
         if (this.cameraAttached) {
             Game.getInstance().getCamera().getTransform().setPosition(this.getTransform().getPosition().sub(new Vector2(p.width/2,p.height/2).sub(this.getTransform().getScale().scalMul(0.5))));
         }

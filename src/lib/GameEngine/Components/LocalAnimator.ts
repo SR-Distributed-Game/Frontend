@@ -34,7 +34,7 @@ export class LocalAnimator extends Component {
             this.currentAnimation.stop();
     }
 
-    update(p:p5) {
+    update(p:p5,dt:number) {
         if (this.currentAnimation)
             this.currentAnimation.Mupdate(p);
     }

@@ -69,5 +69,9 @@ export class Transform {
         }
     }
 
+    public copy(): Transform {
+        return new Transform(this.position.getX(), this.position.getY(), this.scale.getX(), this.scale.getY());
+    }
+
     
 }

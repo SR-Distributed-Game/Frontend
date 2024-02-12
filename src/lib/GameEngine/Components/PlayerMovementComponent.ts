@@ -10,21 +10,22 @@ export class PlayerMovementComponent extends Component {
         this.speed = speed;
     }
     
-    update(p:p5) {
+    update(p:p5,dt:number) {
+        var scaledSpeed = this.speed * dt;
         var amountToMove:Vector2;
         amountToMove = new Vector2(0,0);
 
         if(p.keyIsDown(p.LEFT_ARROW)){
-            amountToMove.setX(-this.speed);
+            amountToMove.setX(-scaledSpeed);
         }
         if(p.keyIsDown(p.RIGHT_ARROW)){
-            amountToMove.setX(this.speed);
+            amountToMove.setX(scaledSpeed);
         }
         if(p.keyIsDown(p.UP_ARROW)){
-            amountToMove.setY(-this.speed);
+            amountToMove.setY(-scaledSpeed);
         }
         if(p.keyIsDown(p.DOWN_ARROW)){
-            amountToMove.setY(this.speed);
+            amountToMove.setY(scaledSpeed);
         }
         amountToMove.normalize();
         this.getParent().asyncMove( this.getParent().getTransform().getPosition().add(amountToMove));
